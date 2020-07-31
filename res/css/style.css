@@ -1,0 +1,146 @@
+/*CSS reset*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*END CSS reset*/
+
+/*CSS-VARS*/
+:root {
+    --white: #ebebeb;
+    --black: #111111;
+    --gray: #a4a4a4;
+    --icon-bg-blue: #00B0E8;
+    --main-font: 'Roboto', sans-serif;
+}
+
+body {
+    font-family: var(--main-font);
+}
+.app-container {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: var(--white);
+}
+
+.app-container .header {
+    display: flex;
+    flex-direction: column;
+    height: 8.75rem;
+    background: linear-gradient(90deg, #052E97 1.16%, #0B84AA 49.88%, #0896B6 97.2%);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.app-container .header .date-block .current-date {
+    color: var(--white);
+    font-family: var(--main-font);
+    font-weight: 700;
+    margin: .25rem .25rem;
+    font-size: .75rem;
+}
+
+.app-container .header .menu-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.app-container .header .menu-wrapper .menu-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-height: 10rem;
+}
+
+.app-container .header .menu-wrapper .menu-item .btn {
+    width: 4.75rem;
+    height: 4.75rem;
+    border-radius: 50%;
+    background: #00B0E8;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.app-container .header .menu-wrapper .menu-item .btn img {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+.app-container .header .menu-wrapper .menu-item p {
+    color: var(--white);
+    font-size: 0.75rem;
+    text-align: center;
+    margin-top: .5rem;
+}
+.app-container .header .menu-wrapper .weather-block .city {
+    font-weight: 500;
+    font-size: .8rem;
+}
+.app-container .header .menu-wrapper .weather-block .temp {
+    font-size: 2.8rem;
+    position: relative;
+}
+.app-container .header .menu-wrapper .weather-block .temp .deg-icon {
+    position: absolute;
+    top: 0;
+}
+.app-container .header .menu-wrapper .weather-block img {
+    height: 3rem;
+    width: 3rem;
+}
+input[type="date"] {
+    font-size: 2rem;
+    color: #888888;
+    border: #888888;
+    background-color: #888888;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My ToDo App</title>
+    <link rel="stylesheet" href="res/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="date-block">
+                <p class="current-date"><span>Сегодня: </span>Пятница, 31.07.2020</p>
+            </div>
+            <div class="menu-wrapper">
+                <div class="menu-item">
+                    <div class="btn">
+                        <img src="res/img/calendar.svg" alt="">
+                    </div>
+                    <p>Выбрать дату</p>
+                </div>
+                <div class="menu-item">
+                    <div class="btn">
+                        <img src="res/img/list-date.svg" alt="">
+                    </div>
+                    <p>Списки по датам</p>
+                </div>
+                <div class="menu-item weather-block">
+                    <p class="city">Dnipro</p>
+                    <p class="temp">28<span class="deg-icon">0</span></p>
+                    <img src="/res/img/weather-icon.svg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="app-content">
+            <input type="date">
+        </div>
+    </div>
+<script src="res/js/main.js"></script>
+</body>
+</html>
