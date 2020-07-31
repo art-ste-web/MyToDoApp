@@ -135,6 +135,9 @@ body {
     height: 3rem;
     width: 3rem;
 }
+
+
+/*
 input[type="date"] {
     font-size: 2rem;
     color: #888888;
@@ -144,3 +147,4 @@ input[type="date"] {
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+*/
