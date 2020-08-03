@@ -2,8 +2,13 @@
 const addTaskTodayBtn = document.querySelector(".new-task-btn");
 const taskInput = document.querySelector(".task-input-block");
 addTaskTodayBtn.addEventListener("click", ()=>{
-    taskInput.style.bottom = 0;
+    
     addTaskTodayBtn.style.display = "none";
+    function showInput() {
+        taskInput.style.bottom = 0;
+    }
+    setTimeout(showInput, 1000);
+    
 })
 
 
@@ -29,6 +34,14 @@ function showCurrentDate(dateEl) {
     dateEl.innerHTML = fullDate;
 }
 showCurrentDate(dateEl);
+
+
+//full screen api
+document.addEventListener("click", ()=>{
+    document.documentElement.requestFullscreen().catch((e) => {
+        console.log(e);
+    });
+});
 
 
 // let dateInp = document.getElementById("date_input");

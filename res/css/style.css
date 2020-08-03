@@ -190,11 +190,12 @@ body {
     max-width: 480px;
     min-height: 3rem;
     background-color: var(--light-gray);
+    background: linear-gradient(-90deg, #052E97 1.16%, #0B84AA 49.88%, #0896B6 97.2%);
     padding: 1rem 0;
     position: absolute;
     bottom: -100px;
     left: 0;
-    transition: all 0.25s;
+    transition: all 0.5s;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     box-shadow: 0px -6px 6px rgba(0, 0, 0, 0.1);
@@ -205,6 +206,8 @@ body {
     border-radius: 5px;
     margin: 0 1rem;
     width: 68%;
+    font-size: 1.2rem;
+    color: var(--light-gray);
 }
 .app-container .task-input-block button {
     background-color: var(--icon-bg-blue);
