@@ -3,6 +3,7 @@ const addTaskTodayBtn = document.querySelector(".new-task-btn");
 const taskInput = document.querySelector(".task-input-block");
 addTaskTodayBtn.addEventListener("click", ()=>{
     taskInput.style.bottom = 0;
+    document.body.requestFullscreen();
     addTaskTodayBtn.style.display = "none";
 })
 
