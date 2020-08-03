@@ -54,8 +54,10 @@ table {
     --white: #ebebeb;
     --black: #111111;
     --gray: #a4a4a4;
+    --light-gray: #d8d8d8;
     --icon-bg-blue: #00B0E8;
     --main-font: 'Roboto', sans-serif;
+    --btn-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -66,9 +68,12 @@ body {
     display: block;
     width: 100%;
     max-width: 480px;
+    min-height: 500px;
     height: 100vh;
     margin: 0 auto;
     background-color: var(--white);
+    overflow: hidden;
+    position: relative;
 }
 
 
@@ -86,7 +91,7 @@ body {
     font-family: var(--main-font);
     font-weight: 700;
     margin: .25rem .25rem;
-    font-size: .75rem;
+    font-size: .85rem;
 }
 
 .app-container .header .menu-wrapper {
@@ -107,7 +112,7 @@ body {
     height: 4.75rem;
     border-radius: 50%;
     background: #00B0E8;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--btn-shadow);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,6 +160,13 @@ body {
     align-items: center;
     min-height: 60vh;
 }
+.app-container .app-content .new-task-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: display ease-out 0.5s;
+}
 .app-container .app-content img {
     height: 5rem;
     width: 5rem;
@@ -169,7 +181,45 @@ body {
     color: var(--gray);
 }
 
-
+/*task input block*/
+.app-container .task-input-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    min-height: 3rem;
+    background-color: var(--light-gray);
+    padding: 1rem 0;
+    position: absolute;
+    bottom: -100px;
+    left: 0;
+    transition: all 0.25s;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0px -6px 6px rgba(0, 0, 0, 0.1);
+}
+.app-container .task-input-block input {
+    padding: .6rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    margin: 0 1rem;
+    width: 68%;
+}
+.app-container .task-input-block button {
+    background-color: var(--icon-bg-blue);
+    outline: none;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    box-shadow: var(--btn-shadow);
+    transition: all ease-out .2s;
+    cursor: pointer;
+}
+.app-container .task-input-block button:hover {
+    transform: scale(1.1);
+}
 
 /*
 input[type="date"] {

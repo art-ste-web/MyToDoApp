@@ -11,7 +11,7 @@
     <div class="app-container">
         <div class="header">
             <div class="date-block">
-                <p class="current-date"><span>Сегодня: </span>Пятница, 31.07.2020</p>
+                <p class="current-date">Сегодня: <span class="current-date">-</span></p>
             </div>
             <div class="menu-wrapper">
                 <div class="menu-item">
@@ -34,9 +34,17 @@
             </div>
         </div>
         <div class="app-content">
-            <img src="res/img/plus.svg" alt="">
-            <p>Нажмите, чтобы создать список</p>
-            <input id="date_input" type="date">
+            <ul class="task-list">
+
+            </ul>
+            <div class="new-task-btn">
+                <img src="res/img/plus-circle.svg" alt="">
+                <p>Нажмите, чтобы создать список</p>
+            </div>
+        </div>
+        <div class="task-input-block">
+            <input class="task-text" type="text" placeholder="введите текст задания">
+            <button class="add-task-btn"><img src="/res/img/plus.svg" alt=""></button>
         </div>
     </div>
 <script src="res/js/main.js"></script>
