@@ -1,22 +1,11 @@
-//show task input bar
-const addTaskTodayBtn = document.querySelector(".new-task-btn");
-const taskInput = document.querySelector(".task-input-block");
-addTaskTodayBtn.addEventListener("click", ()=>{
-    
-    addTaskTodayBtn.style.display = "none";
-    function showInput() {
-        taskInput.style.bottom = 0;
-    }
-    setTimeout(showInput, 1000);
-    
-})
-
+//app content container
+const appContent = document.querySelector(".app-content");
 
 //today date 
 let currentDate = new Date();
-let currDay = String(currentDate.getDate());
 let currWeekDay = String(currentDate.getDay());
-let currMonth = String(currentDate.getMonth()+1);
+let currDay = currentDate.getDate()<10 ? '0'+String(currentDate.getDate()) : String(currentDate.getDate());
+let currMonth = currentDate.getMonth()<10 ? '0'+String(currentDate.getMonth()+1) : String(currentDate.getMonth()+1);
 let currYear = String(currentDate.getFullYear());
 
 const weekDays = [
@@ -29,19 +18,68 @@ const weekDays = [
     'Суббота'
   ];
 let fullDate = `${weekDays[currWeekDay]}, ${currDay}.${currMonth}.${currYear}`;
-const dateEl = document.querySelector(".current-date");
+const dateEl = document.querySelector(".current-date-js");
 function showCurrentDate(dateEl) {
     dateEl.innerHTML = fullDate;
 }
 showCurrentDate(dateEl);
 
+//show task input bar (for adding today tasks)
+const addTaskTodayBtn = document.querySelector(".new-task-btn");
+const taskInput = document.querySelector(".task-input-block");
+addTaskTodayBtn.addEventListener("click", ()=>{
+    
+    addTaskTodayBtn.style.display = "none";
+    function showInput() {
+        taskInput.style.bottom = 0;
+    }
+    setTimeout(showInput, 1000);
+    
+})
+
+//show date select block
+const selectDateBtn = document.querySelector(".btn-calendar");
+const selectDateBlock = document.querySelector(".date-select");
+selectDateBtn.addEventListener("click", ()=> {
+    selectDateBlock.classList.toggle("show-el");
+    addTaskTodayBtn.classList.toggle("hide-el");
+    
+})
+
+//create list for selected date
+const adjInsPosition = 'afterbegin';
+
+
+const confirmDateBtn = document.querySelector(".date-select-btn");
+confirmDateBtn.addEventListener("click", ()=>{
+    const taskDate = document.getElementById("task-date");
+    const taskListHeader = `<h2 class="task-list-header">Задания на ${taskDate.value}</h2>`;
+    if(!taskDate.value) {
+        const dateLabel = document.querySelector(".date-select p");
+        dateLabel.style.transform = "scale(1.1)";
+        
+    }
+    else {
+        appContent.insertAdjacentHTML(adjInsPosition, taskListHeader);
+        selectDateBlock.classList.toggle("hide-el");
+        selectDateBlock.classList.toggle("show-el");
+        console.log(taskDate.value);
+    }
+    
+})
+
+
+
+
+
+
 
 //full screen api
-document.addEventListener("click", ()=>{
-    document.documentElement.requestFullscreen().catch((e) => {
-        console.log(e);
-    });
-});
+// document.addEventListener("click", ()=>{
+//     document.documentElement.requestFullscreen().catch((e) => {
+//         console.log(e);
+//     });
+// });
 
 
 // let dateInp = document.getElementById("date_input");

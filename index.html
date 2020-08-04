@@ -11,19 +11,15 @@
     <div class="app-container">
         <div class="header">
             <div class="date-block">
-                <p class="current-date">Сегодня: <span class="current-date">-</span></p>
+                <p class="current-date">Сегодня: <span class="current-date-js">-</span></p>
             </div>
             <div class="menu-wrapper">
                 <div class="menu-item">
-                    <div class="btn">
-                        <img src="res/img/calendar.svg" alt="">
-                    </div>
+                    <button class="btn btn-calendar"></button>
                     <p>Выбрать дату</p>
                 </div>
                 <div class="menu-item">
-                    <div class="btn">
-                        <img src="res/img/list-date.svg" alt="">
-                    </div>
+                    <button class="btn btn-dates-list"></button>
                     <p>Списки по датам</p>
                 </div>
                 <div class="menu-item weather-block">
@@ -40,6 +36,14 @@
             <div class="new-task-btn">
                 <img src="res/img/plus-circle.svg" alt="">
                 <p>Нажмите, чтобы создать список</p>
+            </div>
+            <div class="date-select">
+                <p>Выберите дату:</p>
+                <div class="date-input">
+                    <input type="date" name="task-date" id="task-date" value="">
+                    <button class="date-select-btn"></button>
+                </div>
+                
             </div>
         </div>
         <div class="task-input-block">
