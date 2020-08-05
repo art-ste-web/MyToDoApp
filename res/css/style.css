@@ -49,6 +49,13 @@ table {
 }
 /*END CSS reset*/
 
+/*animations*/
+@keyframes pulse {
+    from { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    to { transform: scale(1); }
+}
+
 /*JS styles*/
 .hide-el {
     display: none !important;
@@ -153,6 +160,7 @@ body {
 
 .app-container .header .menu-wrapper .menu-item .btn:hover {
     transform: scale(1.1);
+    
 }
 .app-container .header .menu-wrapper .menu-item .btn img {
     width: 2.5rem;
@@ -185,16 +193,50 @@ body {
 
 /*content part*/
 
+
 .app-container .app-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 60vh;
+    max-height: 400px;
+    padding: 1rem;
+    overflow: auto;
 }
 .app-container .app-content .task-list-header {
     font-size: 1.2rem;
     font-weight: 700;
+}
+/* task list styles */
+.app-container .app-content .task-list {
+    width: 100%;
+    padding: 1rem 0;
+}
+.app-container .app-content .task-list li {
+    margin-top: .5rem;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.app-container .app-content .task-list li .status {
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+    border: 2px solid var(--gray);
+    border-radius: 50%;
+    margin-right: .5rem;
+}
+.app-container .app-content .task-list li .trash {
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+    margin-right: .5rem;
+    background-image: url(../img/trash.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-left: auto;
 }
 .app-container .app-content .new-task-btn {
     display: flex;
@@ -243,7 +285,7 @@ body {
     margin: 1.2rem 1rem;
     width: 68%;
     font-size: 1.2rem;
-    color: var(--light-gray);
+    color: var(--black);
 }
 .app-container .task-input-block button {
     background-color: var(--icon-bg-blue);
@@ -266,7 +308,8 @@ body {
 }
 .app-container .app-content .date-select p {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    text-align: center;
     
 }
 .app-container .app-content .date-select .date-input {
