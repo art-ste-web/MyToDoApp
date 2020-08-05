@@ -194,11 +194,11 @@ confirmDateBtn.addEventListener("click", ()=>{
 
 
 //full screen api
-// document.addEventListener("click", ()=>{
-//     document.documentElement.requestFullscreen().catch((e) => {
-//         console.log(e);
-//     });
-// });
+document.addEventListener("click", ()=>{
+    document.documentElement.requestFullscreen().catch((e) => {
+        console.log(e);
+    });
+});
 
 
 // let dateInp = document.getElementById("date_input");
