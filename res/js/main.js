@@ -1,4 +1,4 @@
-let dateTasks = [
+let genTasksArr = [
     {
         id: 0,
         date: "31.07.2020",
@@ -21,7 +21,7 @@ let dateTasks = [
     },
     {
         id: 1,
-        date: "06.08.2020",
+        date: "07.08.2020",
         tasks: [
             {
                 id: 0,
@@ -40,7 +40,7 @@ let dateTasks = [
 
     }
 ]
-// console.log(dateTasks);
+// console.log(genTasksArr);
 
 //pulse animation (accent on element)
 function accentElement(el) {
@@ -83,8 +83,8 @@ showCurrentDate();
 //show start block 
 function showStartContent(appContentContainer) {
     todayDate = showCurrentDate();
-    let todayTasks;
-    dateTasks.forEach(element => {
+    let todayTasks = null;
+    genTasksArr.forEach(element => {
         if (todayDate==element["date"]) {
             todayTasks = element;
             return todayTasks;
@@ -127,29 +127,57 @@ function addNewTodayTask() {
     const addTaskBtn = document.querySelector(".add-task-btn");
     const parentTaskEl = document.querySelector(".task-list");
     
-    let dayTaskList = [
-            {
-                taskId: 0,
-                text: "Выпить кофе",
-                done: false,
-                trash: false
-            }
-    ]
+    let dayTaskList = [];
     addTaskBtn.addEventListener("click", () => {
         const inputTaskText = document.querySelector(".task-text");
         appContent.style.alignItems = "flex-start";
+        appContent.style.justifyContent = "flex-start";
         let taskItem = `<li><span class="status"></span>${inputTaskText.value}<span class="trash"></span></li>`;
+        let taskObj = {};
         if(inputTaskText.value) {
             parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
+            taskObj['tId'] = dayTaskList.length;
+            taskObj['text'] = inputTaskText.value;
+            taskObj['status'] = false;
+            taskObj['trash'] = false;
+            // console.log(taskObj);
+            dayTaskList.push(taskObj);
+            // console.log(dayTaskList);
+            addTodayTaskToGenArr(dayTaskList, genTasksArr);
             inputTaskText.value = "";
-        }
+            
+            
+        }   
         else {
             accentElement(inputTaskText);
             
         }
     })
 }
-addNewTodayTask()
+addNewTodayTask();
+
+//????????????????????????????????????????????????????????????????????????
+
+function addTodayTaskToGenArr(todayTasksArr, genArr) {
+    let dateTaskObj = {};
+    genArr.forEach(element => {
+        if (element['date'] == showCurrentDate()) {
+            element['tasks'] = todayTasksArr;
+           console.log(1);
+        }
+        else {
+            dateTaskObj['id'] = genArr.length;
+            dateTaskObj['date'] = showCurrentDate();
+            dateTaskObj['tasks'] = todayTasksArr;
+            dateTaskObj['allDone'] = false;
+            genArr.push(dateTaskObj);
+            console.log(2);
+        }
+    })
+    
+    console.log(genArr);
+    
+}
 
 
 
@@ -194,11 +222,11 @@ confirmDateBtn.addEventListener("click", ()=>{
 
 
 //full screen api
-document.addEventListener("click", ()=>{
-    document.documentElement.requestFullscreen().catch((e) => {
-        console.log(e);
-    });
-});
+// document.addEventListener("click", ()=>{
+//     document.documentElement.requestFullscreen().catch((e) => {
+//         console.log(e);
+//     });
+// });
 
 
 // let dateInp = document.getElementById("date_input");
