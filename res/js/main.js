@@ -21,7 +21,27 @@ let genTasksArr = [
     },
     {
         id: 1,
-        date: "07.08.2020",
+        date: "11.08.2020",
+        tasks: [
+            {
+                id: 0,
+                text: "Бегать",
+                done: false,
+                trash: false
+            },
+            {
+                id: 1,
+                text: "Прогулка",
+                done: false,
+                trash: false
+            }
+        ],
+        allDone: false
+
+    },
+    {
+        id: 2,
+        date: "12.08.2020",
         tasks: [
             {
                 id: 0,
@@ -51,18 +71,29 @@ function accentElement(el) {
 }
 
 
+//app globals
+ let appElements = {
+     appContent: document.querySelector(".app-content"),
+     dateEl: document.querySelector(".current-date-js"),
+ };
 
-//app content container
-const appContent = document.querySelector(".app-content");
+ let appData = {
+    todayTaskArr: [],
+ }
 
-//current date 
-function showCurrentDate() {
-    const dateEl = document.querySelector(".current-date-js");
+
+//generate current date
+function fullCurrentDate() {
     let currentDate = new Date();
-    let currWeekDay = String(currentDate.getDay());
-    let currDay = currentDate.getDate()<10 ? '0'+String(currentDate.getDate()) : String(currentDate.getDate());
-    let currMonth = currentDate.getMonth()<10 ? '0'+String(currentDate.getMonth()+1) : String(currentDate.getMonth()+1);
-    let currYear = String(currentDate.getFullYear());
+    let weekDay = currentDate.getDay();
+    let date = currentDate.getDate();
+    let month = currentDate.getMonth()+1;
+    let year = currentDate.getFullYear();
+    let strDate = date.toString();
+    let strMonth = month.toString();
+    let strYear = year.toString();
+    let showCurrDay = date<10 ? '0' + strDate : strDate;
+    let showCurMonth = month<10 ? '0' + strMonth : strMonth;
     const weekDays = [
         'Воскресенье',
         'Понедельник',
@@ -72,20 +103,24 @@ function showCurrentDate() {
         'Пятница',
         'Суббота'
     ];
-    let fullDate = `${weekDays[currWeekDay]}, ${currDay}.${currMonth}.${currYear}`;
-    let shortDate = `${currDay}.${currMonth}.${currYear}`;
-    dateEl.innerHTML = fullDate;
+    let fullDate = `${weekDays[weekDay]}, ${showCurrDay}.${showCurMonth}.${strYear}`;
+    let shortDate = `${showCurrDay}.${showCurMonth}.${strYear}`;
+    appElements.dateEl.innerHTML = fullDate;
     return shortDate;
 }
-showCurrentDate();
+
+function shortCurrentDate() {
+    return fullCurrentDate();
+    
+}
 
 
-//show start block 
-function showStartContent(appContentContainer) {
-    todayDate = showCurrentDate();
+//show task list for today or create add task btn and add its function
+function showStartContent(appContentContainer, mainDataArr) {
+    todayDate = shortCurrentDate();
     let todayTasks = null;
-    genTasksArr.forEach(element => {
-        if (todayDate==element["date"]) {
+    mainDataArr.forEach(element => {
+        if (todayDate === element["date"]) {
             todayTasks = element;
             return todayTasks;
         }
@@ -97,127 +132,151 @@ function showStartContent(appContentContainer) {
                              </div>`;
         appContentContainer.insertAdjacentHTML('afterbegin', newTaskBtn);
         appContentContainer.style.justifyContent = "center";
+        const addTaskTodayBtn = document.querySelector(".new-task-btn");
+        addTaskTodayBtn.addEventListener("click", showTodayTaskInput);
     }
     else {
-        console.log(todayTasks);
+        // console.log(todayTasks);
+        showTasks(todayTasks);
     }
 }
-showStartContent(appContent);
 
-//create new today task btn click (input task bar show)
+//show today tasks if exist
+function showTasks(todayTasks) {
+   const todayTaskArr = todayTasks.tasks;
+   console.log(todayTaskArr);
+
+}
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//renders list to parrent ul element from tasks array
+function renderListFromArr(listArr) {
+
+}
+
+//show input on click add task btn
 function showTodayTaskInput() {
-    const addTaskTodayBtn = document.querySelector(".new-task-btn");
     const taskInput = document.querySelector(".task-input-block");
-    if (addTaskTodayBtn) {
-        addTaskTodayBtn.addEventListener("click", ()=>{
-    
-            addTaskTodayBtn.style.display = "none";
-            function showInput() {
-                taskInput.style.bottom = 0;
-            }
-            setTimeout(showInput, 1000);
-            
-        })
-    }
-}
-showTodayTaskInput();
-
-//add task to list 
-function addNewTodayTask() {
+    const addTaskTodayBtn = document.querySelector(".new-task-btn");
     const addTaskBtn = document.querySelector(".add-task-btn");
+    addTaskTodayBtn.style.display = "none";
+        function showInput() {
+                taskInput.style.bottom = 0;
+        }
+        setTimeout(showInput, 1000);
+    addTaskBtn.addEventListener("click", addNewTodayTask);
+}
+
+//add new li element to parent ul
+function addNewTaskItemToDOM() {
+    const inputTaskText = document.querySelector(".task-text");
     const parentTaskEl = document.querySelector(".task-list");
-    
-    let dayTaskList = [];
-    addTaskBtn.addEventListener("click", () => {
-        const inputTaskText = document.querySelector(".task-text");
-        appContent.style.alignItems = "flex-start";
-        appContent.style.justifyContent = "flex-start";
-        let taskItem = `<li><span class="status"></span>${inputTaskText.value}<span class="trash"></span></li>`;
-        let taskObj = {};
-        if(inputTaskText.value) {
-            parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
-            taskObj['tId'] = dayTaskList.length;
-            taskObj['text'] = inputTaskText.value;
-            taskObj['status'] = false;
-            taskObj['trash'] = false;
-            // console.log(taskObj);
-            dayTaskList.push(taskObj);
-            // console.log(dayTaskList);
-            addTodayTaskToGenArr(dayTaskList, genTasksArr);
-            inputTaskText.value = "";
-            
-            
-        }   
-        else {
-            accentElement(inputTaskText);
-            
-        }
-    })
-}
-addNewTodayTask();
+    let taskItem = `<li><span class="status"></span>${inputTaskText.value}<span class="trash"></span></li>`;
+    appElements.appContent.style.alignItems = "flex-start";
+    appElements.appContent.style.justifyContent = "flex-start";
+    parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
 
-//????????????????????????????????????????????????????????????????????????
-
-function addTodayTaskToGenArr(todayTasksArr, genArr) {
-    let dateTaskObj = {};
-    genArr.forEach(element => {
-        if (element['date'] == showCurrentDate()) {
-            element['tasks'] = todayTasksArr;
-           console.log(1);
-        }
-        else {
-            dateTaskObj['id'] = genArr.length;
-            dateTaskObj['date'] = showCurrentDate();
-            dateTaskObj['tasks'] = todayTasksArr;
-            dateTaskObj['allDone'] = false;
-            genArr.push(dateTaskObj);
-            console.log(2);
-        }
-    })
-    
-    console.log(genArr);
-    
 }
 
+//create or update array with tasks for today
+function createTodayTasksArr(todayTaskArr) {
+    const inputTaskText = document.querySelector(".task-text");
+    let taskObj = {};
+    taskObj['tId'] = todayTaskArr.length;
+    taskObj['text'] = inputTaskText.value;
+    taskObj['status'] = false;
+    taskObj['trash'] = false;
+    todayTaskArr.push(taskObj);
+    // console.log(taskObj);
+    return todayTaskArr;
 
-
-//show date select block
-const selectDateBtn = document.querySelector(".btn-calendar");
-const selectDateBlock = document.querySelector(".date-select");
-selectDateBtn.addEventListener("click", ()=> {
-    selectDateBlock.classList.toggle("show-el");
-    addTaskTodayBtn.classList.toggle("hide-el");
-    
-})
-
-//button "select date" click 
-
-const confirmDateBtn = document.querySelector(".date-select-btn");
-confirmDateBtn.addEventListener("click", ()=>{
-    const taskDate = document.getElementById("task-date");
-    const adjInsPosition = 'afterbegin';
-    const taskListHeader = `<h2 class="task-list-header">Сделать ${taskDate.value}:</h2>`;
-    
-    if(!taskDate.value) {
-        const dateLabel = document.querySelector(".date-select p");
-        accentElement(dateLabel);
+}
+//adds new today task on click
+function addNewTodayTask() {
+    const inputTaskText = document.querySelector(".task-text");
+    if(inputTaskText.value) {
+        addNewTaskItemToDOM();
+        curTodayTask = createTodayTasksArr(appData.todayTaskArr);
+        inputTaskText.value = "";
+        addTodayTaskToMainArr(curTodayTask, genTasksArr);
+        // console.log(curTodayTask);
+    }
+    else {
+        accentElement(inputTaskText);
         
     }
-    else {
-        appContent.insertAdjacentHTML(adjInsPosition, taskListHeader);
-        selectDateBlock.classList.toggle("hide-el");
-        selectDateBlock.classList.toggle("show-el");
-        console.log(taskDate.value);
-    }
-    if(appContent.firstElementChild.tagName == "H2") {
-        selectDateBlock.classList.toggle("show-el");
-    }
     
-})
+}
+//update main data array with new tasks
+function addTodayTaskToMainArr(todayTasksArr, genArr) {
+    let dateTaskObj = {};
+    let today = shortCurrentDate();
+    let arrItem = null;
+    if(arrItem = genArr.find(item => item.date == today)) {
+        arrItem.tasks = todayTasksArr;
+        console.log('updated');
+    }
+    else {
+        dateTaskObj['id'] = genArr.length;
+        dateTaskObj['date'] = shortCurrentDate();
+        dateTaskObj['tasks'] = todayTasksArr;
+        dateTaskObj['allDone'] = false;
+        genArr.push(dateTaskObj);
+        console.log("added");
+    }
+    console.log(genArr);
+    return genArr;
+}
 
 
 
 
+
+
+
+
+
+
+
+// //show date select block
+// const selectDateBtn = document.querySelector(".btn-calendar");
+// const selectDateBlock = document.querySelector(".date-select");
+// selectDateBtn.addEventListener("click", ()=> {
+//     selectDateBlock.classList.toggle("show-el");
+//     addTaskTodayBtn.classList.toggle("hide-el");
+    
+// })
+
+// //button "select date" click 
+
+// const confirmDateBtn = document.querySelector(".date-select-btn");
+// confirmDateBtn.addEventListener("click", ()=>{
+//     const taskDate = document.getElementById("task-date");
+//     const adjInsPosition = 'afterbegin';
+//     const taskListHeader = `<h2 class="task-list-header">Сделать ${taskDate.value}:</h2>`;
+    
+//     if(!taskDate.value) {
+//         const dateLabel = document.querySelector(".date-select p");
+//         accentElement(dateLabel);
+        
+//     }
+//     else {
+//         appContent.insertAdjacentHTML(adjInsPosition, taskListHeader);
+//         selectDateBlock.classList.toggle("hide-el");
+//         selectDateBlock.classList.toggle("show-el");
+//         console.log(taskDate.value);
+//     }
+//     if(appContent.firstElementChild.tagName == "H2") {
+//         selectDateBlock.classList.toggle("show-el");
+//     }
+    
+// })
+
+
+//call functions
+
+
+fullCurrentDate();
+showStartContent(appElements.appContent, genTasksArr);
 
 
 
@@ -233,6 +292,5 @@ confirmDateBtn.addEventListener("click", ()=>{
 // dateInp.addEventListener("input", ()=> {
 //     console.log(dateInp.value);
 // })
-
 
 

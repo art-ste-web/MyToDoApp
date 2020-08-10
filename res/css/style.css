@@ -220,6 +220,10 @@ body {
     align-items: center;
     width: 100%;
 }
+.app-container .app-content .task-list li.done {
+    color: var(--gray);
+    text-decoration: line-through;
+}
 .app-container .app-content .task-list li .status {
     display: inline-block;
     height: 2rem;
@@ -228,6 +232,16 @@ body {
     border-radius: 50%;
     margin-right: .5rem;
 }
+.app-container .app-content .task-list li span.checked {
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+    border: none;
+    border-radius: 50%;
+    margin-right: .5rem;
+    background-image: url(../img/checked.svg);
+}
+
 .app-container .app-content .task-list li .trash {
     display: inline-block;
     height: 2rem;
