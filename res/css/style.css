@@ -231,6 +231,7 @@ body {
     border: 2px solid var(--gray);
     border-radius: 50%;
     margin-right: .5rem;
+    cursor: pointer;
 }
 .app-container .app-content .task-list li span.checked {
     display: inline-block;
@@ -240,6 +241,7 @@ body {
     border-radius: 50%;
     margin-right: .5rem;
     background-image: url(../img/checked.svg);
+    background-position: center center;
 }
 
 .app-container .app-content .task-list li .trash {
@@ -251,6 +253,7 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     margin-left: auto;
+    cursor: pointer;
 }
 .app-container .app-content .new-task-btn {
     display: flex;

@@ -41,7 +41,7 @@ let genTasksArr = [
     },
     {
         id: 2,
-        date: "12.08.2020",
+        date: "10.08.2020",
         tasks: [
             {
                 id: 0,
@@ -52,7 +52,7 @@ let genTasksArr = [
             {
                 id: 1,
                 text: "Прогулка",
-                done: false,
+                done: true,
                 trash: false
             }
         ],
@@ -136,21 +136,46 @@ function showStartContent(appContentContainer, mainDataArr) {
         addTaskTodayBtn.addEventListener("click", showTodayTaskInput);
     }
     else {
-        // console.log(todayTasks);
-        showTasks(todayTasks);
+        let tasksList = selectTaskArr(todayTasks);
+        renderTaskListFromArr(tasksList);
+        showNewTaskInput();
     }
 }
 
 //show today tasks if exist
-function showTasks(todayTasks) {
+function selectTaskArr(todayTasks) {
    const todayTaskArr = todayTasks.tasks;
    console.log(todayTaskArr);
+   return todayTaskArr;
 
 }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//renders list to parrent ul element from tasks array
-function renderListFromArr(listArr) {
 
+//show input for today task 
+function showNewTaskInput() {
+    const taskInput = document.querySelector(".task-input-block");
+    const addTaskBtn = document.querySelector(".add-task-btn");
+        function showInput() {
+                taskInput.style.bottom = 0;
+        }
+        setTimeout(showInput, 1000);
+    addTaskBtn.addEventListener("click", addNewTodayTask);
+}
+
+//renders list to parrent ul element from tasks array
+function renderTaskListFromArr(listArr) {
+    const parentTaskEl = document.querySelector(".task-list");
+    listArr.forEach(element  => {
+        let taskDoneItem = `<li class = "done"><span class="status checked"></span>${element.text}<span class="trash"></span></li>`;
+        if(element.done === true) {
+            parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
+        }
+        else {
+            let taskItem = `<li><span class="status"></span>${element.text}<span class="trash"></span></li>`;
+            parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
+        }
+        
+    });
+    
 }
 
 //show input on click add task btn
