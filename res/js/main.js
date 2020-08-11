@@ -1,4 +1,5 @@
-let genTasksArr = [
+let genTasksArr=getDataFromLocalStorage();
+let genTasksArr1 = [
     {
         id: 0,
         date: "31.07.2020",
@@ -21,7 +22,7 @@ let genTasksArr = [
     },
     {
         id: 1,
-        date: "11.08.2020",
+        date: "12.08.2020",
         tasks: [
             {
                 id: 0,
@@ -72,9 +73,10 @@ function accentElement(el) {
 
 
 //app globals
- let appElements = {
+ const appElements = {
      appContent: document.querySelector(".app-content"),
      dateEl: document.querySelector(".current-date-js"),
+     taskListContainer: document.querySelector(".task-list"),
  };
 
  let appData = {
@@ -165,12 +167,12 @@ function showNewTaskInput() {
 function renderTaskListFromArr(listArr) {
     const parentTaskEl = document.querySelector(".task-list");
     listArr.forEach(element  => {
-        let taskDoneItem = `<li class = "done"><span class="status checked"></span>${element.text}<span class="trash"></span></li>`;
-        if(element.done === true) {
+        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span>${element.text}<span class="trash"></span></li>`;
+        if(element.status === true) {
             parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
         }
         else {
-            let taskItem = `<li><span class="status"></span>${element.text}<span class="trash"></span></li>`;
+            let taskItem = `<li><span  id = "${element.tId}" class="status"></span>${element.text}<span class="trash"></span></li>`;
             parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
         }
         
@@ -249,12 +251,88 @@ function addTodayTaskToMainArr(todayTasksArr, genArr) {
         console.log("added");
     }
     console.log(genArr);
+    setToLocalStorage(genArr);
     return genArr;
 }
 
+//save main data array to local storage
+function setToLocalStorage(mainArr) {
+    localStorage.setItem("MYTODO", JSON.stringify(mainArr));
+}
+
+//get data from local storage
+function getDataFromLocalStorage() {
+    let data = localStorage.getItem("MYTODO");
+    let mainDataArr = [];
+    if(data) {
+        mainDataArr = JSON.parse(data);
+        return mainDataArr;
+    }
+    else {
+        return [];
+    }
+}
+    
 
 
+//get clicked element and set/unset done status
+appElements.taskListContainer.addEventListener("click", (event) => {
+    let element = event.target;
+    let elCheckedState = false;
+    let elId = event.target.id;
+    let curDate = shortCurrentDate();
+    console.log(elId);
+    if(element.classList.contains("status")) {
+        element.classList.toggle("checked");
+        element.parentNode.classList.toggle('done');
+        if (element.classList.contains("checked")) {
+            elCheckedState = true;
+            changeStatusOfTask(curDate, elId, genTasksArr, elCheckedState);
+        }
+        else {
+            elCheckedState = false;
+            changeStatusOfTask(curDate, elId, genTasksArr, elCheckedState);
+        }
+        
+    }
+    else {
+        let elChilds = element.childNodes;
+        elChilds.forEach(el => {
+            if(el.className ==="status") {
+                accentElement(el);
+            }
+        })
+        
+        
+    }
+    
+    //console.log(element);
+})
 
+//change task status in main array
+function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
+    mainDataArr.forEach(el =>{
+        // console.log(el);
+        if(el.date === taskDate) {
+            el.tasks.forEach( e => {
+                //  console.log(e);
+                if(e.tId == taskId) {
+                    if(elState === true) {
+                        e.status = true;
+                        console.log(e.status);
+                        setToLocalStorage(mainDataArr);
+                    }
+                    else {
+                        e.status = false;
+                        console.log(e.status);
+                        setToLocalStorage(mainDataArr);
+                    }
+                }
+            })
+        }
+    })
+    
+}
 
 
 
@@ -306,11 +384,11 @@ showStartContent(appElements.appContent, genTasksArr);
 
 
 //full screen api
-// document.addEventListener("click", ()=>{
-//     document.documentElement.requestFullscreen().catch((e) => {
-//         console.log(e);
-//     });
-// });
+document.addEventListener("click", ()=>{
+    document.documentElement.requestFullscreen().catch((e) => {
+        console.log(e);
+    });
+});
 
 
 // let dateInp = document.getElementById("date_input");
