@@ -1,5 +1,6 @@
-let genTasksArr=getDataFromLocalStorage();
-let genTasksArr1 = [
+let genTasksArr = getDataFromLocalStorage();
+console.log(genTasksArr);
+let genTasksArr1= [
     {
         id: 0,
         date: "31.07.2020",
@@ -33,6 +34,12 @@ let genTasksArr1 = [
             {
                 id: 1,
                 text: "Прогулка",
+                done: false,
+                trash: false
+            },
+            {
+                id: 2,
+                text: "Learn JS",
                 done: false,
                 trash: false
             }
@@ -94,8 +101,8 @@ function fullCurrentDate() {
     let strDate = date.toString();
     let strMonth = month.toString();
     let strYear = year.toString();
-    let showCurrDay = date<10 ? '0' + strDate : strDate;
-    let showCurMonth = month<10 ? '0' + strMonth : strMonth;
+    let showCurrDay = date < 10 ? '0' + strDate : strDate;
+    let showCurMonth = month < 10 ? '0' + strMonth : strMonth;
     const weekDays = [
         'Воскресенье',
         'Понедельник',
@@ -116,17 +123,24 @@ function shortCurrentDate() {
     
 }
 
+//get today task array from main data array
+function getTodayTaskArr() {
+    let todayDate = shortCurrentDate();
+    let todayTasks = null;
+    genTasksArr.forEach(element => {
+        if(element.date == todayDate) {
+            todayTasks = element.tasks;
+        }
+        
+    })
+    return todayTasks;
+}
 
 //show task list for today or create add task btn and add its function
 function showStartContent(appContentContainer, mainDataArr) {
     todayDate = shortCurrentDate();
-    let todayTasks = null;
-    mainDataArr.forEach(element => {
-        if (todayDate === element["date"]) {
-            todayTasks = element;
-            return todayTasks;
-        }
-});
+    let todayTasks = getTodayTaskArr();
+    // console.log(todayTasks);
     if(!todayTasks) {
         let newTaskBtn = `<div class="new-task-btn"> 
                                 <img src="res/img/plus-circle.svg" alt="">
@@ -138,18 +152,10 @@ function showStartContent(appContentContainer, mainDataArr) {
         addTaskTodayBtn.addEventListener("click", showTodayTaskInput);
     }
     else {
-        let tasksList = selectTaskArr(todayTasks);
-        renderTaskListFromArr(tasksList);
+        // let tasksList = selectTaskArr(todayTasks);
+        renderTaskListFromArr(todayTasks);
         showNewTaskInput();
     }
-}
-
-//show today tasks if exist
-function selectTaskArr(todayTasks) {
-   const todayTaskArr = todayTasks.tasks;
-   console.log(todayTaskArr);
-   return todayTaskArr;
-
 }
 
 //show input for today task 
@@ -163,6 +169,17 @@ function showNewTaskInput() {
     addTaskBtn.addEventListener("click", addNewTodayTask);
 }
 
+//create new today date objecr in main data array
+function createTodayDateObj(mainArr) {
+    let todayObj = {};
+    todayObj.id = mainArr.length;
+    todayObj.date = shortCurrentDate();
+    todayObj.tasks = [];
+    todayObj.allDone = false;
+    mainArr.push(todayObj);
+    setToLocalStorage(mainArr)
+    return mainArr;
+}
 //renders list to parrent ul element from tasks array
 function renderTaskListFromArr(listArr) {
     const parentTaskEl = document.querySelector(".task-list");
@@ -185,6 +202,7 @@ function showTodayTaskInput() {
     const taskInput = document.querySelector(".task-input-block");
     const addTaskTodayBtn = document.querySelector(".new-task-btn");
     const addTaskBtn = document.querySelector(".add-task-btn");
+    createTodayDateObj(genTasksArr);
     addTaskTodayBtn.style.display = "none";
         function showInput() {
                 taskInput.style.bottom = 0;
@@ -204,6 +222,8 @@ function addNewTaskItemToDOM() {
 
 }
 
+
+
 //create or update array with tasks for today
 function createTodayTasksArr(todayTaskArr) {
     const inputTaskText = document.querySelector(".task-text");
@@ -219,10 +239,12 @@ function createTodayTasksArr(todayTaskArr) {
 }
 //adds new today task on click
 function addNewTodayTask() {
+    let todayTasks = getTodayTaskArr();
+    console.log(todayTasks);
     const inputTaskText = document.querySelector(".task-text");
     if(inputTaskText.value) {
         addNewTaskItemToDOM();
-        curTodayTask = createTodayTasksArr(appData.todayTaskArr);
+        curTodayTask = createTodayTasksArr(todayTasks);
         inputTaskText.value = "";
         addTodayTaskToMainArr(curTodayTask, genTasksArr);
         // console.log(curTodayTask);
@@ -239,7 +261,7 @@ function addTodayTaskToMainArr(todayTasksArr, genArr) {
     let today = shortCurrentDate();
     let arrItem = null;
     if(arrItem = genArr.find(item => item.date == today)) {
-        arrItem.tasks = todayTasksArr;
+        arrItem.tasks = todayTasksArr; 
         console.log('updated');
     }
     else {
@@ -279,7 +301,7 @@ function getDataFromLocalStorage() {
 appElements.taskListContainer.addEventListener("click", (event) => {
     let element = event.target;
     let elCheckedState = false;
-    let elId = event.target.id;
+    let elId = Number(event.target.id);
     let curDate = shortCurrentDate();
     console.log(elId);
     if(element.classList.contains("status")) {
@@ -302,21 +324,19 @@ appElements.taskListContainer.addEventListener("click", (event) => {
                 accentElement(el);
             }
         })
-        
-        
     }
-    
     //console.log(element);
 })
-
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //change task status in main array
 function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
     mainDataArr.forEach(el =>{
         // console.log(el);
         if(el.date === taskDate) {
             el.tasks.forEach( e => {
-                //  console.log(e);
-                if(e.tId == taskId) {
+                // console.log(e);
+                // console.log(typeof(taskId));
+                if(e.tId === taskId) {
                     if(elState === true) {
                         e.status = true;
                         console.log(e.status);
@@ -384,11 +404,11 @@ showStartContent(appElements.appContent, genTasksArr);
 
 
 //full screen api
-document.addEventListener("click", ()=>{
-    document.documentElement.requestFullscreen().catch((e) => {
-        console.log(e);
-    });
-});
+// document.addEventListener("click", ()=>{
+//     document.documentElement.requestFullscreen().catch((e) => {
+//         console.log(e);
+//     });
+// });
 
 
 // let dateInp = document.getElementById("date_input");
