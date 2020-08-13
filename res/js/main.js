@@ -1,18 +1,18 @@
 let genTasksArr = getDataFromLocalStorage();
-console.log(genTasksArr);
-let genTasksArr1= [
+// console.log(genTasksArr);
+let genTasksArr1 = [
     {
         id: 0,
         date: "31.07.2020",
         tasks: [
             {
-                id: 0,
+                tId: 0,
                 text: "Выпить кофе",
                 done: false,
                 trash: false
             },
             {
-                id: 1,
+                tId: 1,
                 text: "Учить JS",
                 done: false,
                 trash: false
@@ -23,22 +23,22 @@ let genTasksArr1= [
     },
     {
         id: 1,
-        date: "12.08.2020",
+        date: "13.08.2020",
         tasks: [
             {
-                id: 0,
+                tId: 0,
                 text: "Бегать",
                 done: false,
                 trash: false
             },
             {
-                id: 1,
+                tId: 1,
                 text: "Прогулка",
                 done: false,
                 trash: false
             },
             {
-                id: 2,
+                tId: 2,
                 text: "Learn JS",
                 done: false,
                 trash: false
@@ -52,13 +52,13 @@ let genTasksArr1= [
         date: "10.08.2020",
         tasks: [
             {
-                id: 0,
+                tId: 0,
                 text: "Бегать",
                 done: false,
                 trash: false
             },
             {
-                id: 1,
+                tId: 1,
                 text: "Прогулка",
                 done: true,
                 trash: false
@@ -184,17 +184,23 @@ function createTodayDateObj(mainArr) {
 function renderTaskListFromArr(listArr) {
     const parentTaskEl = document.querySelector(".task-list");
     listArr.forEach(element  => {
-        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span>${element.text}<span class="trash"></span></li>`;
+        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span>${element.text}<span id="t${element.tId}" class="trash"></span></li>`;
         if(element.status === true) {
             parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
         }
         else {
-            let taskItem = `<li><span  id = "${element.tId}" class="status"></span>${element.text}<span class="trash"></span></li>`;
+            let taskItem = `<li><span  id = "${element.tId}" class="status"></span>${element.text}<span id="t${element.tId}" class="trash"></span></li>`;
             parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
         }
         
     });
     
+}
+
+//clear parent ul element (for redrawing list)
+function clearDOMTaskList() {
+    const parentTaskEl = document.querySelector(".task-list");
+    parentTaskEl.innerHTML = '';
 }
 
 //show input on click add task btn
@@ -213,9 +219,11 @@ function showTodayTaskInput() {
 
 //add new li element to parent ul
 function addNewTaskItemToDOM() {
+    
     const inputTaskText = document.querySelector(".task-text");
     const parentTaskEl = document.querySelector(".task-list");
-    let taskItem = `<li><span class="status"></span>${inputTaskText.value}<span class="trash"></span></li>`;
+    const elCount = parentTaskEl.childElementCount;
+    let taskItem = `<li><span id = "${elCount}" class="status"></span>${inputTaskText.value}<span id="t${elCount}" class="trash"></span></li>`;
     appElements.appContent.style.alignItems = "flex-start";
     appElements.appContent.style.justifyContent = "flex-start";
     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
@@ -303,7 +311,7 @@ appElements.taskListContainer.addEventListener("click", (event) => {
     let elCheckedState = false;
     let elId = Number(event.target.id);
     let curDate = shortCurrentDate();
-    console.log(elId);
+    // console.log(elId);
     if(element.classList.contains("status")) {
         element.classList.toggle("checked");
         element.parentNode.classList.toggle('done');
@@ -327,34 +335,57 @@ appElements.taskListContainer.addEventListener("click", (event) => {
     }
     //console.log(element);
 })
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//get clicked trash element and delete task from list
+appElements.taskListContainer.addEventListener("click", (event) => {
+    let element = event.target;
+    let getElId = event.target.id;
+    let curDate = shortCurrentDate();
+    let trashIdNum = Number(getElId.substr(1));
+    console.log(trashIdNum);
+    if(element.classList.contains("trash")) {
+        deleteItemFromList(curDate, trashIdNum, genTasksArr);
+        let todayTasks = getTodayTaskArr();
+        clearDOMTaskList();
+        renderTaskListFromArr(todayTasks);
+    }
+
+})
+
 //change task status in main array
 function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
-    mainDataArr.forEach(el =>{
-        // console.log(el);
-        if(el.date === taskDate) {
-            el.tasks.forEach( e => {
-                // console.log(e);
-                // console.log(typeof(taskId));
-                if(e.tId === taskId) {
-                    if(elState === true) {
-                        e.status = true;
-                        console.log(e.status);
-                        setToLocalStorage(mainDataArr);
-                    }
-                    else {
-                        e.status = false;
-                        console.log(e.status);
-                        setToLocalStorage(mainDataArr);
-                    }
-                }
-            })
+    
+    let todayEl = mainDataArr.find(el => el.date === taskDate);
+    todayEl.tasks.forEach(el => {
+        if(el.tId === taskId) {
+            el.status = elState;
+            console.log("work");
+            setToLocalStorage(mainDataArr);
         }
     })
-    
 }
 
+//delete item from tasklist
+function deleteItemFromList(taskDate, taskId, mainDataArr) {
+    let todayEl = mainDataArr.find(el => el.date === taskDate);
+    let todayElTasks = todayEl.tasks;
+    todayElTasks.forEach(el => {
+        if(el.tId === taskId) {
+            todayElTasks.splice(el.tId, 1);
+            console.log(el.tId);
+            // console.log(todayElTasks);
+            for(let i = 0; i < todayElTasks.length; i++) {
+                todayElTasks[i].tId = i;
+                console.log(todayElTasks);
+                
+            }
+            
+           
+        }
+    })
+    setToLocalStorage(mainDataArr);
 
+}
 
 
 

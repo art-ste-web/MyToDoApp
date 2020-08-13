@@ -87,8 +87,8 @@ table {
 
 body {
     font-family: var(--main-font);
+    -webkit-tap-highlight-color: transparent;
 }
-
 .app-container {
     display: block;
     width: 100%;
