@@ -298,8 +298,7 @@ body {
     text-align: center;
     width: 80%;
     top: 50%;
-    left: 30%;
-    transform: translate(-30%, -50%);
+    transform: translate(0%, -50%);
     animation: appear-from-top;
     animation-duration: 0.5s;
 }
