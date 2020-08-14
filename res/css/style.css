@@ -291,11 +291,15 @@ body {
     margin-top: 1rem;
     color: var(--gray);
 }
+/*message when list empty*/
 .app-container .app-content .list-message {
     position: absolute;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 80%;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left: 30%;
+    transform: translate(-30%, -50%);
     animation: appear-from-top;
     animation-duration: 0.5s;
 }
@@ -407,6 +411,7 @@ body {
     font-family: var(--main-font);
     font-size: 1.2rem;
     color: #00B0E8;
+    background-color: transparent;
     cursor: pointer;
     animation: appear;
     animation-duration: .3s;

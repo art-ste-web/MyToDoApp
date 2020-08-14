@@ -323,7 +323,7 @@ function getDataFromLocalStorage() {
 
 
 //get clicked element and set/unset done status
-appElements.taskListContainer.addEventListener("click", (event) => {
+appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
     let elCheckedState = false;
     let elId = Number(event.target.id);
@@ -354,7 +354,7 @@ appElements.taskListContainer.addEventListener("click", (event) => {
 })
 
 //get clicked trash element and delete task from list
-appElements.taskListContainer.addEventListener("click", (event) => {
+appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
     let getElId = event.target.id;
     let curDate = shortCurrentDate();
@@ -362,7 +362,7 @@ appElements.taskListContainer.addEventListener("click", (event) => {
     console.log(trashIdNum);
     if(element.classList.contains("trash")) {
         deleteItemFromList(curDate, trashIdNum, genTasksArr);
-        let todayTasks = getTodayTaskArr();
+        let todayTasks = getTodayTaskArr(curDate);
         clearDOMTaskList();
         renderTaskListFromArr(todayTasks);
     }
@@ -382,7 +382,7 @@ function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
     })
 }
 
-//delete item from tasklist
+//delete item from tasklist in main data array
 function deleteItemFromList(taskDate, taskId, mainDataArr) {
     let todayEl = mainDataArr.find(el => el.date === taskDate);
     let todayElTasks = todayEl.tasks;
