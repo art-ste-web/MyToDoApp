@@ -86,6 +86,8 @@ function accentElement(el) {
      appContent: document.querySelector(".app-content"),
      dateEl: document.querySelector(".current-date-js"),
      taskListContainer: document.querySelector(".task-list"),
+     optionsBtn: document.querySelector(".options-btn"),
+
  };
 
  let appData = {
@@ -138,6 +140,21 @@ function transformDateToDdMmYy(dateYyMmDd) {
     return transformedDate;
 }
 //*********END DATES FUNCTIONS***********/
+
+
+//******OPTIONS MENU*****/
+appElements.optionsBtn.addEventListener("click", () => {
+    const optBtnsCont = document.querySelector(".options-btns-container");
+    const closeOptBtn = document.querySelector(".close-options-btn");
+    const clearStorageBtn = document.querySelector(".delete-data-btn");
+    optBtnsCont.style.display = "flex";
+    closeOptBtn.addEventListener("click", () => {
+        optBtnsCont.style.display = "none";
+    })
+    clearStorageBtn.addEventListener("click", () => {
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    })
+})
 
 
 //get today task array from main data array

@@ -63,6 +63,10 @@ table {
     from { opacity: 0;}
     to { opacity: 1; }
 }
+@keyframes slide-from-right {
+    from { right: -5rem; }
+    to { right: 0;}
+}
 /*JS styles*/
 .hide-el {
     display: none !important;
@@ -116,11 +120,109 @@ body {
 .app-container .header {
     display: flex;
     flex-direction: column;
-    height: 8.75rem;
+    height: 9.5rem;
     background: linear-gradient(90deg, #052E97 1.16%, #0B84AA 49.88%, #0896B6 97.2%);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
-
+.app-container .header .date-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.app-container .header .date-block .options-btn {
+    background-image: url(../img/menu.svg);
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin-right: .5rem;
+    /* margin-top: .25rem; */
+    height: 2rem;
+    width: 2rem;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.app-container .header .date-block .options-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+.app-container .header .date-block .options-btns-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4rem;
+    height: 10rem;
+    background-color: var(--white);
+    box-shadow: var(--btn-shadow);
+    border-bottom-left-radius: 5px;
+    z-index: 1000;
+    animation: slide-from-right;
+    animation-duration: .5s;
+}
+.app-container .header .date-block .options-btns-container .close-options-btn {
+    height: 1rem;
+    width: 1rem;
+    background-color: transparent;
+    background-image: url(../img/close.svg);
+    background-size: 90%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    margin: .5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.2rem;
+    cursor: pointer;
+}
+.app-container .header .date-block .options-btns-container .delete-data-btn {
+    height: 2rem;
+    width: 2rem;
+    background-color: #00B0E8;
+    background-image: url(../img/delete-database.svg);
+    background-size: 60%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    margin: .5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: .5rem;
+}
+.app-container .header .date-block .options-btns-container .select-location-btn {
+    height: 2rem;
+    width: 2rem;
+    background-color: #00B0E8;
+    background-image: url(../img/location.svg);
+    background-size: 60%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    margin: .5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: .5rem;
+}
+.app-container .header .date-block .options-btns-container .delete-data-btn {
+    height: 2rem;
+    width: 2rem;
+    background-color: #00B0E8;
+    background-image: url(../img/delete-database.svg);
+    background-size: 60%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    margin: .5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: .5rem;
+}
 .app-container .header .date-block .current-date {
     color: var(--white);
     font-family: var(--main-font);
