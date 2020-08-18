@@ -91,8 +91,11 @@ table {
     --gray: #a4a4a4;
     --light-gray: #d8d8d8;
     --icon-bg-blue: #00B0E8;
+    --success-green: #28a745;
+    --danger-red: #dc3545;
     --main-font: 'Roboto', sans-serif;
     --btn-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    --block-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
         
 }
 *:focus {
@@ -129,12 +132,14 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+/*options menu*/
 .app-container .header .date-block .options-btn {
     background-image: url(../img/menu.svg);
-    background-size: 80%;
+    background-size: 60%;
     background-repeat: no-repeat;
     background-position: center center;
-    margin-right: .5rem;
+    margin-top: .25rem;
     /* margin-top: .25rem; */
     height: 2rem;
     width: 2rem;
@@ -142,6 +147,7 @@ body {
     outline: none;
     border: none;
     border-radius: 50%;
+    transform: rotate(90deg);
     cursor: pointer;
 }
 .app-container .header .date-block .options-btn:hover {
@@ -228,7 +234,7 @@ body {
     font-family: var(--main-font);
     font-weight: 400;
     margin: .25rem .25rem;
-    font-size: .85rem;
+    font-size: .8rem;
 }
 .app-container .header .date-block .current-date .current-date-js {
     font-weight: 700;
@@ -285,12 +291,15 @@ body {
     margin-top: .5rem;
     
 }
+.app-container .header .menu-wrapper .weather-block {
+    z-index: 500;
+}
 .app-container .header .menu-wrapper .weather-block .city {
     font-weight: 500;
     font-size: .8rem;
 }
 .app-container .header .menu-wrapper .weather-block .temp {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     position: relative;
 }
 .app-container .header .menu-wrapper .weather-block .temp .deg-icon {
@@ -393,7 +402,7 @@ body {
     margin-top: 1rem;
     color: var(--gray);
 }
-/*message when list empty*/
+/*message when task list empty*/
 .app-container .app-content .list-message {
     position: absolute;
     font-size: 1.2rem;
@@ -404,7 +413,87 @@ body {
     animation: appear-from-top;
     animation-duration: 0.5s;
 }
-
+/*popup window*/
+.app-container .popup-block-screen {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1500;
+}
+.app-container .app-content .popup-window {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 10rem;
+    border-radius: 5px;
+    background-color: var(--white);
+    box-shadow: var(--block-shadow);
+    z-index: 2000;
+    animation: appear-from-top;
+    animation-duration: 0.5s;
+}
+.app-container .app-content .popup-window .popup-close {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 20%;
+}
+.app-container .app-content .popup-window .popup-close .close-popup-btn {
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color: transparent;
+    background-image: url(../img/close.svg);
+    background-size: 80%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: none;
+    outline: none;
+    margin: .5rem;
+    margin-top: 1rem;
+    
+    cursor: pointer;
+}
+.app-container .app-content .popup-window .popup-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+}
+.app-container .app-content .popup-window .popup-content p {
+    margin-top: 0;
+    padding: 1rem;
+    color: var(--black);
+}
+.app-container .app-content .popup-window .popup-btns {
+    display: flex;
+    height: 30%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.app-container .app-content .popup-window .popup-btns .popup-confirm-btn {
+    padding: .5rem;
+    border: none;
+    outline: none;
+    background-color: var(--success-green);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.app-container .app-content .popup-window .popup-btns .popup-cancel-btn {
+    padding: .5rem;
+    border: 1px solid var(--gray);
+    outline: none;
+    background-color: none;
+    color: var(--black);
+    border-radius: 5px;
+    cursor: pointer;
+}
 /*task input block*/
 .app-container .task-input-block {
     display: flex;

@@ -141,6 +141,71 @@ function transformDateToDdMmYy(dateYyMmDd) {
 }
 //*********END DATES FUNCTIONS***********/
 
+/********LOCAL STORAGE FUNCTIONS********/
+//save main data array to local storage
+function setToLocalStorage(mainArr) {
+    localStorage.setItem("MYTODO", JSON.stringify(mainArr));
+}
+
+//get data from local storage
+function getDataFromLocalStorage() {
+    let data = localStorage.getItem("MYTODO");
+    let mainDataArr = [];
+    if(data) {
+        mainDataArr = JSON.parse(data);
+        return mainDataArr;
+    }
+    else {
+        return [];
+    }
+}
+
+//clear local storage
+function clearStorage() {
+    localStorage.clear();
+    document.location.reload();
+}
+/********END LOCAL STORAGE FUNCTIONS********/    
+
+
+//********POPUP WINDOW*********/
+function showPopUp(popUpData) {
+    const popUpWin = document.querySelector(".popup-window");
+    const parentEl = appElements.appContent;
+    const blockScreen = document.querySelector(".popup-block-screen");
+    const popUpMarkup = `<div class = "popup-window">
+                            <div class="popup-close"><button class="close-popup-btn"></button></div>
+                            <div class="popup-content">
+                                <p>${popUpData.bodyText}</p>
+                            </div>
+                            <div class="popup-btns">
+                                <button class="popup-confirm-btn">${popUpData.btnText}</button>
+                                <button class="popup-cancel-btn">Отмена</button>
+                        </div>
+                    </div>`;
+    hideOptions();
+    blockScreen.style.display = "block";
+    if(!popUpWin) {
+        parentEl.insertAdjacentHTML('afterbegin', popUpMarkup);
+    }
+    const confirmBtn = document.querySelector(".popup-confirm-btn");
+    const closePopUpBtn = document.querySelector(".close-popup-btn");
+    const cancelPopUpBtn = document.querySelector(".popup-cancel-btn");
+    confirmBtn.style.backgroundColor = popUpData.btnColor;
+    confirmBtn.addEventListener("click", popUpData.btnFunc);
+    closePopUpBtn.addEventListener("click", hidePopUp);
+    cancelPopUpBtn.addEventListener("click", hidePopUp);
+}
+//hide popup
+function hidePopUp() {
+    const blockScreen = document.querySelector(".popup-block-screen");
+    const popUpWin = document.querySelector(".popup-window");
+    blockScreen.style.display = "none";
+    // parentEl.removeChild(popUpWin);
+    popUpWin.remove();
+}
+//********END POPUP WINDOW*********/
+
 
 //******OPTIONS MENU*****/
 appElements.optionsBtn.addEventListener("click", () => {
@@ -149,12 +214,29 @@ appElements.optionsBtn.addEventListener("click", () => {
     const clearStorageBtn = document.querySelector(".delete-data-btn");
     optBtnsCont.style.display = "flex";
     closeOptBtn.addEventListener("click", () => {
-        optBtnsCont.style.display = "none";
+        hideOptions();
     })
     clearStorageBtn.addEventListener("click", () => {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        const root = document.querySelector(':root');
+        const rootStyles = getComputedStyle(root);
+        const btnColor = rootStyles.getPropertyValue('--danger-red');
+        const clearStoragePopUp = {
+            bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+            btnText: "Удалить данные",
+            btnColor: btnColor,
+            btnFunc: clearStorage,
+        };
+        showPopUp(clearStoragePopUp);
+        
     })
 })
+
+//hide options menu
+function hideOptions() {
+    const optBtnsCont = document.querySelector(".options-btns-container");
+    optBtnsCont.style.display = "none";
+}
+//******END OPTIONS MENU*****/
 
 
 //get today task array from main data array
@@ -217,12 +299,12 @@ function createTodayDateObj(mainArr) {
 function renderTaskListFromArr(listArr) {
     const parentTaskEl = document.querySelector(".task-list");
     listArr.forEach(element  => {
-        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span>${element.text}<span id="t${element.tId}" class="trash"></span></li>`;
+        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
         if(element.status === true) {
             parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
         }
         else {
-            let taskItem = `<li><span  id = "${element.tId}" class="status"></span>${element.text}<span id="t${element.tId}" class="trash"></span></li>`;
+            let taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
             parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
         }
         
@@ -256,7 +338,7 @@ function addNewTaskItemToDOM() {
     const inputTaskText = document.querySelector(".task-text");
     const parentTaskEl = document.querySelector(".task-list");
     const elCount = parentTaskEl.childElementCount;
-    let taskItem = `<li><span id = "${elCount}" class="status"></span>${inputTaskText.value}<span id="t${elCount}" class="trash"></span></li>`;
+    let taskItem = `<li><span id = "${elCount}" class="status"></span><span id="text${element.tId}" class="task-text-content">${inputTaskText.value}</span><span id="t${elCount}" class="trash"></span></li>`;
     appElements.appContent.style.alignItems = "flex-start";
     appElements.appContent.style.justifyContent = "flex-start";
     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
@@ -319,26 +401,9 @@ function addTodayTaskToMainArr(todayTasksArr, genArr) {
     return genArr;
 }
 
-//save main data array to local storage
-function setToLocalStorage(mainArr) {
-    localStorage.setItem("MYTODO", JSON.stringify(mainArr));
-}
-
-//get data from local storage
-function getDataFromLocalStorage() {
-    let data = localStorage.getItem("MYTODO");
-    let mainDataArr = [];
-    if(data) {
-        mainDataArr = JSON.parse(data);
-        return mainDataArr;
-    }
-    else {
-        return [];
-    }
-}
-    
 
 
+/******CONTENT BLOCK USER EVENTS******/
 //get clicked element and set/unset done status
 appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
@@ -370,13 +435,20 @@ appElements.appContent.addEventListener("click", (event) => {
     //console.log(element);
 })
 
+//get double clicked element to edit task text content
+appElements.appContent.addEventListener("dblclick", (event) => {
+    let element = event.target;
+    let elId = Number(event.target.id);
+    console.log(elId);
+})
+
 //get clicked trash element and delete task from list
 appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
     let getElId = event.target.id;
     let curDate = shortCurrentDate();
     let trashIdNum = Number(getElId.substr(1));
-    console.log(trashIdNum);
+    // console.log(trashIdNum);
     if(element.classList.contains("trash")) {
         deleteItemFromList(curDate, trashIdNum, genTasksArr);
         let todayTasks = getTodayTaskArr(curDate);
