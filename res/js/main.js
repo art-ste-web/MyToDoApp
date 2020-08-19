@@ -338,14 +338,37 @@ function addNewTaskItemToDOM() {
     const inputTaskText = document.querySelector(".task-text");
     const parentTaskEl = document.querySelector(".task-list");
     const elCount = parentTaskEl.childElementCount;
-    let taskItem = `<li><span id = "${elCount}" class="status"></span><span id="text${element.tId}" class="task-text-content">${inputTaskText.value}</span><span id="t${elCount}" class="trash"></span></li>`;
+    let taskItem = `<li><span id = "${elCount}" class="status"></span><span id="text${elCount}" class="task-text-content">${inputTaskText.value}</span><span id="t${elCount}" class="trash"></span></li>`;
     appElements.appContent.style.alignItems = "flex-start";
     appElements.appContent.style.justifyContent = "flex-start";
     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
     
 }
-
-
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//edit text of task item in DOM
+function editListItemTextInDom (itemId){
+    const inputTaskText = document.querySelector(".task-text");
+    const inputAddBtn = document.querySelector(".add-task-btn");
+    const inputEditBtn = document.querySelector(".edit-task-btn");
+    let selectedItemId = `text${itemId}`;
+    inputAddBtn.style.display = "none";
+    inputEditBtn.style.display = "block";
+    let selectedItem = document.getElementById(selectedItemId);
+    inputTaskText.value = selectedItem.innerText;
+    console.log(selectedItem);
+    inputEditBtn.addEventListener("click", () => {
+        
+        console.log(selectedItem);
+        selectedItem.innerText = inputTaskText.value;
+        inputAddBtn.style.display = "block";
+        inputEditBtn.style.display = "none";
+        console.log(inputTaskText.value);
+        inputTaskText.value = "";
+        selectedItem = null;
+        
+    })
+    
+}
 
 //create or update array with tasks for today
 function createTodayTasksArr(todayTaskArr) {
@@ -435,11 +458,18 @@ appElements.appContent.addEventListener("click", (event) => {
     //console.log(element);
 })
 
+//edit task
 //get double clicked element to edit task text content
 appElements.appContent.addEventListener("dblclick", (event) => {
     let element = event.target;
-    let elId = Number(event.target.id);
+    let getElId = element.id;
+    let elId = Number(getElId.substr(4));
+    
     console.log(elId);
+    editListItemTextInDom (elId);
+
+    // changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText);
+
 })
 
 //get clicked trash element and delete task from list
@@ -493,7 +523,18 @@ function deleteItemFromList(taskDate, taskId, mainDataArr) {
 
 }
 
-//****************Tasks by dates*****************/
+//change task text in main array
+function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
+    let todayEl = mainDataArr.find(el => el.date === taskDate);
+    todayEl.tasks.forEach(el => {
+        if(el.tId === taskId) {
+            el.text = newTaskText;
+            console.log("text edited");
+            setToLocalStorage(mainDataArr);
+        }
+    })
+}
+//****************TASKS BY DATES*****************/
 function showDateSelectBlock() {
     const taskInputBlock = document.querySelector(".task-input-block");
     const parentEl = appElements.appContent;

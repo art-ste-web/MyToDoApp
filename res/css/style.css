@@ -160,7 +160,8 @@ body {
     position: absolute;
     right: 0;
     top: 0;
-    width: 4rem;
+    padding: 1rem;
+    /* width: 4rem; */
     height: 10rem;
     background-color: var(--white);
     box-shadow: var(--btn-shadow);
@@ -180,13 +181,12 @@ body {
     border: none;
     outline: none;
     margin: .5rem;
-    margin-top: 1rem;
     margin-bottom: 1.2rem;
     cursor: pointer;
 }
 .app-container .header .date-block .options-btns-container .delete-data-btn {
-    height: 2rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 2.5rem;
     background-color: #00B0E8;
     background-image: url(../img/delete-database.svg);
     background-size: 60%;
@@ -200,8 +200,8 @@ body {
     padding: .5rem;
 }
 .app-container .header .date-block .options-btns-container .select-location-btn {
-    height: 2rem;
-    width: 2rem;
+    height: 2.5rem;
+    width: 2.5rem;
     background-color: #00B0E8;
     background-image: url(../img/location.svg);
     background-size: 60%;
@@ -214,21 +214,7 @@ body {
     border-radius: 50%;
     padding: .5rem;
 }
-.app-container .header .date-block .options-btns-container .delete-data-btn {
-    height: 2rem;
-    width: 2rem;
-    background-color: #00B0E8;
-    background-image: url(../img/delete-database.svg);
-    background-size: 60%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    border: none;
-    outline: none;
-    margin: .5rem;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: .5rem;
-}
+
 .app-container .header .date-block .current-date {
     color: var(--white);
     font-family: var(--main-font);
@@ -489,7 +475,7 @@ body {
     padding: .5rem;
     border: 1px solid var(--gray);
     outline: none;
-    background-color: none;
+    background-color: transparent;
     color: var(--black);
     border-radius: 5px;
     cursor: pointer;
@@ -522,8 +508,12 @@ body {
     font-size: 1.2rem;
     color: var(--black);
 }
-.app-container .task-input-block button {
+.app-container .task-input-block .add-task-btn {
     background-color: var(--icon-bg-blue);
+    background-image: url("../img/plus.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
     outline: none;
     border: none;
     width: 3rem;
@@ -532,6 +522,26 @@ body {
     box-shadow: var(--btn-shadow);
     transition: all ease-out .2s;
     cursor: pointer;
+    animation: appear;
+    animation-duration: 0.5s;
+}
+.app-container .task-input-block .edit-task-btn {
+    display: none;
+    background-color: var(--icon-bg-blue);
+    background-image: url("../img/check.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    outline: none;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    box-shadow: var(--btn-shadow);
+    transition: all ease-out .2s;
+    cursor: pointer;
+    animation: appear;
+    animation-duration: 0.5s;
 }
 .app-container .task-input-block button:hover {
     transform: scale(1.1);
