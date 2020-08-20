@@ -345,30 +345,97 @@ function addNewTaskItemToDOM() {
     
 }
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//edit text of task item in DOM
-function editListItemTextInDom (itemId){
+//show edit task input block
+function showEditTextInputBlock() {
+    const inputAddBtn = document.querySelector(".add-task-btn");
+    const inputEditBtn = document.querySelector(".edit-task-btn");
+    inputAddBtn.style.display = "none";
+    inputEditBtn.style.display = "block";
+    
+}
+
+//insert edit task text to input
+function editableTaskTextToInput(itemId) {
+    const inputTaskText = document.querySelector(".task-text");
+    const selectedItemId = `text${itemId}`;
+    const selectedItem = document.getElementById(selectedItemId);
+    selectedItem.setAttribute("edit", "true");
+    inputTaskText.value = selectedItem.innerText;
+    
+} 
+
+
+
+//hide edit task input block
+function hideEditTextInputBlock() {
     const inputTaskText = document.querySelector(".task-text");
     const inputAddBtn = document.querySelector(".add-task-btn");
     const inputEditBtn = document.querySelector(".edit-task-btn");
-    let selectedItemId = `text${itemId}`;
-    inputAddBtn.style.display = "none";
-    inputEditBtn.style.display = "block";
-    let selectedItem = document.getElementById(selectedItemId);
-    inputTaskText.value = selectedItem.innerText;
-    console.log(selectedItem);
-    inputEditBtn.addEventListener("click", () => {
-        
-        console.log(selectedItem);
-        selectedItem.innerText = inputTaskText.value;
-        inputAddBtn.style.display = "block";
-        inputEditBtn.style.display = "none";
-        console.log(inputTaskText.value);
-        inputTaskText.value = "";
-        selectedItem = null;
-        
-    })
-    
+    inputAddBtn.style.display = "block";
+    inputEditBtn.style.display = "none";
+    clearTaskTextInput();
+    const tasktItems = document.querySelectorAll(".task-text-content");
+    for(let i=0; i<tasktItems.length; i++) {
+        tasktItems[i].parentNode.style.opacity = '1';
+    }
 }
+
+//edit text of task item in DOM
+// function editListItemTextInDom (itemId){
+//     const inputTaskText = document.querySelector(".task-text");
+//     const inputAddBtn = document.querySelector(".add-task-btn");
+//     const inputEditBtn = document.querySelector(".edit-task-btn");
+//     const selectedItemId = `text${itemId}`;
+//     inputAddBtn.style.display = "none";
+//     inputEditBtn.style.display = "block";
+//     const selectedItem = document.getElementById(selectedItemId);
+//     inputTaskText.value = selectedItem.innerText;
+//     console.log(selectedItem);
+//     inputEditBtn.addEventListener("click", () => {
+        
+//         console.log(selectedItem);
+//         selectedItem.innerText = inputTaskText.value;
+//         inputAddBtn.style.display = "block";
+//         inputEditBtn.style.display = "none";
+//         console.log(inputTaskText.value);
+//         // inputTaskText.value = "";
+//         // selectedItem = `text${itemId}`;
+//         clearTaskTextInput();
+//     })
+    
+// }
+
+//clear task input 
+function clearTaskTextInput() {
+    const inputTaskText = document.querySelector(".task-text");
+    inputTaskText.value = "";
+}
+
+//insert new task text to task item
+function updateTaskText() {
+    const inputTaskText = document.querySelector(".task-text");
+    const tasktItems = document.querySelectorAll(".task-text-content");
+    for(let i=0; i<tasktItems.length; i++) {
+        if(tasktItems[i].getAttribute("edit")) {
+          let editTask = document.getElementById(tasktItems[i].id);
+          editTask.innerText = inputTaskText.value;
+          //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            console.log(tasktItems[i].id);
+        }
+        else {
+            tasktItems[i].parentNode.style.opacity = '.2';
+        }
+        // console.log(tasktItems[i]);
+    }
+    editTask.removeAttribute("edit");
+    // console.log(tasktItems);
+    // clearTaskTextInput();
+    // hideEditTextInputBlock();
+}
+
+
+
+
 
 //create or update array with tasks for today
 function createTodayTasksArr(todayTaskArr) {
@@ -461,16 +528,26 @@ appElements.appContent.addEventListener("click", (event) => {
 //edit task
 //get double clicked element to edit task text content
 appElements.appContent.addEventListener("dblclick", (event) => {
-    let element = event.target;
-    let getElId = element.id;
-    let elId = Number(getElId.substr(4));
+    const inputTaskText = document.querySelector(".task-text");
+    const inputEditBtn = document.querySelector(".edit-task-btn");
+    const element = event.target;
+    const getElId = element.id;
+    const elId = Number(getElId.substr(4));
+    console.log("clicked "+elId);
+    showEditTextInputBlock();
+    editableTaskTextToInput(elId);
+    inputTaskText.addEventListener("keyup", updateTaskText);
+    inputEditBtn.addEventListener("click", hideEditTextInputBlock);
+    // editableTaskTextToInput(elId);
     
-    console.log(elId);
-    editListItemTextInDom (elId);
+    
+    // console.log(elId);
+    // editListItemTextInDom (elId);
 
     // changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText);
 
 })
+
 
 //get clicked trash element and delete task from list
 appElements.appContent.addEventListener("click", (event) => {
@@ -534,6 +611,12 @@ function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
         }
     })
 }
+
+
+
+
+
+
 //****************TASKS BY DATES*****************/
 function showDateSelectBlock() {
     const taskInputBlock = document.querySelector(".task-input-block");
