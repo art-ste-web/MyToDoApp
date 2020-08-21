@@ -344,7 +344,7 @@ function addNewTaskItemToDOM() {
     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
     
 }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*********EDIT TASK TEXT FUNCTIONS**********/
 //show edit task input block
 function showEditTextInputBlock() {
     const inputAddBtn = document.querySelector(".add-task-btn");
@@ -355,7 +355,7 @@ function showEditTextInputBlock() {
 }
 
 //insert edit task text to input
-function editableTaskTextToInput(itemId) {
+function selectAndMarkEditableTask(itemId) {
     const inputTaskText = document.querySelector(".task-text");
     const selectedItemId = `text${itemId}`;
     const selectedItem = document.getElementById(selectedItemId);
@@ -376,34 +376,11 @@ function hideEditTextInputBlock() {
     clearTaskTextInput();
     const tasktItems = document.querySelectorAll(".task-text-content");
     for(let i=0; i<tasktItems.length; i++) {
-        tasktItems[i].parentNode.style.opacity = '1';
+        tasktItems[i].parentNode.style.opacity = null;
     }
+    removeEditAttr();
 }
 
-//edit text of task item in DOM
-// function editListItemTextInDom (itemId){
-//     const inputTaskText = document.querySelector(".task-text");
-//     const inputAddBtn = document.querySelector(".add-task-btn");
-//     const inputEditBtn = document.querySelector(".edit-task-btn");
-//     const selectedItemId = `text${itemId}`;
-//     inputAddBtn.style.display = "none";
-//     inputEditBtn.style.display = "block";
-//     const selectedItem = document.getElementById(selectedItemId);
-//     inputTaskText.value = selectedItem.innerText;
-//     console.log(selectedItem);
-//     inputEditBtn.addEventListener("click", () => {
-        
-//         console.log(selectedItem);
-//         selectedItem.innerText = inputTaskText.value;
-//         inputAddBtn.style.display = "block";
-//         inputEditBtn.style.display = "none";
-//         console.log(inputTaskText.value);
-//         // inputTaskText.value = "";
-//         // selectedItem = `text${itemId}`;
-//         clearTaskTextInput();
-//     })
-    
-// }
 
 //clear task input 
 function clearTaskTextInput() {
@@ -411,28 +388,89 @@ function clearTaskTextInput() {
     inputTaskText.value = "";
 }
 
+
+
+
 //insert new task text to task item
-function updateTaskText() {
+function updateTaskText(mainDataArr) {
+    const date = shortCurrentDate();
     const inputTaskText = document.querySelector(".task-text");
     const tasktItems = document.querySelectorAll(".task-text-content");
     for(let i=0; i<tasktItems.length; i++) {
         if(tasktItems[i].getAttribute("edit")) {
-          let editTask = document.getElementById(tasktItems[i].id);
-          editTask.innerText = inputTaskText.value;
-          //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            console.log(tasktItems[i].id);
+            let getElId = tasktItems[i].id;
+            let elId = Number(getElId.substr(4));
+            let editTask = document.getElementById(getElId);
+            editTask.innerText = inputTaskText.value;
+            console.log(elId);
+            let todayEl = mainDataArr.find(el => el.date === date);
+                todayEl.tasks.forEach(el => {
+                    if(el.tId === elId) {
+                        el.text = inputTaskText.value;
+                        console.log("text edited");
+                        setToLocalStorage(mainDataArr);
+                    }
+                })
         }
         else {
             tasktItems[i].parentNode.style.opacity = '.2';
         }
         // console.log(tasktItems[i]);
     }
-    editTask.removeAttribute("edit");
+    
     // console.log(tasktItems);
     // clearTaskTextInput();
     // hideEditTextInputBlock();
+    
 }
 
+
+
+//remove edit attr 
+function removeEditAttr() {
+    const tasktItems = document.querySelectorAll(".task-text-content");
+    for(let i=0; i<tasktItems.length; i++) {
+        if(tasktItems[i].getAttribute("edit")) {
+            let editTask = document.getElementById(tasktItems[i].id);
+            editTask.removeAttribute("edit");
+        }
+        
+    }
+}
+
+
+
+
+//edit task event
+//get double clicked element to edit task text content
+appElements.appContent.addEventListener("dblclick", (event) => {
+    const date = shortCurrentDate();
+    const inputTaskText = document.querySelector(".task-text");
+    const inputEditBtn = document.querySelector(".edit-task-btn");
+    const element = event.target;
+    const getElId = element.id;
+    const elId = Number(getElId.substr(4));
+    console.log("clicked "+elId);
+    showEditTextInputBlock();
+    selectAndMarkEditableTask(elId);
+    inputTaskText.addEventListener("keyup", ()=> {updateTaskText(genTasksArr)});
+    inputEditBtn.addEventListener("click", hideEditTextInputBlock);
+    
+    // changeTextContentOfTask(date, elId, genTasksArr, newTaskText);
+
+})
+
+//change task text in main array
+function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
+    let todayEl = mainDataArr.find(el => el.date === taskDate);
+    todayEl.tasks.forEach(el => {
+        if(el.tId === taskId) {
+            el.text = newTaskText;
+            console.log("text edited");
+            setToLocalStorage(mainDataArr);
+        }
+    })
+}
 
 
 
@@ -525,28 +563,7 @@ appElements.appContent.addEventListener("click", (event) => {
     //console.log(element);
 })
 
-//edit task
-//get double clicked element to edit task text content
-appElements.appContent.addEventListener("dblclick", (event) => {
-    const inputTaskText = document.querySelector(".task-text");
-    const inputEditBtn = document.querySelector(".edit-task-btn");
-    const element = event.target;
-    const getElId = element.id;
-    const elId = Number(getElId.substr(4));
-    console.log("clicked "+elId);
-    showEditTextInputBlock();
-    editableTaskTextToInput(elId);
-    inputTaskText.addEventListener("keyup", updateTaskText);
-    inputEditBtn.addEventListener("click", hideEditTextInputBlock);
-    // editableTaskTextToInput(elId);
-    
-    
-    // console.log(elId);
-    // editListItemTextInDom (elId);
 
-    // changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText);
-
-})
 
 
 //get clicked trash element and delete task from list
@@ -600,17 +617,7 @@ function deleteItemFromList(taskDate, taskId, mainDataArr) {
 
 }
 
-//change task text in main array
-function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
-    let todayEl = mainDataArr.find(el => el.date === taskDate);
-    todayEl.tasks.forEach(el => {
-        if(el.tId === taskId) {
-            el.text = newTaskText;
-            console.log("text edited");
-            setToLocalStorage(mainDataArr);
-        }
-    })
-}
+
 
 
 
@@ -669,7 +676,7 @@ function checkSelectedDate() {
 function createTaskListSelectedDate(selectedDate) {
     const container = appElements.appContent;
     const listParent = `<ul class = "task-list"></ul>`;
-    const listHeader = `<h4 class = "date-list-head">Список заданий на <span>${selectedDate}</span></h4>`;
+    const listHeader = `<h4 class = "date-list-head">Список заданий на <span id="sheduled-date">${selectedDate}</span></h4>`;
     container.innerHTML = "";
     container.style.justifyContent = "flex-start";
     container.insertAdjacentHTML('afterbegin', listHeader);

@@ -316,6 +316,7 @@ body {
     font-weight: 700;
     animation: appear;
     animation-duration: 0.5s;
+    align-self: center;
 }
 /* task list styles */
 .app-container .app-content .task-list {
