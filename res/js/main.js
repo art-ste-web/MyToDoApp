@@ -91,48 +91,15 @@ import {dataStore} from './storage.js';
 //change HTML elements and styles
 import {ElementActions} from './el-actions.js';
 
+//popUp
+import {PopUpWindow} from './pop-up.js';
+
 //header date
 const todayDate = new ElementActions(appElements.dateEl);
 todayDate.setInnerText(appDate.todayFullDate());
 
 
-//********POPUP WINDOW*********/
-function showPopUp(popUpData) {
-    const popUpWin = document.querySelector(".popup-window");
-    const parentEl = appElements.appContent;
-    const blockScreen = document.querySelector(".popup-block-screen");
-    const popUpMarkup = `<div class = "popup-window">
-                            <div class="popup-close"><button class="close-popup-btn"></button></div>
-                            <div class="popup-content">
-                                <p>${popUpData.bodyText}</p>
-                            </div>
-                            <div class="popup-btns">
-                                <button class="popup-confirm-btn">${popUpData.btnText}</button>
-                                <button class="popup-cancel-btn">Отмена</button>
-                        </div>
-                    </div>`;
-    hideOptions();
-    blockScreen.style.display = "block";
-    if(!popUpWin) {
-        parentEl.insertAdjacentHTML('afterbegin', popUpMarkup);
-    }
-    const confirmBtn = document.querySelector(".popup-confirm-btn");
-    const closePopUpBtn = document.querySelector(".close-popup-btn");
-    const cancelPopUpBtn = document.querySelector(".popup-cancel-btn");
-    confirmBtn.style.backgroundColor = popUpData.btnColor;
-    confirmBtn.addEventListener("click", popUpData.btnFunc);
-    closePopUpBtn.addEventListener("click", hidePopUp);
-    cancelPopUpBtn.addEventListener("click", hidePopUp);
-}
-//hide popup
-function hidePopUp() {
-    const blockScreen = document.querySelector(".popup-block-screen");
-    const popUpWin = document.querySelector(".popup-window");
-    blockScreen.style.display = "none";
-    // parentEl.removeChild(popUpWin);
-    popUpWin.remove();
-}
-//********END POPUP WINDOW*********/
+
 
 
 //******OPTIONS MENU*****/
@@ -154,7 +121,10 @@ appElements.optionsBtn.addEventListener("click", () => {
             btnColor: btnColor,
             btnFunc: dataStore.clearLocalStorage,
         };
-        showPopUp(clearStoragePopUp);
+        PopUpWindow(clearStoragePopUp).createPopUp();
+        
+        // showPopUp(clearStoragePopUp);
+        
         
     })
 })
