@@ -1,4 +1,4 @@
-let genTasksArr = getDataFromLocalStorage();
+let genTasksArr = dataStore.getFromLocalStorage();
 // console.log(genTasksArr);
 let genTasksArr1 = [
     {
@@ -80,92 +80,20 @@ function accentElement(el) {
 
 
 //app globals
- const appElements = {
-     selectDateBtn: document.querySelector(".btn-calendar"),
-     allDatesListsBtn: document.querySelector(".btn-dates-list"),
-     appContent: document.querySelector(".app-content"),
-     dateEl: document.querySelector(".current-date-js"),
-     taskListContainer: document.querySelector(".task-list"),
-     optionsBtn: document.querySelector(".options-btn"),
+import {appElements} from './globals.js';
+ 
+ //dates
+import {appDate} from './dates.js';
+ 
+//local storage functions
+import {dataStore} from './storage.js';
 
- };
+//change HTML elements and styles
+import {ElementActions} from './el-actions.js';
 
- let appData = {
-    todayTaskArr: [],
- }
-
-//*********DATES FUNCTIONS***********/
-//generate current date
-function fullCurrentDate() {
-    let currentDate = new Date();
-    let weekDay = currentDate.getDay();
-    let date = currentDate.getDate();
-    let month = currentDate.getMonth()+1;
-    let year = currentDate.getFullYear();
-    let strDate = date.toString();
-    let strMonth = month.toString();
-    let strYear = year.toString();
-    let showCurrDay = date < 10 ? '0' + strDate : strDate;
-    let showCurMonth = month < 10 ? '0' + strMonth : strMonth;
-    const weekDays = [
-        'Воскресенье',
-        'Понедельник',
-        'Вторник',
-        'Среда',
-        'Четверг',
-        'Пятница',
-        'Суббота'
-    ];
-    let fullDate = `${weekDays[weekDay]}, ${showCurrDay}.${showCurMonth}.${strYear}`;
-    let shortDate = `${showCurrDay}.${showCurMonth}.${strYear}`;
-    appElements.dateEl.innerHTML = fullDate;
-    return shortDate;
-}
-//short date format DD.MM.YYYY
-function shortCurrentDate() {
-    return fullCurrentDate();
-    
-}
-//tranform date from DD.MM.YYYY to YYYY-MM-DD
-function transformDateToYyMmDd(dateDdMmYy) {
-    let dateArr = dateDdMmYy.split(".").reverse();
-    let transformedDate = `${dateArr[0]}-${dateArr[1]}-${dateArr[2]}`;
-    return transformedDate;
-}
-
-//tranform date from YYYY-MM-DD to DD.MM.YYYY
-function transformDateToDdMmYy(dateYyMmDd) {
-    let dateArr = dateYyMmDd.split("-").reverse();
-    let transformedDate = `${dateArr[0]}.${dateArr[1]}.${dateArr[2]}`;
-    return transformedDate;
-}
-//*********END DATES FUNCTIONS***********/
-
-/********LOCAL STORAGE FUNCTIONS********/
-//save main data array to local storage
-function setToLocalStorage(mainArr) {
-    localStorage.setItem("MYTODO", JSON.stringify(mainArr));
-}
-
-//get data from local storage
-function getDataFromLocalStorage() {
-    let data = localStorage.getItem("MYTODO");
-    let mainDataArr = [];
-    if(data) {
-        mainDataArr = JSON.parse(data);
-        return mainDataArr;
-    }
-    else {
-        return [];
-    }
-}
-
-//clear local storage
-function clearStorage() {
-    localStorage.clear();
-    document.location.reload();
-}
-/********END LOCAL STORAGE FUNCTIONS********/    
+//header date
+const todayDate = new ElementActions(appElements.dateEl);
+todayDate.setInnerText(appDate.todayFullDate());
 
 
 //********POPUP WINDOW*********/
@@ -224,7 +152,7 @@ appElements.optionsBtn.addEventListener("click", () => {
             bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
             btnText: "Удалить данные",
             btnColor: btnColor,
-            btnFunc: clearStorage,
+            btnFunc: dataStore.clearLocalStorage,
         };
         showPopUp(clearStoragePopUp);
         
@@ -253,7 +181,7 @@ function getTodayTaskArr(date) {
 
 //show start content (task list for today or create add task btn and add it's function)
 function showStartContent(appContentContainer) {
-    todayDate = shortCurrentDate();
+    let todayDate = appDate.todayShortDate();
     let todayTasks = getTodayTaskArr(todayDate);
     // console.log(todayTasks);
     if(!todayTasks) {
@@ -288,11 +216,11 @@ function showNewTaskInput() {
 function createTodayDateObj(mainArr) {
     let todayObj = {};
     todayObj.id = mainArr.length;
-    todayObj.date = shortCurrentDate();
+    todayObj.date = appDate.todayShortDate();
     todayObj.tasks = [];
     todayObj.allDone = false;
     mainArr.push(todayObj);
-    setToLocalStorage(mainArr)
+    dataStore.setToLocalStorage(mainArr)
     return mainArr;
 }
 //renders list to parrent ul element from tasks array
@@ -393,7 +321,7 @@ function clearTaskTextInput() {
 
 //insert new task text to task item
 function updateTaskText(mainDataArr) {
-    const date = shortCurrentDate();
+    const date = appDate.todayShortDate();
     const inputTaskText = document.querySelector(".task-text");
     const tasktItems = document.querySelectorAll(".task-text-content");
     for(let i=0; i<tasktItems.length; i++) {
@@ -408,7 +336,7 @@ function updateTaskText(mainDataArr) {
                     if(el.tId === elId) {
                         el.text = inputTaskText.value;
                         console.log("text edited");
-                        setToLocalStorage(mainDataArr);
+                        dataStore.setToLocalStorage(mainDataArr);
                     }
                 })
         }
@@ -444,7 +372,7 @@ function removeEditAttr() {
 //edit task event
 //get double clicked element to edit task text content
 appElements.appContent.addEventListener("dblclick", (event) => {
-    const date = shortCurrentDate();
+    const date = appDate.todayShortDate();
     const inputTaskText = document.querySelector(".task-text");
     const inputEditBtn = document.querySelector(".edit-task-btn");
     const element = event.target;
@@ -467,7 +395,7 @@ function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
         if(el.tId === taskId) {
             el.text = newTaskText;
             console.log("text edited");
-            setToLocalStorage(mainDataArr);
+            dataStore.setToLocalStorage(mainDataArr);
         }
     })
 }
@@ -490,13 +418,13 @@ function createTodayTasksArr(todayTaskArr) {
 }
 //adds new today task on click
 function addNewTodayTask() {
-    const todayDate = shortCurrentDate();
+    const todayDate = appDate.todayShortDate();
     let todayTasks = getTodayTaskArr(todayDate);
     console.log(todayTasks);
     const inputTaskText = document.querySelector(".task-text");
     if(inputTaskText.value) {
         addNewTaskItemToDOM();
-        curTodayTask = createTodayTasksArr(todayTasks);
+        let curTodayTask = createTodayTasksArr(todayTasks);
         inputTaskText.value = "";
         addTodayTaskToMainArr(curTodayTask, genTasksArr);
         // console.log(curTodayTask);
@@ -510,7 +438,7 @@ function addNewTodayTask() {
 //update main data array with new tasks
 function addTodayTaskToMainArr(todayTasksArr, genArr) {
     let dateTaskObj = {};
-    let today = shortCurrentDate();
+    let today = appDate.todayShortDate();
     let arrItem = null;
     if(arrItem = genArr.find(item => item.date == today)) {
         arrItem.tasks = todayTasksArr; 
@@ -518,14 +446,14 @@ function addTodayTaskToMainArr(todayTasksArr, genArr) {
     }
     else {
         dateTaskObj['id'] = genArr.length;
-        dateTaskObj['date'] = shortCurrentDate();
+        dateTaskObj['date'] = appDate.todayShortDate();
         dateTaskObj['tasks'] = todayTasksArr;
         dateTaskObj['allDone'] = false;
         genArr.push(dateTaskObj);
         console.log("added");
     }
     console.log(genArr);
-    setToLocalStorage(genArr);
+    dataStore.setToLocalStorage(genArr);
     return genArr;
 }
 
@@ -537,7 +465,7 @@ appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
     let elCheckedState = false;
     let elId = Number(event.target.id);
-    let curDate = shortCurrentDate();
+    let curDate = appDate.todayShortDate();
     // console.log(elId);
     if(element.classList.contains("status")) {
         element.classList.toggle("checked");
@@ -570,7 +498,7 @@ appElements.appContent.addEventListener("click", (event) => {
 appElements.appContent.addEventListener("click", (event) => {
     let element = event.target;
     let getElId = event.target.id;
-    let curDate = shortCurrentDate();
+    let curDate = appDate.todayShortDate();
     let trashIdNum = Number(getElId.substr(1));
     // console.log(trashIdNum);
     if(element.classList.contains("trash")) {
@@ -590,7 +518,7 @@ function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
         if(el.tId === taskId) {
             el.status = elState;
             console.log("work");
-            setToLocalStorage(mainDataArr);
+            dataStore.setToLocalStorage(mainDataArr);
         }
     })
 }
@@ -613,7 +541,7 @@ function deleteItemFromList(taskDate, taskId, mainDataArr) {
            
         }
     })
-    setToLocalStorage(mainDataArr);
+    dataStore.setToLocalStorage(mainDataArr);
 
 }
 
@@ -628,8 +556,8 @@ function deleteItemFromList(taskDate, taskId, mainDataArr) {
 function showDateSelectBlock() {
     const taskInputBlock = document.querySelector(".task-input-block");
     const parentEl = appElements.appContent;
-    let dateDdMmYy = shortCurrentDate();
-    let minDate = transformDateToYyMmDd(dateDdMmYy);
+    let dateDdMmYy = appDate.todayShortDate();
+    let minDate = appDate.transformDateToYYMMDD(dateDdMmYy);
     const dateEl = `<div class="date-select">
                         <p>Выберите дату</p>
                         <div class="date-input">
@@ -663,7 +591,7 @@ function toMainScreen() {
 function checkSelectedDate() {
     const dateInput = document.getElementById("task-date");
     if(dateInput.value !== "") {
-        let plannedTaskDate = transformDateToDdMmYy(dateInput.value);
+        let plannedTaskDate = appDate.transformDateToDDMMYY(dateInput.value);
         console.log(plannedTaskDate);
         createTaskListSelectedDate(plannedTaskDate);
     }
@@ -720,7 +648,7 @@ function addTasksForDateToMainArr() {
 
 //************CALL FUNCTIONS***************
 
-window.onload = fullCurrentDate();
+// window.onload = fullCurrentDate();
 window.onload = showStartContent(appElements.appContent, genTasksArr);
 appElements.selectDateBtn.addEventListener("click", showDateSelectBlock);
 
