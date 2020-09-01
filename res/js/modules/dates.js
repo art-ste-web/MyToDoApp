@@ -1,4 +1,6 @@
-export class ToDoDates {
+export {ToDoDates};
+
+class ToDoDates {
     constructor(dateToConvert) {
         this.dateToConvert = dateToConvert;
         this.currentDate = new Date();
@@ -43,4 +45,4 @@ export class ToDoDates {
 }
 
 
-export let appDate = new ToDoDates();
+

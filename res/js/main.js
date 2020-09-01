@@ -83,22 +83,41 @@ function accentElement(el) {
 import {appElements} from './globals.js';
  
  //dates
-import {appDate} from './dates.js';
+import {ToDoDates} from './modules/dates.js';
+const appDate = new ToDoDates();
  
 //local storage functions
-import {dataStore} from './storage.js';
+import {dataStore} from './modules/storage.js';
 
 //change HTML elements and styles
-import {ElementActions} from './el-actions.js';
+import {ElementActions} from './modules/el-actions.js';
 
 //popUp
-import {PopUpWindow} from './pop-up.js';
+import {PopUpWindow} from './modules/pop-up.js';
 
 //header date
 const todayDate = new ElementActions(appElements.dateEl);
 todayDate.setInnerText(appDate.todayFullDate());
 
 
+
+
+
+const root = document.querySelector(':root');
+        const rootStyles = getComputedStyle(root);
+        const btnColor = rootStyles.getPropertyValue('--danger-red');
+        const clearStoragePopUp = {
+            bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+            btnText: "Удалить данные",
+            btnColor: btnColor,
+            btnFunc: dataStore.clearLocalStorage,
+        };
+        const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
+        appElements.allDatesListsBtn.addEventListener("click", ()=> { 
+            console.log("pop");
+            alertClearStorePopUp.createPopUp();
+            
+        } );
 
 
 
@@ -121,7 +140,8 @@ appElements.optionsBtn.addEventListener("click", () => {
             btnColor: btnColor,
             btnFunc: dataStore.clearLocalStorage,
         };
-        PopUpWindow(clearStoragePopUp).createPopUp();
+        const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
+        alertClearStorePopUp.createPopUp();
         
         // showPopUp(clearStoragePopUp);
         
@@ -341,7 +361,7 @@ function removeEditAttr() {
 
 //edit task event
 //get double clicked element to edit task text content
-appElements.appContent.addEventListener("dblclick", (event) => {
+appElements.taskListContainer.addEventListener("dblclick", (event) => {
     const date = appDate.todayShortDate();
     const inputTaskText = document.querySelector(".task-text");
     const inputEditBtn = document.querySelector(".edit-task-btn");
