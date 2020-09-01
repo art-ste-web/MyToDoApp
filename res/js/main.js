@@ -1,4 +1,25 @@
-let genTasksArr = dataStore.getFromLocalStorage();
+//app globals
+import {appElements} from './globals.js';
+ 
+ //dates
+import {ToDoDates} from './modules/dates.js';
+const appDate = new ToDoDates();
+ 
+//options menu
+import {OptionsMenu} from './modules/options-menu.js';
+
+//local storage functions
+import {DataStore} from './modules/storage.js';
+
+//change HTML elements and styles
+import {ElementActions} from './modules/el-actions.js';
+
+//popUp
+import {PopUpWindow} from './modules/pop-up.js';
+
+
+
+let genTasksArr = DataStore.getFromLocalStorage();
 // console.log(genTasksArr);
 let genTasksArr1 = [
     {
@@ -79,21 +100,7 @@ function accentElement(el) {
 }
 
 
-//app globals
-import {appElements} from './globals.js';
- 
- //dates
-import {ToDoDates} from './modules/dates.js';
-const appDate = new ToDoDates();
- 
-//local storage functions
-import {dataStore} from './modules/storage.js';
 
-//change HTML elements and styles
-import {ElementActions} from './modules/el-actions.js';
-
-//popUp
-import {PopUpWindow} from './modules/pop-up.js';
 
 //header date
 const todayDate = new ElementActions(appElements.dateEl);
@@ -102,52 +109,61 @@ todayDate.setInnerText(appDate.todayFullDate());
 
 
 
-
-const root = document.querySelector(':root');
-        const rootStyles = getComputedStyle(root);
-        const btnColor = rootStyles.getPropertyValue('--danger-red');
-        const clearStoragePopUp = {
-            bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
-            btnText: "Удалить данные",
-            btnColor: btnColor,
-            btnFunc: dataStore.clearLocalStorage,
-        };
-        const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
-        appElements.allDatesListsBtn.addEventListener("click", ()=> { 
-            console.log("pop");
-            alertClearStorePopUp.createPopUp();
+//TEST
+        // const root = document.querySelector(':root');
+        // const rootStyles = getComputedStyle(root);
+        // const btnColor = rootStyles.getPropertyValue('--danger-red');
+        // const clearStoragePopUp = {
+        //     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+        //     btnText: "Удалить данные",
+        //     btnColor: btnColor,
+        //     btnFunc: DataStore.clearLocalStorage,
+        // };
+        // const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
+        // appElements.allDatesListsBtn.addEventListener("click", ()=> { 
+        //     console.log("pop");
+        //     alertClearStorePopUp.renderPopUp();
             
-        } );
+        // } );
 
 
 
 //******OPTIONS MENU*****/
 appElements.optionsBtn.addEventListener("click", () => {
-    const optBtnsCont = document.querySelector(".options-btns-container");
-    const closeOptBtn = document.querySelector(".close-options-btn");
-    const clearStorageBtn = document.querySelector(".delete-data-btn");
-    optBtnsCont.style.display = "flex";
-    closeOptBtn.addEventListener("click", () => {
-        hideOptions();
-    })
-    clearStorageBtn.addEventListener("click", () => {
-        const root = document.querySelector(':root');
-        const rootStyles = getComputedStyle(root);
-        const btnColor = rootStyles.getPropertyValue('--danger-red');
-        const clearStoragePopUp = {
-            bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
-            btnText: "Удалить данные",
-            btnColor: btnColor,
-            btnFunc: dataStore.clearLocalStorage,
-        };
-        const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
-        alertClearStorePopUp.createPopUp();
+    const options = new OptionsMenu;
+    options.renderOptionsMenu();
+});
+
+
+
+
+
+// appElements.optionsBtn.addEventListener("click", () => {
+//     const optBtnsCont = document.querySelector(".options-btns-container");
+//     const closeOptBtn = document.querySelector(".close-options-btn");
+//     const clearStorageBtn = document.querySelector(".delete-data-btn");
+//     optBtnsCont.style.display = "flex";
+//     closeOptBtn.addEventListener("click", () => {
+//         hideOptions();
+//     })
+//     clearStorageBtn.addEventListener("click", () => {
+//         const root = document.querySelector(':root');
+//         const rootStyles = getComputedStyle(root);
+//         const btnColor = rootStyles.getPropertyValue('--danger-red');
+//         const clearStoragePopUp = {
+//             bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+//             btnText: "Удалить данные",
+//             btnColor: btnColor,
+//             btnFunc: dataStore.clearLocalStorage,
+//         };
+//         const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
+//         alertClearStorePopUp.renderPopUp();
         
-        // showPopUp(clearStoragePopUp);
+//         // showPopUp(clearStoragePopUp);
         
         
-    })
-})
+//     })
+// })
 
 //hide options menu
 function hideOptions() {
@@ -210,7 +226,7 @@ function createTodayDateObj(mainArr) {
     todayObj.tasks = [];
     todayObj.allDone = false;
     mainArr.push(todayObj);
-    dataStore.setToLocalStorage(mainArr)
+    DataStore.setToLocalStorage(mainArr)
     return mainArr;
 }
 //renders list to parrent ul element from tasks array
@@ -326,7 +342,7 @@ function updateTaskText(mainDataArr) {
                     if(el.tId === elId) {
                         el.text = inputTaskText.value;
                         console.log("text edited");
-                        dataStore.setToLocalStorage(mainDataArr);
+                        DataStore.setToLocalStorage(mainDataArr);
                     }
                 })
         }
@@ -385,7 +401,7 @@ function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
         if(el.tId === taskId) {
             el.text = newTaskText;
             console.log("text edited");
-            dataStore.setToLocalStorage(mainDataArr);
+            DataStore.setToLocalStorage(mainDataArr);
         }
     })
 }
@@ -443,7 +459,7 @@ function addTodayTaskToMainArr(todayTasksArr, genArr) {
         console.log("added");
     }
     console.log(genArr);
-    dataStore.setToLocalStorage(genArr);
+    DataStore.setToLocalStorage(genArr);
     return genArr;
 }
 
@@ -508,7 +524,7 @@ function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
         if(el.tId === taskId) {
             el.status = elState;
             console.log("work");
-            dataStore.setToLocalStorage(mainDataArr);
+            DataStore.setToLocalStorage(mainDataArr);
         }
     })
 }
@@ -531,7 +547,7 @@ function deleteItemFromList(taskDate, taskId, mainDataArr) {
            
         }
     })
-    dataStore.setToLocalStorage(mainDataArr);
+    DataStore.setToLocalStorage(mainDataArr);
 
 }
 

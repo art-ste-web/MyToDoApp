@@ -1,12 +1,13 @@
-export {dataStore};
+export {DataStore};
+
 class DataStore {
     constructor(mainDataArr) {
         this.mainDataArr = mainDataArr;
     }
-    setToLocalStorage(mainDataArr) {
+    static setToLocalStorage(mainDataArr) {
         localStorage.setItem("MYTODO", JSON.stringify(mainDataArr));
     }
-    getFromLocalStorage() {
+    static getFromLocalStorage() {
         let data = localStorage.getItem("MYTODO");
         let mainDataArr = [];
         if(data) {
@@ -17,10 +18,8 @@ class DataStore {
             return [];
         }
     }
-    clearLocalStorage() {
+    static clearLocalStorage() {
         localStorage.clear();
         document.location.reload();
     }
 }
-
-const dataStore = new DataStore;

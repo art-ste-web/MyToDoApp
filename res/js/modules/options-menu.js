@@ -1,4 +1,6 @@
-import {appElements} from './globals.js';
+import {appElements} from '../globals.js';
+import {PopUpWindow} from './pop-up.js';
+import {DataStore} from './storage.js';
 
 export {OptionsMenu};
 
@@ -11,10 +13,38 @@ class OptionsMenu {
                                 <button class = "select-location-btn"></button>
                             </div>`;
     }
-    renderOptions() {
+    renderOptionsMenu() {
         this.parentEl.insertAdjacentHTML('beforeend', this.optionsHTML);
+        const optBlock = document.querySelector('.options-btns-container');
+        optBlock.style.display = "flex";
+        this.closeBtn = document.querySelector(".close-options-btn");
+        this.delDataBtn = document.querySelector(".delete-data-btn");
+
+        //close menu btn
+        this.closeBtn.addEventListener("click", ()=> {
+            OptionsMenu.hideOptionsMenu();
+        });
+
+        //clear local storage btn
+        this.delDataBtn.addEventListener("click", ()=> {
+            //getting value of CSS variable
+            const root = document.querySelector(':root');
+            const rootStyles = getComputedStyle(root);
+            const btnColor = rootStyles.getPropertyValue('--danger-red');
+            //popUp input data
+            const clearStoragePopUpData = {
+                bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+                btnText: "Удалить данные",
+                btnColor: btnColor,
+                btnFunc: DataStore.clearLocalStorage,
+            };
+            const alertClearStorePopUp = new PopUpWindow(clearStoragePopUpData);
+            alertClearStorePopUp.renderPopUp();
+            console.log("options");
+        });
+        
     }
-    static hideOptions() {
+    static hideOptionsMenu() {
         const optCont = document.querySelector(".options-btns-container");
         optCont.style.display = "none";
     }
