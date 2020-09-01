@@ -25,8 +25,7 @@ class OptionsMenu {
             OptionsMenu.hideOptionsMenu();
         });
 
-        //clear local storage btn
-        this.delDataBtn.addEventListener("click", ()=> {
+        function showPopUp() {
             //getting value of CSS variable
             const root = document.querySelector(':root');
             const rootStyles = getComputedStyle(root);
@@ -36,12 +35,16 @@ class OptionsMenu {
                 bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
                 btnText: "Удалить данные",
                 btnColor: btnColor,
-                btnFunc: DataStore.clearLocalStorage,
+                btnFunc: DataStore.clearLocalStorage
             };
             const alertClearStorePopUp = new PopUpWindow(clearStoragePopUpData);
             alertClearStorePopUp.renderPopUp();
             console.log("options");
-        });
+            this.delDataBtn.removeEventListener("click", showPopUp);
+        }
+        //clear local storage btn
+        this.delDataBtn.addEventListener("click", showPopUp);
+        
         
     }
     static hideOptionsMenu() {
