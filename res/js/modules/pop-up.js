@@ -1,4 +1,4 @@
-import {appElements} from '../globals.js';
+import {appElements} from '../common/globals.js';
 import {OptionsMenu} from './options-menu.js';
 
 export {PopUpWindow};
@@ -40,8 +40,6 @@ class PopUpWindow {
         const popUp = document.querySelector(".popup-window");
         this.blockScr.classList.remove("show-el");
         popUp.remove();
-        
-        console.log(this);
     }
 }
 

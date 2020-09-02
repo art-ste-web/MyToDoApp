@@ -1,12 +1,13 @@
-import {appElements} from '../globals.js';
+import {appElements} from '../common/globals.js';
 import {PopUpWindow} from './pop-up.js';
-import {DataStore} from './storage.js';
+import {DataStore} from '../common/storage.js';
 
 export {OptionsMenu};
 
 class OptionsMenu {
-    constructor() {
-        this.parentEl = appElements.dateBlock;
+    constructor(parentEl, popUpData) {
+        this.parentEl = parentEl;
+        this.popUpData = popUpData;
         this.optionsHTML = `<div class = "options-btns-container">
                                 <button class = "close-options-btn"></button>
                                 <button class = "delete-data-btn"></button>
@@ -39,8 +40,8 @@ class OptionsMenu {
             };
             const alertClearStorePopUp = new PopUpWindow(clearStoragePopUpData);
             alertClearStorePopUp.renderPopUp();
-            console.log("options");
-            this.delDataBtn.removeEventListener("click", showPopUp);
+            const delDBtn = document.querySelector(".delete-data-btn");
+            delDBtn.removeEventListener("click", showPopUp);
         }
         //clear local storage btn
         this.delDataBtn.addEventListener("click", showPopUp);

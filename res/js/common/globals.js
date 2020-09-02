@@ -14,6 +14,15 @@ const appElements = {
 
 };
 
+//clear storage popUp window data
+const btnColor = getComputedStyle(document.querySelector(':root')).getPropertyValue('--danger-red');
+const clearStoragePopUpData = {
+    bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+    btnText: "Удалить данные",
+    btnColor: btnColor,
+    btnFunc: DataStore.clearLocalStorage
+};
+
 // let appData = {
 //    todayTaskArr: [],
 // }

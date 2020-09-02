@@ -1,27 +1,55 @@
+//IMPORT
 //app globals
-import {appElements} from './globals.js';
- 
- //dates
-import {ToDoDates} from './modules/dates.js';
-const appDate = new ToDoDates();
- 
-//options menu
-import {OptionsMenu} from './modules/options-menu.js';
+import {appElements} from './common/globals.js';
+
+//animations
+import {ElementAnimation} from './common/animations.js';
+const animateEl = new ElementAnimation;
+
+//dates
+import {ToDoDates} from './common/dates.js';
+const appDate = new ToDoDates;
 
 //local storage functions
-import {DataStore} from './modules/storage.js';
+import {DataStore} from './common/storage.js';
+
+//data functions
+import {AppData} from './common/app-data.js';
 
 //change HTML elements and styles
-import {ElementActions} from './modules/el-actions.js';
+import {ElementActions} from './common/el-actions.js';
 
-//popUp
-import {PopUpWindow} from './modules/pop-up.js';
+//MODULES
+//options menu
+import {OptionsMenu} from './modules/options-menu.js';
+const options = new OptionsMenu;
+
+//app content 
+import {ContentArea} from './modules/content-area.js';
 
 
 
-let genTasksArr = DataStore.getFromLocalStorage();
-// console.log(genTasksArr);
-let genTasksArr1 = [
+
+
+
+
+
+
+//APPLICATION
+//get data from local storage
+let mainDataArr = DataStore.getFromLocalStorage();
+
+//TEST data class
+const appData = new AppData(mainDataArr);
+const taskA = appData.getTodayTaskArr(appDate.todayShortDate());
+console.log(taskA);
+
+
+const appContent = new ContentArea(appElements.appContent, appDate.todayShortDate(), taskA);
+appContent.showStartContent();
+
+//test data array
+let mainDataArr1 = [
     {
         id: 0,
         date: "31.07.2020",
@@ -89,123 +117,40 @@ let genTasksArr1 = [
 
     }
 ]
-// console.log(genTasksArr);
 
-//pulse animation (accent on element)
-function accentElement(el) {
-    el.style.animation = "pulse  .8s ease-in-out";
-            setTimeout(()=> {
-                el.style.animation = "";
-            }, 1000)
-}
-
-
-
-
-//header date
+//today date in header
 const todayDate = new ElementActions(appElements.dateEl);
 todayDate.setInnerText(appDate.todayFullDate());
 
-
-
-
-//TEST
-        // const root = document.querySelector(':root');
-        // const rootStyles = getComputedStyle(root);
-        // const btnColor = rootStyles.getPropertyValue('--danger-red');
-        // const clearStoragePopUp = {
-        //     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
-        //     btnText: "Удалить данные",
-        //     btnColor: btnColor,
-        //     btnFunc: DataStore.clearLocalStorage,
-        // };
-        // const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
-        // appElements.allDatesListsBtn.addEventListener("click", ()=> { 
-        //     console.log("pop");
-        //     alertClearStorePopUp.renderPopUp();
-            
-        // } );
-
-
-
-//******OPTIONS MENU*****/
+//options menu
 appElements.optionsBtn.addEventListener("click", () => {
-    const options = new OptionsMenu;
     options.renderOptionsMenu();
 });
 
+//*****************************/
 
-
-
-
-// appElements.optionsBtn.addEventListener("click", () => {
-//     const optBtnsCont = document.querySelector(".options-btns-container");
-//     const closeOptBtn = document.querySelector(".close-options-btn");
-//     const clearStorageBtn = document.querySelector(".delete-data-btn");
-//     optBtnsCont.style.display = "flex";
-//     closeOptBtn.addEventListener("click", () => {
-//         hideOptions();
-//     })
-//     clearStorageBtn.addEventListener("click", () => {
-//         const root = document.querySelector(':root');
-//         const rootStyles = getComputedStyle(root);
-//         const btnColor = rootStyles.getPropertyValue('--danger-red');
-//         const clearStoragePopUp = {
-//             bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
-//             btnText: "Удалить данные",
-//             btnColor: btnColor,
-//             btnFunc: dataStore.clearLocalStorage,
-//         };
-//         const alertClearStorePopUp = new PopUpWindow(clearStoragePopUp);
-//         alertClearStorePopUp.renderPopUp();
-        
-//         // showPopUp(clearStoragePopUp);
-        
-        
-//     })
-// })
-
-//hide options menu
-function hideOptions() {
-    const optBtnsCont = document.querySelector(".options-btns-container");
-    optBtnsCont.style.display = "none";
-}
-//******END OPTIONS MENU*****/
-
-
-//get today task array from main data array
-function getTodayTaskArr(date) {
-    let todayTasks = null;
-    genTasksArr.forEach(element => {
-        if(element.date == date) {
-            todayTasks = element.tasks;
-        }
-        
-    })
-    return todayTasks;
-}
 
 //show start content (task list for today or create add task btn and add it's function)
-function showStartContent(appContentContainer) {
-    let todayDate = appDate.todayShortDate();
-    let todayTasks = getTodayTaskArr(todayDate);
-    // console.log(todayTasks);
-    if(!todayTasks) {
-        let newTaskBtn = `<div class="new-task-btn"> 
-                                <img src="res/img/plus-circle.svg" alt="">
-                                <p>Нажмите, чтобы создать список</p>
-                             </div>`;
-        appContentContainer.insertAdjacentHTML('afterbegin', newTaskBtn);
-        appContentContainer.style.justifyContent = "center";
-        const addTaskTodayBtn = document.querySelector(".new-task-btn");
-        addTaskTodayBtn.addEventListener("click", showTodayTaskInput);
-    }
-    else {
-        // let tasksList = selectTaskArr(todayTasks);
-        renderTaskListFromArr(todayTasks);
-        showNewTaskInput();
-    }
-}
+// function showStartContent(appContentContainer) {
+//     let todayDate = appDate.todayShortDate();
+//     let todayTasks = appData.getTodayTaskArr(todayDate);
+//     // console.log(todayTasks);
+//     if(!todayTasks) {
+//         let newTaskBtn = `<div class="new-task-btn"> 
+//                                 <img src="res/img/plus-circle.svg" alt="">
+//                                 <p>Нажмите, чтобы создать список</p>
+//                              </div>`;
+//         appContentContainer.insertAdjacentHTML('afterbegin', newTaskBtn);
+//         appContentContainer.style.justifyContent = "center";
+//         const addTaskTodayBtn = document.querySelector(".new-task-btn");
+//         addTaskTodayBtn.addEventListener("click", showTodayTaskInput);
+//     }
+//     else {
+//         // let tasksList = selectTaskArr(todayTasks);
+//         renderTaskListFromArr(todayTasks);
+//         showNewTaskInput();
+//     }
+// }
 
 //show input block  
 function showNewTaskInput() {
@@ -257,7 +202,7 @@ function showTodayTaskInput() {
     const taskInput = document.querySelector(".task-input-block");
     const addTaskTodayBtn = document.querySelector(".new-task-btn");
     const addTaskBtn = document.querySelector(".add-task-btn");
-    createTodayDateObj(genTasksArr);
+    createTodayDateObj(mainDataArr);
     addTaskTodayBtn.style.display = "none";
         function showInput() {
                 taskInput.style.bottom = 0;
@@ -387,10 +332,10 @@ appElements.taskListContainer.addEventListener("dblclick", (event) => {
     console.log("clicked "+elId);
     showEditTextInputBlock();
     selectAndMarkEditableTask(elId);
-    inputTaskText.addEventListener("keyup", ()=> {updateTaskText(genTasksArr)});
+    inputTaskText.addEventListener("keyup", ()=> {updateTaskText(mainDataArr)});
     inputEditBtn.addEventListener("click", hideEditTextInputBlock);
     
-    // changeTextContentOfTask(date, elId, genTasksArr, newTaskText);
+    // changeTextContentOfTask(date, elId, mainDataArr, newTaskText);
 
 })
 
@@ -425,19 +370,19 @@ function createTodayTasksArr(todayTaskArr) {
 //adds new today task on click
 function addNewTodayTask() {
     const todayDate = appDate.todayShortDate();
-    let todayTasks = getTodayTaskArr(todayDate);
+    let todayTasks = appData.getTodayTaskArr(todayDate);
     console.log(todayTasks);
     const inputTaskText = document.querySelector(".task-text");
     if(inputTaskText.value) {
         addNewTaskItemToDOM();
         let curTodayTask = createTodayTasksArr(todayTasks);
         inputTaskText.value = "";
-        addTodayTaskToMainArr(curTodayTask, genTasksArr);
+        addTodayTaskToMainArr(curTodayTask, mainDataArr);
         // console.log(curTodayTask);
     }
     else {
-        accentElement(inputTaskText);
-        
+        animateEl.accentElement(inputTaskText);
+                
     }
     
 }
@@ -478,11 +423,11 @@ appElements.appContent.addEventListener("click", (event) => {
         element.parentNode.classList.toggle('done');
         if (element.classList.contains("checked")) {
             elCheckedState = true;
-            changeStatusOfTask(curDate, elId, genTasksArr, elCheckedState);
+            changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
         }
         else {
             elCheckedState = false;
-            changeStatusOfTask(curDate, elId, genTasksArr, elCheckedState);
+            changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
         }
         
     }
@@ -490,7 +435,7 @@ appElements.appContent.addEventListener("click", (event) => {
         let elChilds = element.childNodes;
         elChilds.forEach(el => {
             if(el.className ==="status") {
-                accentElement(el);
+                animateEl.accentElement(el);
             }
         })
     }
@@ -508,8 +453,8 @@ appElements.appContent.addEventListener("click", (event) => {
     let trashIdNum = Number(getElId.substr(1));
     // console.log(trashIdNum);
     if(element.classList.contains("trash")) {
-        deleteItemFromList(curDate, trashIdNum, genTasksArr);
-        let todayTasks = getTodayTaskArr(curDate);
+        deleteItemFromList(curDate, trashIdNum, mainDataArr);
+        let todayTasks = appData.getTodayTaskArr(curDate);
         clearDOMTaskList();
         renderTaskListFromArr(todayTasks);
     }
@@ -602,7 +547,7 @@ function checkSelectedDate() {
         createTaskListSelectedDate(plannedTaskDate);
     }
     else {
-        accentElement(dateInput);
+        animateEl.accentElement(dateInput);
     }
 }
 
@@ -621,7 +566,7 @@ function createTaskListSelectedDate(selectedDate) {
 
 //check if exist tasks for selected date and render tasks (if exists) or show message (if not) 
 function checkPlannedTasks(selectedDate, appContentContainer) {
-    let dateTasks = getTodayTaskArr(selectedDate);
+    let dateTasks = appData.getTodayTaskArr(selectedDate);
     // console.log(todayTasks);
     if(!dateTasks) {
         let emptyListMessage = `<p class = "list-message">Пока ничего не запланировано</p>`;
@@ -655,7 +600,7 @@ function addTasksForDateToMainArr() {
 //************CALL FUNCTIONS***************
 
 // window.onload = fullCurrentDate();
-window.onload = showStartContent(appElements.appContent, genTasksArr);
+window.onload = showStartContent(appElements.appContent, mainDataArr);
 appElements.selectDateBtn.addEventListener("click", showDateSelectBlock);
 
 
