@@ -1,6 +1,8 @@
 export {appElements};
 
 const appElements = {
+    cssRoot: document.querySelector(':root'),
+    headerDateBlock: document.querySelector(".date-block"),
     dateEl: document.querySelector(".current-date-js"),
     selectDateBtn: document.querySelector(".btn-calendar"),
     allDatesListsBtn: document.querySelector(".btn-dates-list"),
@@ -10,18 +12,13 @@ const appElements = {
     blockScreen: document.querySelector(".popup-block-screen"),
     appContent: document.querySelector(".app-content"),    
     taskListContainer: document.querySelector(".task-list"),
-    
+    //task input block
+    taskInputBlock: document.querySelector(".task-input-block"),
+    addTaskBtn: document.querySelector(".add-task-btn")
 
 };
 
-//clear storage popUp window data
-const btnColor = getComputedStyle(document.querySelector(':root')).getPropertyValue('--danger-red');
-const clearStoragePopUpData = {
-    bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
-    btnText: "Удалить данные",
-    btnColor: btnColor,
-    btnFunc: DataStore.clearLocalStorage
-};
+
 
 // let appData = {
 //    todayTaskArr: [],

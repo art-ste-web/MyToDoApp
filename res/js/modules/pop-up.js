@@ -1,13 +1,11 @@
-import {appElements} from '../common/globals.js';
-import {OptionsMenu} from './options-menu.js';
-
 export {PopUpWindow};
 
 class PopUpWindow {
     constructor(popUpData) {
         this.popUpData = popUpData;
-        this.parentEl = appElements.appContent;
-        this.blockScr = appElements.blockScreen;
+        this.parentEl = document.querySelector(".app-content");
+        this.blockScr = document.querySelector(".popup-block-screen");
+        this.optionsCont = document.querySelector(".options-btns-container");
         this.popUpHTML = `<div class = "popup-window">
             <div class="popup-close"><button class="close-popup-btn"></button></div>
                 <div class="popup-content">
@@ -21,8 +19,9 @@ class PopUpWindow {
         
     }
     renderPopUp() {
-        OptionsMenu.hideOptionsMenu();
-        // this.optionsBlock.style.display = "none";
+        // if(this.optionsCont) {
+        //     this.optionsCont.style.display = "none";
+        // }
         this.blockScr.classList.add("show-el");
         this.parentEl.insertAdjacentHTML('afterbegin', this.popUpHTML);
         this.confirmBtn = document.querySelector(".popup-confirm-btn");

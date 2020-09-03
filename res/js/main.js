@@ -4,14 +4,15 @@ import {appElements} from './common/globals.js';
 
 //animations
 import {ElementAnimation} from './common/animations.js';
-const animateEl = new ElementAnimation;
 
 //dates
 import {ToDoDates} from './common/dates.js';
-const appDate = new ToDoDates;
 
 //local storage functions
 import {DataStore} from './common/storage.js';
+
+//pop up window
+import {PopUpWindow} from './modules/pop-up.js';
 
 //data functions
 import {AppData} from './common/app-data.js';
@@ -22,110 +23,72 @@ import {ElementActions} from './common/el-actions.js';
 //MODULES
 //options menu
 import {OptionsMenu} from './modules/options-menu.js';
-const options = new OptionsMenu;
 
 //app content 
 import {ContentArea} from './modules/content-area.js';
 
+//!!!TEST DATA
+import {mainDataArr} from './_test-data-array.js';
+
+//get dates
+
+
+//INSTANCES
+const animateEl = new ElementAnimation;
+
+const appDate = new ToDoDates;
+const todayShortDate = appDate.todayShortDate();
+const todayFullDate = appDate.todayFullDate();
+
+const storeData = new DataStore(mainDataArr);
+const saveDataMethod = () => {storeData.setToLocalStorage()};
+
+const dataOperations = new AppData(mainDataArr, todayShortDate, saveDataMethod);
+const createTodayDateDataMethod = () => {dataOperations.createTodayDateObj()};
+const addTodayTaskToMainArrMethod = () => {dataOperations.addTodayTaskToMainArr()};
 
 
 
 
+
+const appData = new AppData(mainDataArr, todayShortDate, saveDataMethod);
 
 
 
 
 //APPLICATION
 //get data from local storage
-let mainDataArr = DataStore.getFromLocalStorage();
+// let mainDataArr = DataStore.getFromLocalStorage();
 
-//TEST data class
-const appData = new AppData(mainDataArr);
-const taskA = appData.getTodayTaskArr(appDate.todayShortDate());
-console.log(taskA);
+//show today date in header
+const todayDateEl = new ElementActions(appElements.dateEl);
+todayDateEl.setInnerText(todayFullDate);
 
-
-const appContent = new ContentArea(appElements.appContent, appDate.todayShortDate(), taskA);
-appContent.showStartContent();
-
-//test data array
-let mainDataArr1 = [
-    {
-        id: 0,
-        date: "31.07.2020",
-        tasks: [
-            {
-                tId: 0,
-                text: "Выпить кофе",
-                done: false,
-                trash: false
-            },
-            {
-                tId: 1,
-                text: "Учить JS",
-                done: false,
-                trash: false
-            }
-        ],
-        allDone: false
-
-    },
-    {
-        id: 1,
-        date: "13.08.2020",
-        tasks: [
-            {
-                tId: 0,
-                text: "Бегать",
-                done: false,
-                trash: false
-            },
-            {
-                tId: 1,
-                text: "Прогулка",
-                done: false,
-                trash: false
-            },
-            {
-                tId: 2,
-                text: "Learn JS",
-                done: false,
-                trash: false
-            }
-        ],
-        allDone: false
-
-    },
-    {
-        id: 2,
-        date: "10.08.2020",
-        tasks: [
-            {
-                tId: 0,
-                text: "Бегать",
-                done: false,
-                trash: false
-            },
-            {
-                tId: 1,
-                text: "Прогулка",
-                done: true,
-                trash: false
-            }
-        ],
-        allDone: false
-
-    }
-]
-
-//today date in header
-const todayDate = new ElementActions(appElements.dateEl);
-todayDate.setInnerText(appDate.todayFullDate());
-
-//options menu
+//OPTIONS MENU
+//clear storage popUp window data
+const btnColor = getComputedStyle(appElements.cssRoot).getPropertyValue('--danger-red');
+const clearStoragePopUpData = {
+    bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
+    btnText: "Удалить данные",
+    btnColor: btnColor,
+    btnFunc: DataStore.clearLocalStorage
+};
+//clear storage popUp window
+const alertDelDataPopUp = new PopUpWindow(clearStoragePopUpData);
+//clear storage popUp window render method
+function showDelDataPopUp() {
+    return alertDelDataPopUp.renderPopUp();
+}
+//open options menu
+const optionsMenu = new OptionsMenu(showDelDataPopUp);
 appElements.optionsBtn.addEventListener("click", () => {
-    options.renderOptionsMenu();
+    optionsMenu.renderOptionsMenu();
 });
+
+//CONTENT AREA
+const todayTasksArr = appData.getTodayTaskArr(todayShortDate);
+const appContent = new ContentArea(todayShortDate, todayTasksArr, createTodayDateDataMethod, addTodayTaskToMainArrMethod);
+appContent.showStartContent();
 
 //*****************************/
 
@@ -153,15 +116,15 @@ appElements.optionsBtn.addEventListener("click", () => {
 // }
 
 //show input block  
-function showNewTaskInput() {
-    const taskInput = document.querySelector(".task-input-block");
-    const addTaskBtn = document.querySelector(".add-task-btn");
-        function showInput() {
-                taskInput.style.bottom = 0;
-        }
-        setTimeout(showInput, 1000);
-    addTaskBtn.addEventListener("click", addNewTodayTask);
-}
+// function showNewTaskInput() {
+//     const taskInput = document.querySelector(".task-input-block");
+//     const addTaskBtn = document.querySelector(".add-task-btn");
+//         function showInput() {
+//                 taskInput.style.bottom = 0;
+//         }
+//         setTimeout(showInput, 1000);
+//     addTaskBtn.addEventListener("click", addNewTodayTask);
+// }
 
 //create new today date object in main data array
 function createTodayDateObj(mainArr) {
@@ -175,21 +138,21 @@ function createTodayDateObj(mainArr) {
     return mainArr;
 }
 //renders list to parrent ul element from tasks array
-function renderTaskListFromArr(listArr) {
-    const parentTaskEl = document.querySelector(".task-list");
-    listArr.forEach(element  => {
-        let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
-        if(element.status === true) {
-            parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
-        }
-        else {
-            let taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
-            parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
-        }
+// function renderTaskListFromArr(listArr) {
+//     const parentTaskEl = document.querySelector(".task-list");
+//     listArr.forEach(element  => {
+//         let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
+//         if(element.status === true) {
+//             parentTaskEl.insertAdjacentHTML('beforeend', taskDoneItem);
+//         }
+//         else {
+//             let taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
+//             parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
+//         }
         
-    });
+//     });
     
-}
+// }
 
 //clear parent ul element (for redrawing list)
 function clearDOMTaskList() {
@@ -198,18 +161,18 @@ function clearDOMTaskList() {
 }
 
 //show input on click add task btn
-function showTodayTaskInput() {
-    const taskInput = document.querySelector(".task-input-block");
-    const addTaskTodayBtn = document.querySelector(".new-task-btn");
-    const addTaskBtn = document.querySelector(".add-task-btn");
-    createTodayDateObj(mainDataArr);
-    addTaskTodayBtn.style.display = "none";
-        function showInput() {
-                taskInput.style.bottom = 0;
-        }
-        setTimeout(showInput, 1000);
-    addTaskBtn.addEventListener("click", addNewTodayTask);
-}
+// function showTodayTaskInput() {
+//     const taskInput = document.querySelector(".task-input-block");
+//     const addTaskTodayBtn = document.querySelector(".new-task-btn");
+//     const addTaskBtn = document.querySelector(".add-task-btn");
+//     createTodayDateObj(mainDataArr);
+//     addTaskTodayBtn.style.display = "none";
+//         function showInput() {
+//                 taskInput.style.bottom = 0;
+//         }
+//         setTimeout(showInput, 1000);
+//     addTaskBtn.addEventListener("click", addNewTodayTask);
+// }
 
 //add new li element to parent ul
 function addNewTaskItemToDOM() {
@@ -600,7 +563,7 @@ function addTasksForDateToMainArr() {
 //************CALL FUNCTIONS***************
 
 // window.onload = fullCurrentDate();
-window.onload = showStartContent(appElements.appContent, mainDataArr);
+// window.onload = showStartContent(appElements.appContent, mainDataArr);
 appElements.selectDateBtn.addEventListener("click", showDateSelectBlock);
 
 
