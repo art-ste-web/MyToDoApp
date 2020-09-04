@@ -27,8 +27,13 @@ import {HeaderTodayDate} from './modules/header-date-block.js';
 //options menu
 import {OptionsMenu} from './modules/options-menu.js';
 
+//start content
+import {StartContent} from './modules/start-content.js'; 
+
+//task input block
+import {TaskInputBlock} from './modules/task-input-block.js';
 //app content 
-import {ContentArea} from './modules/content-area.js';
+// import {ContentArea} from './modules/content-area.js';
 
 //!!!TEST DATA
 import {mainDataArr} from './_test-data-array.js';
@@ -40,15 +45,18 @@ import {mainDataArr} from './_test-data-array.js';
 //animations
 const animateEl = new ElementAnimation;
 
-
+//dates
 const appDate = new ToDoDates;
 const todayShortDate = appDate.todayShortDate();
 const todayFullDate = appDate.todayFullDate();
 
+//data functions
 const storeData = new DataStore(mainDataArr);
 const saveDataMethod = () => {storeData.setToLocalStorage()};
+const clearDataStorage = () => {storeData.clearLocalStorage()};
 
-const dataOperations = new AppData(mainDataArr, todayShortDate, saveDataMethod);
+
+
 
 
 
@@ -69,14 +77,12 @@ const clearStoragePopUpData = {
     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
     btnText: "Удалить данные",
     btnColor: btnColor,
-    btnFunc: DataStore.clearLocalStorage
+    btnFunc: clearDataStorage
 };
 //clear storage popUp window
 const alertDelDataPopUp = new PopUpWindow(clearStoragePopUpData);
 //clear storage popUp window render method
-function showDelDataPopUp() {
-    return alertDelDataPopUp.renderPopUp();
-}
+const showDelDataPopUp = () => {alertDelDataPopUp.renderPopUp()};
 //open options menu
 const optionsMenu = new OptionsMenu(showDelDataPopUp);
 appElements.optionsBtn.addEventListener("click", () => {
@@ -84,14 +90,21 @@ appElements.optionsBtn.addEventListener("click", () => {
 });
 
 //CONTENT AREA
-const createTodayDateObj = () => {dataOperations.createTodayDateObj()};
-const addTodayTaskToMainArr = () => {dataOperations.addTodayTaskToMainArr()};
-const getTodayTaskArr = dataOperations.getTodayTaskArr();
-const updateTodayTasksArr = () => {dataOperations.updateTodayTasksArr()};
-const pulseTextInput = animateEl.accentElement(appElements.taskInputText);
+// const createTodayDateObj = () => {dataOperations.createTodayDateObj()};
+// const addTodayTaskToMainArr = () => {dataOperations.addTodayTaskToMainArr()};
+// const getTodayTaskArr = dataOperations.getTodayTaskArr();
+// const updateTodayTasksArr = () => {dataOperations.updateTodayTasksArr()};
+// const pulseTextInput = animateEl.accentElement(appElements.taskInputText);
 
-const appContent = new ContentArea(todayShortDate, getTodayTaskArr, createTodayDateObj, addTodayTaskToMainArr, updateTodayTasksArr, pulseTextInput);
-appContent.showStartContent();
+//task input block
+const taskInput = new TaskInputBlock;
+const renderTaskInput = () => {taskInput.renderTaskInputBlock()};
+
+//start content
+const startContent = new StartContent(mainDataArr, todayShortDate);
+startContent.renderStartContent(renderTaskInput);
+
+
 
 //*****************************/
 

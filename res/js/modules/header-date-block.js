@@ -7,8 +7,7 @@ class HeaderTodayDate {
     }
 
     renderTodayDate() {
-        console.log(this.dateBlock);
-        this.dateBlock.innerText(this.todayDate);
+        this.dateBlock.textContent = this.todayDate;
     }
 
 }
