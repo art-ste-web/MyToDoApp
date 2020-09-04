@@ -21,6 +21,9 @@ import {AppData} from './common/app-data.js';
 import {ElementActions} from './common/el-actions.js';
 
 //MODULES
+//header today date
+import {HeaderTodayDate} from './modules/header-date-block.js';
+
 //options menu
 import {OptionsMenu} from './modules/options-menu.js';
 
@@ -56,8 +59,8 @@ const dataOperations = new AppData(mainDataArr, todayShortDate, saveDataMethod);
 // let mainDataArr = DataStore.getFromLocalStorage();
 
 //show today date in header
-const todayDateEl = new ElementActions(appElements.dateEl);
-todayDateEl.setInnerText(todayFullDate);
+const headerDate = new HeaderTodayDate(todayFullDate);
+headerDate.renderTodayDate();
 
 //OPTIONS MENU
 //clear storage popUp window data
