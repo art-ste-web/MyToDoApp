@@ -3,7 +3,7 @@ export {mainDataArr};
 let mainDataArr = [
     {
         id: 0,
-        date: "06.09.2020",
+        date: "05.09.2020",
         tasks: [
             {
                 tId: 0,

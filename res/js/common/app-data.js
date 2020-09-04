@@ -6,16 +6,33 @@ class AppData {
         this.saveDataMethod = saveDataMethod;
         this.todayDate = todayDate;
     }
+
+    //create or update array with tasks for today
+    updateTodayTasksArr() {
+        this.todayTaskArr = this.getTodayTaskArr();
+        this.inputTaskText = document.querySelector(".task-text");
+        this.taskObj = {};
+        this.taskObj['tId'] = this.todayTaskArr.length;
+        this.taskObj['text'] = this.inputTaskText.value;
+        this.taskObj['status'] = false;
+        this.taskObj['trash'] = false;
+        this.todayTaskArr.push(taskObj);
+        // console.log(taskObj);
+        return this.todayTaskArr;
+    }
+
+
+
     //get today task array from main data array
     getTodayTaskArr() {
-        let todayTasks = null;
+        this.todayTasks = null;
         this.mainDataArr.forEach(element => {
             if(element.date == this.todayDate) {
-                todayTasks = element.tasks;
+                this.todayTasks = element.tasks;
             }
             
         })
-        return todayTasks;
+        return this.todayTasks;
     }
 
     createTodayDateObj() {

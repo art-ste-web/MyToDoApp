@@ -1,8 +1,8 @@
 export {ElementAnimation};
 
 class ElementAnimation {
-    constructor (element) {
-        this.element = element;
+    constructor () {
+        
     }
     accentElement(element) {
         element.style.animation = "pulse  .8s ease-in-out";

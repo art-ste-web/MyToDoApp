@@ -34,7 +34,9 @@ import {mainDataArr} from './_test-data-array.js';
 
 
 //INSTANCES
+//animations
 const animateEl = new ElementAnimation;
+
 
 const appDate = new ToDoDates;
 const todayShortDate = appDate.todayShortDate();
@@ -44,14 +46,7 @@ const storeData = new DataStore(mainDataArr);
 const saveDataMethod = () => {storeData.setToLocalStorage()};
 
 const dataOperations = new AppData(mainDataArr, todayShortDate, saveDataMethod);
-const createTodayDateDataMethod = () => {dataOperations.createTodayDateObj()};
-const addTodayTaskToMainArrMethod = () => {dataOperations.addTodayTaskToMainArr()};
 
-
-
-
-
-const appData = new AppData(mainDataArr, todayShortDate, saveDataMethod);
 
 
 
@@ -86,8 +81,13 @@ appElements.optionsBtn.addEventListener("click", () => {
 });
 
 //CONTENT AREA
-const todayTasksArr = appData.getTodayTaskArr(todayShortDate);
-const appContent = new ContentArea(todayShortDate, todayTasksArr, createTodayDateDataMethod, addTodayTaskToMainArrMethod);
+const createTodayDateObj = () => {dataOperations.createTodayDateObj()};
+const addTodayTaskToMainArr = () => {dataOperations.addTodayTaskToMainArr()};
+const getTodayTaskArr = dataOperations.getTodayTaskArr();
+const updateTodayTasksArr = () => {dataOperations.updateTodayTasksArr()};
+const pulseTextInput = animateEl.accentElement(appElements.taskInputText);
+
+const appContent = new ContentArea(todayShortDate, getTodayTaskArr, createTodayDateObj, addTodayTaskToMainArr, updateTodayTasksArr, pulseTextInput);
 appContent.showStartContent();
 
 //*****************************/
@@ -126,17 +126,17 @@ appContent.showStartContent();
 //     addTaskBtn.addEventListener("click", addNewTodayTask);
 // }
 
-//create new today date object in main data array
-function createTodayDateObj(mainArr) {
-    let todayObj = {};
-    todayObj.id = mainArr.length;
-    todayObj.date = appDate.todayShortDate();
-    todayObj.tasks = [];
-    todayObj.allDone = false;
-    mainArr.push(todayObj);
-    DataStore.setToLocalStorage(mainArr)
-    return mainArr;
-}
+//+create new today date object in main data array
+// function createTodayDateObj(mainArr) {
+//     let todayObj = {};
+//     todayObj.id = mainArr.length;
+//     todayObj.date = appDate.todayShortDate();
+//     todayObj.tasks = [];
+//     todayObj.allDone = false;
+//     mainArr.push(todayObj);
+//     DataStore.setToLocalStorage(mainArr)
+//     return mainArr;
+// }
 //renders list to parrent ul element from tasks array
 // function renderTaskListFromArr(listArr) {
 //     const parentTaskEl = document.querySelector(".task-list");
@@ -174,18 +174,18 @@ function clearDOMTaskList() {
 //     addTaskBtn.addEventListener("click", addNewTodayTask);
 // }
 
-//add new li element to parent ul
-function addNewTaskItemToDOM() {
+//+ add new li element to parent ul
+// function addNewTaskItemToDOM() {
     
-    const inputTaskText = document.querySelector(".task-text");
-    const parentTaskEl = document.querySelector(".task-list");
-    const elCount = parentTaskEl.childElementCount;
-    let taskItem = `<li><span id = "${elCount}" class="status"></span><span id="text${elCount}" class="task-text-content">${inputTaskText.value}</span><span id="t${elCount}" class="trash"></span></li>`;
-    appElements.appContent.style.alignItems = "flex-start";
-    appElements.appContent.style.justifyContent = "flex-start";
-    parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
+//     const inputTaskText = document.querySelector(".task-text");
+//     const parentTaskEl = document.querySelector(".task-list");
+//     const elCount = parentTaskEl.childElementCount;
+//     let taskItem = `<li><span id = "${elCount}" class="status"></span><span id="text${elCount}" class="task-text-content">${inputTaskText.value}</span><span id="t${elCount}" class="trash"></span></li>`;
+//     appElements.appContent.style.alignItems = "flex-start";
+//     appElements.appContent.style.justifyContent = "flex-start";
+//     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
     
-}
+// }
 /*********EDIT TASK TEXT FUNCTIONS**********/
 //show edit task input block
 function showEditTextInputBlock() {
@@ -349,27 +349,27 @@ function addNewTodayTask() {
     }
     
 }
-//update main data array with new tasks
-function addTodayTaskToMainArr(todayTasksArr, genArr) {
-    let dateTaskObj = {};
-    let today = appDate.todayShortDate();
-    let arrItem = null;
-    if(arrItem = genArr.find(item => item.date == today)) {
-        arrItem.tasks = todayTasksArr; 
-        console.log('updated');
-    }
-    else {
-        dateTaskObj['id'] = genArr.length;
-        dateTaskObj['date'] = appDate.todayShortDate();
-        dateTaskObj['tasks'] = todayTasksArr;
-        dateTaskObj['allDone'] = false;
-        genArr.push(dateTaskObj);
-        console.log("added");
-    }
-    console.log(genArr);
-    DataStore.setToLocalStorage(genArr);
-    return genArr;
-}
+//+update main data array with new tasks
+// function addTodayTaskToMainArr(todayTasksArr, genArr) {
+//     let dateTaskObj = {};
+//     let today = appDate.todayShortDate();
+//     let arrItem = null;
+//     if(arrItem = genArr.find(item => item.date == today)) {
+//         arrItem.tasks = todayTasksArr; 
+//         console.log('updated');
+//     }
+//     else {
+//         dateTaskObj['id'] = genArr.length;
+//         dateTaskObj['date'] = appDate.todayShortDate();
+//         dateTaskObj['tasks'] = todayTasksArr;
+//         dateTaskObj['allDone'] = false;
+//         genArr.push(dateTaskObj);
+//         console.log("added");
+//     }
+//     console.log(genArr);
+//     DataStore.setToLocalStorage(genArr);
+//     return genArr;
+// }
 
 
 

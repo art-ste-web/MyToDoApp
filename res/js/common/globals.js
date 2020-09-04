@@ -14,6 +14,7 @@ const appElements = {
     taskListContainer: document.querySelector(".task-list"),
     //task input block
     taskInputBlock: document.querySelector(".task-input-block"),
+    taskInputText: document.querySelector(".task-text"),
     addTaskBtn: document.querySelector(".add-task-btn")
 
 };
