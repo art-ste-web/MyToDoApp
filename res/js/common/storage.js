@@ -8,13 +8,17 @@ class DataStore {
         localStorage.setItem("MYTODO", JSON.stringify(this.mainDataArr));
     }
     getFromLocalStorage() {
-        let data = localStorage.getItem("MYTODO");
-        let mainDataArr = [];
-        if(data) {
-            mainDataArr = JSON.parse(data);
-            return mainDataArr;
+        this.data = localStorage.getItem("MYTODO");
+        if(this.data) {
+            console.log('data');
+            this.mainDataArr = JSON.parse(this.data);
+            return this.mainDataArr;
+            console.log();
         }
         else {
+            this.mainDataArr = [];
+            console.log('nodata');
+            this.setToLocalStorage();
             return [];
         }
     }

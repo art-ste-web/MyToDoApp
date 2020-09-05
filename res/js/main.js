@@ -30,15 +30,15 @@ import {OptionsMenu} from './modules/options-menu.js';
 //start content
 import {StartContent} from './modules/start-content.js'; 
 
-//task input block
-import {TaskInputBlock} from './modules/task-input-block.js';
+
 //app content 
 // import {ContentArea} from './modules/content-area.js';
 
 //!!!TEST DATA
-import {mainDataArr} from './_test-data-array.js';
+// import {mainDataArr} from './_test-data-array.js';
 
-//get dates
+
+
 
 
 //INSTANCES
@@ -51,20 +51,21 @@ const todayShortDate = appDate.todayShortDate();
 const todayFullDate = appDate.todayFullDate();
 
 //data functions
-const storeData = new DataStore(mainDataArr);
-const saveDataMethod = () => {storeData.setToLocalStorage()};
+let initData = [];
+const storeData = new DataStore(initData);
+const saveData = () => {storeData.setToLocalStorage()};
 const clearDataStorage = () => {storeData.clearLocalStorage()};
+const getFromLocalStorage = () => {storeData.getFromLocalStorage()};
 
-
-
-
+//get data from local storage
+let mainDataArr = getFromLocalStorage();
+console.log(mainDataArr);
 
 
 
 
 //APPLICATION
-//get data from local storage
-// let mainDataArr = DataStore.getFromLocalStorage();
+
 
 //show today date in header
 const headerDate = new HeaderTodayDate(todayFullDate);
@@ -90,26 +91,17 @@ appElements.optionsBtn.addEventListener("click", () => {
 });
 
 //CONTENT AREA
-// const createTodayDateObj = () => {dataOperations.createTodayDateObj()};
-// const addTodayTaskToMainArr = () => {dataOperations.addTodayTaskToMainArr()};
-// const getTodayTaskArr = dataOperations.getTodayTaskArr();
-// const updateTodayTasksArr = () => {dataOperations.updateTodayTasksArr()};
-// const pulseTextInput = animateEl.accentElement(appElements.taskInputText);
-
-//task input block
-const taskInput = new TaskInputBlock;
-const renderTaskInput = () => {taskInput.renderTaskInputBlock()};
 
 //start content
 const startContent = new StartContent(mainDataArr, todayShortDate);
-startContent.renderStartContent(renderTaskInput);
+startContent.renderStartContent();
 
 
 
 //*****************************/
 
 
-//show start content (task list for today or create add task btn and add it's function)
+//+show start content (task list for today or create add task btn and add it's function)
 // function showStartContent(appContentContainer) {
 //     let todayDate = appDate.todayShortDate();
 //     let todayTasks = appData.getTodayTaskArr(todayDate);
@@ -131,7 +123,7 @@ startContent.renderStartContent(renderTaskInput);
 //     }
 // }
 
-//show input block  
+//+show input block  
 // function showNewTaskInput() {
 //     const taskInput = document.querySelector(".task-input-block");
 //     const addTaskBtn = document.querySelector(".add-task-btn");
@@ -153,7 +145,7 @@ startContent.renderStartContent(renderTaskInput);
 //     DataStore.setToLocalStorage(mainArr)
 //     return mainArr;
 // }
-//renders list to parrent ul element from tasks array
+//+renders list to parrent ul element from tasks array
 // function renderTaskListFromArr(listArr) {
 //     const parentTaskEl = document.querySelector(".task-list");
 //     listArr.forEach(element  => {
