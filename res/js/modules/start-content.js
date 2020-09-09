@@ -1,10 +1,9 @@
 export {StartContent};
 
 class StartContent {
-    constructor(mainDataArr, todayDate) {
-        this.mainDataArr = mainDataArr;
+    constructor(todayDate) {
+        this.mainDataArr = this.getFromLocalStorage();
         this.todayDate = todayDate;
-        
         this.appContentBlock = document.querySelector(".app-content");
         this.appTaskList = document.querySelector(".task-list");
 
@@ -14,13 +13,13 @@ class StartContent {
                                     <button class="add-task-btn"></button>
                                     <button class="edit-task-btn"></button>
                                 </div>`;
+        
     }
 
     
     //render add task btn or today task list
     renderStartContent() {
         this.todayTasksArr = this.getTodayTaskArr();
-        // console.log(todayTasks);
         if(!this.todayTasksArr) {
             let newTaskBtn = `<div class="new-task-btn"> 
                                     <img src="res/img/plus-circle.svg" alt="">
@@ -33,11 +32,15 @@ class StartContent {
                 this.renderTaskInputBlock();
                 this.createTodayDateObj();
                 this.hideStartBlock();
+                this.setToLocalStorage();
             });
+            console.log('render add task btn');
+            console.log(this.todayTaskArr);
         }
         else {
             this.renderTaskListFromArr();
             this.renderTaskInputBlock()
+            console.log('render exist task list');
 
         }
     }
@@ -69,11 +72,10 @@ class StartContent {
     renderTaskInputBlock() {
         this.inputBlock = document.querySelector(".task-input-block");
         if(!this.inputBlock) {
-            console.log('fdgf');
             this.taskInputParentEl.insertAdjacentHTML('beforeend', this.inputBlockHTML);
             this.addTaskBtn = document.querySelector(".add-task-btn");
             this.inputBlock = document.querySelector(".task-input-block");
-            console.log('111');
+            console.log('show input block');
             this.showInput = () =>{this.inputBlock.style.bottom = 0};
             setTimeout(this.showInput, 1000);
             this.addTaskBtn.addEventListener("click", () => {
@@ -96,8 +98,11 @@ class StartContent {
             // console.log(curTodayTask);
         }
         else {
-            this.method_pulseTextInput;
-            console.log('hihi');
+            this.inputTaskText.style.animation = "pulse  .5s ease-in-out";
+                setTimeout(()=> {
+                    this.inputTaskText.style.animation = "";
+                }, 600)
+            console.log('empty input');
         }
     }
 
@@ -117,7 +122,6 @@ class StartContent {
     //DATA METHODS
     //get today task array from main data array
     getTodayTaskArr() {
-        this.mainDataArr = this.getFromLocalStorage();
         this.todayTasks = null;
         this.mainDataArr.forEach(element => {
             if(element.date == this.todayDate) {
@@ -201,9 +205,9 @@ class StartContent {
 
     getFromLocalStorage() {
         this.data = localStorage.getItem("MYTODO");
-        let mainDataArr = [];
+        this.mainDataArr = [];
         if(this.data) {
-            mainDataArr = JSON.parse(this.data);
+            this.mainDataArr = JSON.parse(this.data);
             return this.mainDataArr;
         }
         else {

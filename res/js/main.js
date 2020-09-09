@@ -15,10 +15,10 @@ import {DataStore} from './common/storage.js';
 import {PopUpWindow} from './modules/pop-up.js';
 
 //data functions
-import {AppData} from './common/app-data.js';
+// import {AppData} from './common/app-data.js';
 
 //change HTML elements and styles
-import {ElementActions} from './common/el-actions.js';
+// import {ElementActions} from './common/el-actions.js';
 
 //MODULES
 //header today date
@@ -29,6 +29,8 @@ import {OptionsMenu} from './modules/options-menu.js';
 
 //start content
 import {StartContent} from './modules/start-content.js'; 
+
+import {ContentAreaEvents} from './modules/content-area-events.js';
 
 
 //app content 
@@ -45,6 +47,8 @@ import {StartContent} from './modules/start-content.js';
 //animations
 const animateEl = new ElementAnimation;
 
+const appContentEvents = new ContentAreaEvents;
+
 //dates
 const appDate = new ToDoDates;
 const todayShortDate = appDate.todayShortDate();
@@ -58,8 +62,8 @@ const clearDataStorage = () => {storeData.clearLocalStorage()};
 const getFromLocalStorage = () => {storeData.getFromLocalStorage()};
 
 //get data from local storage
-let mainDataArr = getFromLocalStorage();
-console.log(mainDataArr);
+// let mainDataArr = getFromLocalStorage();
+// console.log(mainDataArr);
 
 
 
@@ -93,12 +97,49 @@ appElements.optionsBtn.addEventListener("click", () => {
 //CONTENT AREA
 
 //start content
-const startContent = new StartContent(mainDataArr, todayShortDate);
+const startContent = new StartContent(todayShortDate);
 startContent.renderStartContent();
 
 
+appContentEvents.catchElementByEvent();
 
 //*****************************/
+
+/******CONTENT BLOCK USER EVENTS******/
+//get clicked element and set/unset done status
+// appElements.appContent.addEventListener("click", (event) => {
+//     let element = event.target;
+//     let elCheckedState = false;
+//     let elId = Number(event.target.id);
+//     let curDate = appDate.todayShortDate();
+//     // console.log(elId);
+//     if(element.classList.contains("status")) {
+//         element.classList.toggle("checked");
+//         element.parentNode.classList.toggle('done');
+//         if (element.classList.contains("checked")) {
+//             elCheckedState = true;
+//             changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
+//         }
+//         else {
+//             elCheckedState = false;
+//             changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
+//         }
+        
+//     }
+//     else {
+//         let elChilds = element.childNodes;
+//         elChilds.forEach(el => {
+//             if(el.className ==="status") {
+//                 animateEl.accentElement(el);
+//             }
+//         })
+//     }
+//     //console.log(element);
+// })
+
+
+
+
 
 
 //+show start content (task list for today or create add task btn and add it's function)
@@ -338,25 +379,25 @@ function createTodayTasksArr(todayTaskArr) {
     return todayTaskArr;
 
 }
-//adds new today task on click
-function addNewTodayTask() {
-    const todayDate = appDate.todayShortDate();
-    let todayTasks = appData.getTodayTaskArr(todayDate);
-    console.log(todayTasks);
-    const inputTaskText = document.querySelector(".task-text");
-    if(inputTaskText.value) {
-        addNewTaskItemToDOM();
-        let curTodayTask = createTodayTasksArr(todayTasks);
-        inputTaskText.value = "";
-        addTodayTaskToMainArr(curTodayTask, mainDataArr);
-        // console.log(curTodayTask);
-    }
-    else {
-        animateEl.accentElement(inputTaskText);
+//+adds new today task on click
+// function addNewTodayTask() {
+//     const todayDate = appDate.todayShortDate();
+//     let todayTasks = appData.getTodayTaskArr(todayDate);
+//     console.log(todayTasks);
+//     const inputTaskText = document.querySelector(".task-text");
+//     if(inputTaskText.value) {
+//         addNewTaskItemToDOM();
+//         let curTodayTask = createTodayTasksArr(todayTasks);
+//         inputTaskText.value = "";
+//         addTodayTaskToMainArr(curTodayTask, mainDataArr);
+//         // console.log(curTodayTask);
+//     }
+//     else {
+//         animateEl.accentElement(inputTaskText);
                 
-    }
+//     }
     
-}
+// }
 //+update main data array with new tasks
 // function addTodayTaskToMainArr(todayTasksArr, genArr) {
 //     let dateTaskObj = {};
