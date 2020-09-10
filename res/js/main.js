@@ -102,7 +102,7 @@ startContent.renderStartContent();
 
 const appContentEvents = new TaskListAreaEvents(todayShortDate);
 appContentEvents.taskListStatusEvents();
-appContentEvents.taskListEditTaskEvent();
+// appContentEvents.taskListEditTaskEvent();
 
 //*****************************/
 
