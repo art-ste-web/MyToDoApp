@@ -30,7 +30,7 @@ import {OptionsMenu} from './modules/options-menu.js';
 //start content
 import {StartContent} from './modules/start-content.js'; 
 
-import {ContentAreaEvents} from './modules/content-area-events.js';
+import {TaskListAreaEvents} from './modules/content-area-events.js';
 
 
 //app content 
@@ -47,7 +47,7 @@ import {ContentAreaEvents} from './modules/content-area-events.js';
 //animations
 const animateEl = new ElementAnimation;
 
-const appContentEvents = new ContentAreaEvents;
+
 
 //dates
 const appDate = new ToDoDates;
@@ -100,8 +100,9 @@ appElements.optionsBtn.addEventListener("click", () => {
 const startContent = new StartContent(todayShortDate);
 startContent.renderStartContent();
 
-
-appContentEvents.catchElementByEvent();
+const appContentEvents = new TaskListAreaEvents(todayShortDate);
+appContentEvents.taskListStatusEvents();
+appContentEvents.taskListEditTaskEvent();
 
 //*****************************/
 
@@ -203,11 +204,11 @@ appContentEvents.catchElementByEvent();
     
 // }
 
-//clear parent ul element (for redrawing list)
-function clearDOMTaskList() {
-    const parentTaskEl = document.querySelector(".task-list");
-    parentTaskEl.innerHTML = '';
-}
+//+clear parent ul element (for redrawing list)
+// function clearDOMTaskList() {
+//     const parentTaskEl = document.querySelector(".task-list");
+//     parentTaskEl.innerHTML = '';
+// }
 
 //show input on click add task btn
 // function showTodayTaskInput() {
@@ -235,6 +236,7 @@ function clearDOMTaskList() {
 //     parentTaskEl.insertAdjacentHTML('beforeend', taskItem);
     
 // }
+
 /*********EDIT TASK TEXT FUNCTIONS**********/
 //show edit task input block
 function showEditTextInputBlock() {
@@ -334,22 +336,22 @@ function removeEditAttr() {
 
 //edit task event
 //get double clicked element to edit task text content
-appElements.taskListContainer.addEventListener("dblclick", (event) => {
-    const date = appDate.todayShortDate();
-    const inputTaskText = document.querySelector(".task-text");
-    const inputEditBtn = document.querySelector(".edit-task-btn");
-    const element = event.target;
-    const getElId = element.id;
-    const elId = Number(getElId.substr(4));
-    console.log("clicked "+elId);
-    showEditTextInputBlock();
-    selectAndMarkEditableTask(elId);
-    inputTaskText.addEventListener("keyup", ()=> {updateTaskText(mainDataArr)});
-    inputEditBtn.addEventListener("click", hideEditTextInputBlock);
+// appElements.taskListContainer.addEventListener("dblclick", (event) => {
+//     const date = appDate.todayShortDate();
+//     const inputTaskText = document.querySelector(".task-text");
+//     const inputEditBtn = document.querySelector(".edit-task-btn");
+//     const element = event.target;
+//     const getElId = element.id;
+//     const elId = Number(getElId.substr(4));
+//     console.log("clicked "+elId);
+//     showEditTextInputBlock();
+//     selectAndMarkEditableTask(elId);
+//     inputTaskText.addEventListener("keyup", ()=> {updateTaskText(mainDataArr)});
+//     inputEditBtn.addEventListener("click", hideEditTextInputBlock);
     
-    // changeTextContentOfTask(date, elId, mainDataArr, newTaskText);
+//     // changeTextContentOfTask(date, elId, mainDataArr, newTaskText);
 
-})
+// })
 
 //change task text in main array
 function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
@@ -366,19 +368,19 @@ function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
 
 
 
-//create or update array with tasks for today
-function createTodayTasksArr(todayTaskArr) {
-    const inputTaskText = document.querySelector(".task-text");
-    let taskObj = {};
-    taskObj['tId'] = todayTaskArr.length;
-    taskObj['text'] = inputTaskText.value;
-    taskObj['status'] = false;
-    taskObj['trash'] = false;
-    todayTaskArr.push(taskObj);
-    // console.log(taskObj);
-    return todayTaskArr;
+//+create or update array with tasks for today
+// function createTodayTasksArr(todayTaskArr) {
+//     const inputTaskText = document.querySelector(".task-text");
+//     let taskObj = {};
+//     taskObj['tId'] = todayTaskArr.length;
+//     taskObj['text'] = inputTaskText.value;
+//     taskObj['status'] = false;
+//     taskObj['trash'] = false;
+//     todayTaskArr.push(taskObj);
+//     // console.log(taskObj);
+//     return todayTaskArr;
 
-}
+// }
 //+adds new today task on click
 // function addNewTodayTask() {
 //     const todayDate = appDate.todayShortDate();
@@ -424,89 +426,89 @@ function createTodayTasksArr(todayTaskArr) {
 
 /******CONTENT BLOCK USER EVENTS******/
 //get clicked element and set/unset done status
-appElements.appContent.addEventListener("click", (event) => {
-    let element = event.target;
-    let elCheckedState = false;
-    let elId = Number(event.target.id);
-    let curDate = appDate.todayShortDate();
-    // console.log(elId);
-    if(element.classList.contains("status")) {
-        element.classList.toggle("checked");
-        element.parentNode.classList.toggle('done');
-        if (element.classList.contains("checked")) {
-            elCheckedState = true;
-            changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
-        }
-        else {
-            elCheckedState = false;
-            changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
-        }
+// appElements.appContent.addEventListener("click", (event) => {
+//     let element = event.target;
+//     let elCheckedState = false;
+//     let elId = Number(event.target.id);
+//     let curDate = appDate.todayShortDate();
+//     // console.log(elId);
+//     if(element.classList.contains("status")) {
+//         element.classList.toggle("checked");
+//         element.parentNode.classList.toggle('done');
+//         if (element.classList.contains("checked")) {
+//             elCheckedState = true;
+//             changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
+//         }
+//         else {
+//             elCheckedState = false;
+//             changeStatusOfTask(curDate, elId, mainDataArr, elCheckedState);
+//         }
         
-    }
-    else {
-        let elChilds = element.childNodes;
-        elChilds.forEach(el => {
-            if(el.className ==="status") {
-                animateEl.accentElement(el);
-            }
-        })
-    }
-    //console.log(element);
-})
+//     }
+//     else {
+//         let elChilds = element.childNodes;
+//         elChilds.forEach(el => {
+//             if(el.className ==="status") {
+//                 animateEl.accentElement(el);
+//             }
+//         })
+//     }
+//     //console.log(element);
+// })
 
 
 
 
-//get clicked trash element and delete task from list
-appElements.appContent.addEventListener("click", (event) => {
-    let element = event.target;
-    let getElId = event.target.id;
-    let curDate = appDate.todayShortDate();
-    let trashIdNum = Number(getElId.substr(1));
-    // console.log(trashIdNum);
-    if(element.classList.contains("trash")) {
-        deleteItemFromList(curDate, trashIdNum, mainDataArr);
-        let todayTasks = appData.getTodayTaskArr(curDate);
-        clearDOMTaskList();
-        renderTaskListFromArr(todayTasks);
-    }
+//+get clicked trash element and delete task from list
+// appElements.appContent.addEventListener("click", (event) => {
+//     let element = event.target;
+//     let getElId = event.target.id;
+//     let curDate = appDate.todayShortDate();
+//     let trashIdNum = Number(getElId.substr(1));
+//     // console.log(trashIdNum);
+//     if(element.classList.contains("trash")) {
+//         deleteItemFromList(curDate, trashIdNum, mainDataArr);
+//         let todayTasks = appData.getTodayTaskArr(curDate);
+//         clearDOMTaskList();
+//         renderTaskListFromArr(todayTasks);
+//     }
 
-})
+// })
 
-//change task status in main array
-function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
+//+change task status in main array
+// function changeStatusOfTask(taskDate, taskId, mainDataArr, elState) {
     
-    let todayEl = mainDataArr.find(el => el.date === taskDate);
-    todayEl.tasks.forEach(el => {
-        if(el.tId === taskId) {
-            el.status = elState;
-            console.log("work");
-            DataStore.setToLocalStorage(mainDataArr);
-        }
-    })
-}
+//     let todayEl = mainDataArr.find(el => el.date === taskDate);
+//     todayEl.tasks.forEach(el => {
+//         if(el.tId === taskId) {
+//             el.status = elState;
+//             console.log("work");
+//             DataStore.setToLocalStorage(mainDataArr);
+//         }
+//     })
+// }
 
-//delete item from tasklist in main data array
-function deleteItemFromList(taskDate, taskId, mainDataArr) {
-    let todayEl = mainDataArr.find(el => el.date === taskDate);
-    let todayElTasks = todayEl.tasks;
-    todayElTasks.forEach(el => {
-        if(el.tId === taskId) {
-            todayElTasks.splice(el.tId, 1);
-            console.log(el.tId);
-            // console.log(todayElTasks);
-            for(let i = 0; i < todayElTasks.length; i++) {
-                todayElTasks[i].tId = i;
-                console.log(todayElTasks);
+//+delete item from tasklist in main data array
+// function deleteItemFromList(taskDate, taskId, mainDataArr) {
+//     let todayEl = mainDataArr.find(el => el.date === taskDate);
+//     let todayElTasks = todayEl.tasks;
+//     todayElTasks.forEach(el => {
+//         if(el.tId === taskId) {
+//             todayElTasks.splice(el.tId, 1);
+//             console.log(el.tId);
+//             // console.log(todayElTasks);
+//             for(let i = 0; i < todayElTasks.length; i++) {
+//                 todayElTasks[i].tId = i;
+//                 console.log(todayElTasks);
                 
-            }
+//             }
             
            
-        }
-    })
-    DataStore.setToLocalStorage(mainDataArr);
+//         }
+//     })
+//     DataStore.setToLocalStorage(mainDataArr);
 
-}
+// }
 
 
 

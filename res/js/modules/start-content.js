@@ -35,7 +35,7 @@ class StartContent {
                 this.setToLocalStorage();
             });
             console.log('render add task btn');
-            console.log(this.todayTaskArr);
+            // console.log(this.todayTaskArr);
         }
         else {
             this.renderTaskListFromArr();
@@ -88,7 +88,7 @@ class StartContent {
 
     addNewTodayTask() {
         this.inputTaskText = document.querySelector(".task-text");
-        console.log('new task');
+        console.log('add new task btn clicked');
         if(this.inputTaskText.value) {
             this.renderNewTaskItem();
             let curTodayTask = this.updateTodayTasksArr();
@@ -116,12 +116,13 @@ class StartContent {
         this.appContentBlock.style.alignItems = "flex-start";
         this.appContentBlock.style.justifyContent = "flex-start";
         this.appTaskList.insertAdjacentHTML('beforeend', taskItem);
-        
+        console.log('task item rendered');
     }
 
     //DATA METHODS
     //get today task array from main data array
     getTodayTaskArr() {
+        this.mainDataArr = this.getFromLocalStorage();
         this.todayTasks = null;
         this.mainDataArr.forEach(element => {
             if(element.date == this.todayDate) {
@@ -136,12 +137,13 @@ class StartContent {
         this.inputTaskText = document.querySelector(".task-text");
         this.todayTaskArr = this.getTodayTaskArr();
         this.taskObj = {};
-        this.taskObj['tId'] = this.todayTaskArr.length;
-        this.taskObj['text'] = this.inputTaskText.value;
-        this.taskObj['status'] = false;
-        this.taskObj['trash'] = false;
+        this.taskObj.tId = this.todayTaskArr.length;
+        this.taskObj.text = this.inputTaskText.value;
+        this.taskObj.status = false;
+        this.taskObj.trash = false;
         this.todayTaskArr.push(this.taskObj);
-        console.log(this.taskObj);
+        console.log('today task array updated');
+        console.log(this.todayTaskArr);
         return this.todayTaskArr;
     }
 
@@ -153,7 +155,7 @@ class StartContent {
         this.todayObj.allDone = false;
         this.mainDataArr.push(this.todayObj);
         this.saveDataMethod;
-        console.log(this.mainDataArr);
+        console.log('today date obj created in main arr');
         return this.mainDataArr;
         
     }
@@ -166,15 +168,15 @@ class StartContent {
             console.log('main array updated');
         }
         else {
-            this.dateTaskObj['id'] = this.mainDataArr.length;
-            this.dateTaskObj['date'] = this.todayDate;
-            this.dateTaskObj['tasks'] = todayTasks;
-            this.dateTaskObj['allDone'] = false;
+            this.dateTaskObj.id = this.mainDataArr.length;
+            this.dateTaskObj.date = this.todayDate;
+            this.dateTaskObj.tasks = todayTasks;
+            this.dateTaskObj.allDone = false;
             this.mainDataArr.push(this.dateTaskObj);
-            console.log("added");
+            console.log("new task added to main array");
         }
         console.log(this.mainDataArr);
-        this.setToLocalStorage();
+        this.setToLocalStorage;
         return this.mainDataArr;
     }
 
@@ -201,6 +203,7 @@ class StartContent {
     //LOCAL STORAGE
     setToLocalStorage() {
         localStorage.setItem("MYTODO", JSON.stringify(this.mainDataArr));
+        console.log('saved to LS');
     }
 
     getFromLocalStorage() {

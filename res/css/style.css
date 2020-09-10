@@ -55,6 +55,11 @@ table {
     50% { transform: scale(1.05); }
     to { transform: scale(1); }
 }
+@keyframes big-pulse {
+    from { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    to { transform: scale(1); }
+}
 @keyframes appear-from-top {
     from { top: 25%; opacity: 0;}
     to { top: 50%; opacity: 1; }
@@ -343,6 +348,13 @@ body {
     margin-right: .5rem;
     cursor: pointer;
 }
+.app-container .app-content .task-list li input {
+    font-family: var(--main-font);
+    font-size: 1.3rem;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    padding: .5rem;
+}
 .app-container .app-content .task-list li span.checked {
     display: inline-block;
     height: 2.25rem;
@@ -366,6 +378,35 @@ body {
     margin-left: auto;
     cursor: pointer;
 }
+.app-container .app-content .task-list li .edit-task {
+    display: inline-block;
+    height: 2.2rem;
+    width: 2.2rem;
+    padding: .5rem;
+    border-radius: 50%;
+    background-color: var(--icon-bg-blue);
+    background-image: url(../img/edit-task.svg);
+    background-position: center center;
+    background-size: 60%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    cursor: pointer;
+}
+.app-container .app-content .task-list li .confirm-task {
+    display: inline-block;
+    height: 2.2rem;
+    width: 2.2rem;
+    padding: .5rem;
+    border-radius: 50%;
+    background-color: var(--icon-bg-blue);
+    background-image: url(../img/check.svg);
+    background-position: center center;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    cursor: pointer;
+}
+
 .app-container .app-content .new-task-btn {
     display: flex;
     flex-direction: column;
