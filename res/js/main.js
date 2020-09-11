@@ -102,7 +102,7 @@ startContent.renderStartContent();
 
 const appContentEvents = new TaskListAreaEvents(todayShortDate);
 appContentEvents.taskListStatusEvents();
-// appContentEvents.taskListEditTaskEvent();
+
 
 //*****************************/
 
@@ -540,7 +540,16 @@ function showDateSelectBlock() {
     const dateSelectBtn = document.querySelector(".date-select-btn");
     const toMainScreenBtn = document.querySelector(".today-tasks-btn");
     dateSelectBtn.addEventListener("click", checkSelectedDate);
-    toMainScreenBtn.addEventListener("click", toMainScreen);
+    // toMainScreenBtn.addEventListener("click", toMainScreen);
+    toMainScreenBtn.addEventListener("click", ()=>{
+        let contentEl = document.querySelector(".app-content");
+        contentEl.innerHTML = "";
+        const listParent = `<ul class = "task-list"></ul>`;
+        contentEl.insertAdjacentHTML('afterbegin', listParent);
+        startContent.renderStartContent();
+        appContentEvents.taskListStatusEvents();
+        console.log('to main');
+    });
 }
 
 //return to main screen 

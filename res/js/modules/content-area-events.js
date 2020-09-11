@@ -13,22 +13,18 @@ class TaskListAreaEvents extends StartContent {
             this.clickedElement = event.target;
             this.elId = Number(event.target.id);
             this.trashIdNum = Number(event.target.id.substr(1));
-            // console.log(this.trashIdNum);
+            this.taskTextId = Number(event.target.id.substr(4));
+            // console.log(this.taskTextId);
             // console.log(this.clickedElement);
             this.changeStatusOfTask(this.clickedElement, this.elId);
             this.deleteTaskFromList(this.clickedElement, this.todayDate, this.trashIdNum);
+            this.taskListEditTaskEvent(this.clickedElement, this.taskTextId);
             // console.log(this.mainDataArr);
+            
         })
     }
 
-    taskListEditTaskEvent() {
-        this.appTaskList.addEventListener("dbclick", (event) => {
-            this.clickedElement = event.target;
-            console.log(this.clickedElement);
-            console.log('db click');
-        })
-    }
-
+    
     changeStatusOfTask(clickedTaskEl, clickedElId) {
         // console.log(this.mainDataArr);
         if(clickedTaskEl.classList.contains("status")) {
@@ -65,6 +61,89 @@ class TaskListAreaEvents extends StartContent {
         }
     }
 
+    //-----------Edit task text methods----------------
+    taskListEditTaskEvent(clickedTaskEl, clickedTaskTextId) {
+        const editTaskInput = document.getElementById("task-edit-field");
+        const editBtn = document.querySelector(".edit-task");
+        if(clickedTaskEl.classList.contains("task-text-content") && !editTaskInput) {
+            this.trashBtnElements = document.querySelectorAll(".trash");
+            console.log(this.trashBtnElements);
+            this.trashBtnElements.forEach(el => {
+                if(el.nextElementSibling) {
+                    el.nextElementSibling.remove();
+                    el.style.display = 'block';
+                }
+                
+                if(el.id === `t${clickedTaskTextId}`) {
+                    this.editTaskBtnHTML = `<span class = "edit-task"></span>`;
+                    clickedTaskEl.parentNode.insertAdjacentHTML('beforeend', this.editTaskBtnHTML);
+                    el.style.display = 'none';
+                    this.editBtn = document.querySelector(".edit-task");
+                    this.editBtn.addEventListener("click", () => {this.showEditInput(clickedTaskEl)});
+                }
+            })
+                       
+        }
+
+        if (editBtn) {
+        this.trashBtnElements = document.querySelectorAll(".trash");
+            this.trashBtnElements.forEach(el => {
+                if(el.nextElementSibling) {
+                    el.nextElementSibling.remove();
+                    el.style.display = 'block';
+                }
+            })
+        }
+    }
+
+    showEditInput(clickedTaskEl) {
+        this.editInput = document.getElementById("task-edit-field");
+        if(this.editInput) {
+            this.editInput.remove();
+        }
+        this.taskTextContent = clickedTaskEl.innerText;
+        clickedTaskEl.innerHTML = `<input id = "task-edit-field" type = "text" value = "${this.taskTextContent}">`;
+        this.trashBtnElements = document.querySelectorAll(".trash");
+            this.trashBtnElements.forEach(el => {
+                if(el.nextElementSibling) {
+                    el.nextElementSibling.remove();
+                    this.confirmEditBtnHTML = `<span class = "confirm-edit-task"></span>`;
+                    clickedTaskEl.parentNode.insertAdjacentHTML('beforeend', this.confirmEditBtnHTML);
+                    this.confirmEditBtn = document.querySelector(".confirm-edit-task");
+                    this.confirmEditBtn.addEventListener("click", () => {this.confirmEditTask(clickedTaskEl)});
+                }
+            })
+    }
+
+    confirmEditTask(clickedTaskEl) {
+        this.editTaskInput = document.getElementById("task-edit-field");
+        this.confirmEditBtn = document.querySelector(".confirm-edit-task");
+        this.taskTextId = clickedTaskEl.id;
+        this.taskId = Number(clickedTaskEl.id.substr(4));
+        this.taskTextEl = document.getElementById(this.taskTextId);
+        this.taskTextEl.innerText = this.editTaskInput.value;
+        this.dataChangeTextofTask(this.editTaskInput.value, this.taskId);
+        this.editTaskInput.remove();
+        this.confirmEditBtn.remove();
+        this.trashBtn = document.getElementById(`t${this.taskId}`);
+        this.trashBtn.style.display = 'block';
+        
+        console.log(this.taskId);
+    }
+
+    hideEditTaskBtn(clickedElement) {
+        if(!clickedElement.classList.contains("task-text-content")) {
+            this.trashBtnElements = document.querySelectorAll(".trash");
+            this.trashBtnElements.forEach(el => {
+                if(el.nextElementSibling) {
+                    el.nextElementSibling.remove();
+                    el.style.display = 'block';
+                }
+            })
+        }
+    }
+
+    //-----------Delete task methods----------------
     deleteTaskFromList(clickedElement, taskDate, trashIdNum) {
         if(clickedElement.classList.contains("trash")) {
             this.deleteTaskFromDataArr(trashIdNum, taskDate);
@@ -118,5 +197,19 @@ class TaskListAreaEvents extends StartContent {
         })
         super.setToLocalStorage();
         
+    }
+
+    dataChangeTextofTask(newTaskText, taskId) {
+        this.mainDataArr = super.getFromLocalStorage();
+        
+        let todayEl = this.mainDataArr.find(el => el.date === this.todayDate);
+        this.todayElTasks = todayEl.tasks;
+        this.todayElTasks.forEach(el => {
+            if(el.tId === taskId) {
+                el.text = newTaskText;
+            }
+        })
+        super.setToLocalStorage();
+
     }
 }

@@ -59,7 +59,6 @@ class StartContent {
             }
         
         });
-    
     }
 
     //hide add task btn block
