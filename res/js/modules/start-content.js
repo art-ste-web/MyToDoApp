@@ -19,8 +19,11 @@ class StartContent {
     
     //render add task btn or today task list
     renderStartContent() {
+        console.log(this);
         this.todayTasksArr = this.getTodayTaskArr();
+        console.log(this.todayTasksArr);
         if(!this.todayTasksArr) {
+            this.appContentBlock.innerHTML = "";
             let newTaskBtn = `<div class="new-task-btn"> 
                                     <img src="res/img/plus-circle.svg" alt="">
                                     <p>Нажмите, чтобы создать список</p>
@@ -121,6 +124,7 @@ class StartContent {
     //DATA METHODS
     //get today task array from main data array
     getTodayTaskArr() {
+        console.log(this);
         this.mainDataArr = this.getFromLocalStorage();
         this.todayTasks = null;
         this.mainDataArr.forEach(element => {
@@ -129,6 +133,7 @@ class StartContent {
             }
             
         })
+        console.log(this.todayTasks);
         return this.todayTasks;
     }
 
@@ -186,6 +191,7 @@ class StartContent {
     }
 
     getFromLocalStorage() {
+        console.log(this);
         this.data = localStorage.getItem("MYTODO");
         this.mainDataArr = [];
         if(this.data) {

@@ -86,10 +86,16 @@ startContent.renderStartContent();
 const appContentEvents = new TaskListAreaEvents(todayShortDate);
 appContentEvents.taskListStatusEvents();
 
-//SHEDULE TASK
+//SHEDULED TASKS
 const todayYY_MM_DD = appDate.transformDateToYYMMDD(todayShortDate);
 const sheduledTasks = new SheduledTasks(todayYY_MM_DD);
-appElements.selectDateBtn.addEventListener("click", sheduledTasks.renderSelectSheduledDateBlock);
+const sheduledTasksBlock = ()=> {sheduledTasks.renderSelectSheduledDateBlock()};
+const startContentScr = ()=> {startContent.renderStartContent()};
+appElements.selectDateBtn.addEventListener("click", ()=> {sheduledTasks.renderSelectSheduledDateBlock()});
+const toMainScrBtn = document.querySelector(".today-tasks-btn");
+if(toMainScrBtn) {
+    toMainScrBtn.addEventListener("click", ()=> {startContent.renderStartContent()});
+}
 
 
 
