@@ -30,8 +30,11 @@ import {OptionsMenu} from './modules/options-menu.js';
 //start content
 import {StartContent} from './modules/start-content.js'; 
 
+//task list events
 import {TaskListAreaEvents} from './modules/content-area-events.js';
 
+//sheduled tasks
+import {SheduledTasks} from './modules/sheduled-tasks.js';
 
 //app content 
 // import {ContentArea} from './modules/content-area.js';
@@ -42,34 +45,14 @@ import {TaskListAreaEvents} from './modules/content-area-events.js';
 
 
 
-
-//INSTANCES
-//animations
-const animateEl = new ElementAnimation;
-
-
-
 //dates
 const appDate = new ToDoDates;
 const todayShortDate = appDate.todayShortDate();
 const todayFullDate = appDate.todayFullDate();
 
-//data functions
-let initData = [];
-const storeData = new DataStore(initData);
-const saveData = () => {storeData.setToLocalStorage()};
-const clearDataStorage = () => {storeData.clearLocalStorage()};
-const getFromLocalStorage = () => {storeData.getFromLocalStorage()};
-
-//get data from local storage
-// let mainDataArr = getFromLocalStorage();
-// console.log(mainDataArr);
-
-
-
 
 //APPLICATION
-
+const startContent = new StartContent(todayShortDate);
 
 //show today date in header
 const headerDate = new HeaderTodayDate(todayFullDate);
@@ -82,7 +65,7 @@ const clearStoragePopUpData = {
     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
     btnText: "Удалить данные",
     btnColor: btnColor,
-    btnFunc: clearDataStorage
+    btnFunc: startContent.clearLocalStorage
 };
 //clear storage popUp window
 const alertDelDataPopUp = new PopUpWindow(clearStoragePopUpData);
@@ -97,11 +80,17 @@ appElements.optionsBtn.addEventListener("click", () => {
 //CONTENT AREA
 
 //start content
-const startContent = new StartContent(todayShortDate);
+
 startContent.renderStartContent();
 
 const appContentEvents = new TaskListAreaEvents(todayShortDate);
 appContentEvents.taskListStatusEvents();
+
+//SHEDULE TASK
+const todayYY_MM_DD = appDate.transformDateToYYMMDD(todayShortDate);
+const sheduledTasks = new SheduledTasks(todayYY_MM_DD);
+appElements.selectDateBtn.addEventListener("click", sheduledTasks.renderSelectSheduledDateBlock);
+
 
 
 //*****************************/
@@ -238,98 +227,98 @@ appContentEvents.taskListStatusEvents();
 // }
 
 /*********EDIT TASK TEXT FUNCTIONS**********/
-//show edit task input block
-function showEditTextInputBlock() {
-    const inputAddBtn = document.querySelector(".add-task-btn");
-    const inputEditBtn = document.querySelector(".edit-task-btn");
-    inputAddBtn.style.display = "none";
-    inputEditBtn.style.display = "block";
+//+show edit task input block
+// function showEditTextInputBlock() {
+//     const inputAddBtn = document.querySelector(".add-task-btn");
+//     const inputEditBtn = document.querySelector(".edit-task-btn");
+//     inputAddBtn.style.display = "none";
+//     inputEditBtn.style.display = "block";
     
-}
+// }
 
-//insert edit task text to input
-function selectAndMarkEditableTask(itemId) {
-    const inputTaskText = document.querySelector(".task-text");
-    const selectedItemId = `text${itemId}`;
-    const selectedItem = document.getElementById(selectedItemId);
-    selectedItem.setAttribute("edit", "true");
-    inputTaskText.value = selectedItem.innerText;
+//+insert edit task text to input
+// function selectAndMarkEditableTask(itemId) {
+//     const inputTaskText = document.querySelector(".task-text");
+//     const selectedItemId = `text${itemId}`;
+//     const selectedItem = document.getElementById(selectedItemId);
+//     selectedItem.setAttribute("edit", "true");
+//     inputTaskText.value = selectedItem.innerText;
     
-} 
+// } 
 
 
 
-//hide edit task input block
-function hideEditTextInputBlock() {
-    const inputTaskText = document.querySelector(".task-text");
-    const inputAddBtn = document.querySelector(".add-task-btn");
-    const inputEditBtn = document.querySelector(".edit-task-btn");
-    inputAddBtn.style.display = "block";
-    inputEditBtn.style.display = "none";
-    clearTaskTextInput();
-    const tasktItems = document.querySelectorAll(".task-text-content");
-    for(let i=0; i<tasktItems.length; i++) {
-        tasktItems[i].parentNode.style.opacity = null;
-    }
-    removeEditAttr();
-}
+//+hide edit task input block
+// function hideEditTextInputBlock() {
+//     const inputTaskText = document.querySelector(".task-text");
+//     const inputAddBtn = document.querySelector(".add-task-btn");
+//     const inputEditBtn = document.querySelector(".edit-task-btn");
+//     inputAddBtn.style.display = "block";
+//     inputEditBtn.style.display = "none";
+//     clearTaskTextInput();
+//     const tasktItems = document.querySelectorAll(".task-text-content");
+//     for(let i=0; i<tasktItems.length; i++) {
+//         tasktItems[i].parentNode.style.opacity = null;
+//     }
+//     removeEditAttr();
+// }
 
 
 //clear task input 
-function clearTaskTextInput() {
-    const inputTaskText = document.querySelector(".task-text");
-    inputTaskText.value = "";
-}
+// function clearTaskTextInput() {
+//     const inputTaskText = document.querySelector(".task-text");
+//     inputTaskText.value = "";
+// }
 
 
 
 
 //insert new task text to task item
-function updateTaskText(mainDataArr) {
-    const date = appDate.todayShortDate();
-    const inputTaskText = document.querySelector(".task-text");
-    const tasktItems = document.querySelectorAll(".task-text-content");
-    for(let i=0; i<tasktItems.length; i++) {
-        if(tasktItems[i].getAttribute("edit")) {
-            let getElId = tasktItems[i].id;
-            let elId = Number(getElId.substr(4));
-            let editTask = document.getElementById(getElId);
-            editTask.innerText = inputTaskText.value;
-            console.log(elId);
-            let todayEl = mainDataArr.find(el => el.date === date);
-                todayEl.tasks.forEach(el => {
-                    if(el.tId === elId) {
-                        el.text = inputTaskText.value;
-                        console.log("text edited");
-                        DataStore.setToLocalStorage(mainDataArr);
-                    }
-                })
-        }
-        else {
-            tasktItems[i].parentNode.style.opacity = '.2';
-        }
-        // console.log(tasktItems[i]);
-    }
+// function updateTaskText(mainDataArr) {
+//     const date = appDate.todayShortDate();
+//     const inputTaskText = document.querySelector(".task-text");
+//     const tasktItems = document.querySelectorAll(".task-text-content");
+//     for(let i=0; i<tasktItems.length; i++) {
+//         if(tasktItems[i].getAttribute("edit")) {
+//             let getElId = tasktItems[i].id;
+//             let elId = Number(getElId.substr(4));
+//             let editTask = document.getElementById(getElId);
+//             editTask.innerText = inputTaskText.value;
+//             console.log(elId);
+//             let todayEl = mainDataArr.find(el => el.date === date);
+//                 todayEl.tasks.forEach(el => {
+//                     if(el.tId === elId) {
+//                         el.text = inputTaskText.value;
+//                         console.log("text edited");
+//                         DataStore.setToLocalStorage(mainDataArr);
+//                     }
+//                 })
+//         }
+//         else {
+//             tasktItems[i].parentNode.style.opacity = '.2';
+//         }
+//         // console.log(tasktItems[i]);
+//     }
     
-    // console.log(tasktItems);
-    // clearTaskTextInput();
-    // hideEditTextInputBlock();
+//     // console.log(tasktItems);
+//     // clearTaskTextInput();
+//     // hideEditTextInputBlock();
     
-}
+// }
 
 
 
 //remove edit attr 
-function removeEditAttr() {
-    const tasktItems = document.querySelectorAll(".task-text-content");
-    for(let i=0; i<tasktItems.length; i++) {
-        if(tasktItems[i].getAttribute("edit")) {
-            let editTask = document.getElementById(tasktItems[i].id);
-            editTask.removeAttribute("edit");
-        }
+// function removeEditAttr() {
+//     const tasktItems = document.querySelectorAll(".task-text-content");
+//     for(let i=0; i<tasktItems.length; i++) {
+//         if(tasktItems[i].getAttribute("edit")) {
+//             let editTask = document.getElementById(tasktItems[i].id);
+//             editTask.removeAttribute("edit");
+//         }
         
-    }
-}
+//     }
+// }
 
 
 
@@ -354,16 +343,16 @@ function removeEditAttr() {
 // })
 
 //change task text in main array
-function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
-    let todayEl = mainDataArr.find(el => el.date === taskDate);
-    todayEl.tasks.forEach(el => {
-        if(el.tId === taskId) {
-            el.text = newTaskText;
-            console.log("text edited");
-            DataStore.setToLocalStorage(mainDataArr);
-        }
-    })
-}
+// function changeTextContentOfTask(taskDate, taskId, mainDataArr, newTaskText) {
+//     let todayEl = mainDataArr.find(el => el.date === taskDate);
+//     todayEl.tasks.forEach(el => {
+//         if(el.tId === taskId) {
+//             el.text = newTaskText;
+//             console.log("text edited");
+//             DataStore.setToLocalStorage(mainDataArr);
+//         }
+//     })
+// }
 
 
 
@@ -624,7 +613,7 @@ function addTasksForDateToMainArr() {
 
 // window.onload = fullCurrentDate();
 // window.onload = showStartContent(appElements.appContent, mainDataArr);
-appElements.selectDateBtn.addEventListener("click", showDateSelectBlock);
+// appElements.selectDateBtn.addEventListener("click", showDateSelectBlock);
 
 
 

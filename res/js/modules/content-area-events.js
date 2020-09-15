@@ -65,6 +65,7 @@ class TaskListAreaEvents extends StartContent {
     taskListEditTaskEvent(clickedTaskEl, clickedTaskTextId) {
         const editTaskInput = document.getElementById("task-edit-field");
         const editBtn = document.querySelector(".edit-task");
+        const taskInputBlock = document.querySelector(".task-input-block");
         if(clickedTaskEl.classList.contains("task-text-content") && !editTaskInput) {
             this.trashBtnElements = document.querySelectorAll(".trash");
             console.log(this.trashBtnElements);
@@ -79,7 +80,10 @@ class TaskListAreaEvents extends StartContent {
                     clickedTaskEl.parentNode.insertAdjacentHTML('beforeend', this.editTaskBtnHTML);
                     el.style.display = 'none';
                     this.editBtn = document.querySelector(".edit-task");
-                    this.editBtn.addEventListener("click", () => {this.showEditInput(clickedTaskEl)});
+                    this.editBtn.addEventListener("click", () => {
+                        this.showEditInput(clickedTaskEl);
+                        taskInputBlock.style.bottom = '-180px';
+                    });
                 }
             })
                        
@@ -116,6 +120,7 @@ class TaskListAreaEvents extends StartContent {
     }
 
     confirmEditTask(clickedTaskEl) {
+        const taskInputBlock = document.querySelector(".task-input-block");
         this.editTaskInput = document.getElementById("task-edit-field");
         this.confirmEditBtn = document.querySelector(".confirm-edit-task");
         this.taskTextId = clickedTaskEl.id;
@@ -127,7 +132,7 @@ class TaskListAreaEvents extends StartContent {
         this.confirmEditBtn.remove();
         this.trashBtn = document.getElementById(`t${this.taskId}`);
         this.trashBtn.style.display = 'block';
-        
+        taskInputBlock.style.bottom = '0px';
         console.log(this.taskId);
     }
 

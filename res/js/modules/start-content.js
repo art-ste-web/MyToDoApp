@@ -179,26 +179,6 @@ class StartContent {
         return this.mainDataArr;
     }
 
-    // addTodayTaskToMainArr() {
-    //     this.dateTaskObj = {};
-    //     this.arrItem = null;
-    //     if(this.arrItem = this.mainDataArr.find(item => item.date == this.todayDate)) {
-    //         this.arrItem.tasks = this.getTodayTaskArr(); 
-    //         console.log('updated');
-    //     }
-    //     else {
-    //         this.dateTaskObj['id'] = this.mainDataArr.length;
-    //         this.dateTaskObj['date'] = this.todayDate;
-    //         this.dateTaskObj['tasks'] = this.getTodayTaskArr();
-    //         this.dateTaskObj['allDone'] = false;
-    //         this.mainDataArr.push(this.dateTaskObj);
-    //         console.log("added");
-    //     }
-    //     console.log(this.mainDataArr);
-    //     this.saveDataMethod;
-    //     return this.mainDataArr;
-    // }
-
     //LOCAL STORAGE
     setToLocalStorage() {
         localStorage.setItem("MYTODO", JSON.stringify(this.mainDataArr));
@@ -215,5 +195,10 @@ class StartContent {
         else {
             return [];
         }
+    }
+
+    clearLocalStorage() {
+        localStorage.clear();
+        document.location.reload();
     }
 }

@@ -72,6 +72,10 @@ table {
     from { right: -5rem; }
     to { right: 0;}
 }
+@keyframes edit-input-roll-out {
+    from { width: 0%; }
+    to { width: 60%;}
+}
 /*JS styles*/
 .hide-el {
     display: none !important;
@@ -192,7 +196,7 @@ body {
 .app-container .header .date-block .options-btns-container .delete-data-btn {
     height: 2.5rem;
     width: 2.5rem;
-    background-color: #00B0E8;
+    background-color: #dc3545;
     background-image: url(../img/delete-database.svg);
     background-size: 60%;
     background-position: center center;
@@ -329,11 +333,14 @@ body {
     padding: .1rem 0;
 }
 .app-container .app-content .task-list li {
+    position: relative;
     margin-top: 1rem;
     font-size: 1.3rem;
     display: flex;
     align-items: center;
     width: 100%;
+    height: 2.5rem;
+    transition: height .25s;
 }
 .app-container .app-content .task-list li.done {
     color: var(--gray);
@@ -349,13 +356,17 @@ body {
     cursor: pointer;
 }
 .app-container .app-content .task-list li input {
+    position: absolute;
+    top: 0;
+    max-width: 60%;
     font-family: var(--main-font);
     font-size: 1.3rem;
     border: 1px solid var(--gray);
     border-radius: 5px;
     padding: .5rem;
-    animation: appear;
-    animation-duration: .25s;
+    animation: edit-input-roll-out;
+    animation-fill-mode: forwards;
+    animation-duration: .5s;
 }
 .app-container .app-content .task-list li span.checked {
     display: inline-block;
