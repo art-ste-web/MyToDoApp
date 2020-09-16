@@ -2,40 +2,27 @@ export {StartContent};
 
 class StartContent {
     constructor(todayDate) {
-        this.mainDataArr = this.getFromLocalStorage();
         this.todayDate = todayDate;
-        this.appContentBlock = document.querySelector(".app-content");
-        this.appTaskList = document.querySelector(".task-list");
-
-        this.taskInputParentEl = document.querySelector(".app-container");
-        this.inputBlockHTML = `<div class="task-input-block">
-                                    <input class="task-text" type="text" placeholder="введите текст задания">
-                                    <button class="add-task-btn"></button>
-                                    <button class="edit-task-btn"></button>
-                                </div>`;
-        
     }
 
     
     //render add task btn or today task list
     renderStartContent() {
         console.log(this);
-        this.todayTasksArr = this.getTodayTaskArr();
-        console.log(this.todayTasksArr);
-        if(!this.todayTasksArr) {
-            this.appContentBlock.innerHTML = "";
-            let newTaskBtn = `<div class="new-task-btn"> 
+        const appContentBlock = document.querySelector(".app-content");
+        const todayTasksArr = this.getTodayTaskArr();
+        if(!todayTasksArr) {
+            const newTaskBtn = `<div class="new-task-btn"> 
                                     <img src="res/img/plus-circle.svg" alt="">
                                     <p>Нажмите, чтобы создать список</p>
                               </div>`;
-            this.appContentBlock.insertAdjacentHTML('afterbegin', newTaskBtn);
-            this.appContentBlock.style.justifyContent = "center";
-            this.addTaskTodayBtn = document.querySelector(".new-task-btn");
-            this.addTaskTodayBtn.addEventListener("click", () =>{
+            appContentBlock.insertAdjacentHTML('afterbegin', newTaskBtn);
+            appContentBlock.style.justifyContent = "center";
+            const addTaskTodayBtn = document.querySelector(".new-task-btn");
+            addTaskTodayBtn.addEventListener("click", () =>{
                 this.renderTaskInputBlock();
                 this.createTodayDateObj();
                 this.hideStartBlock();
-                this.setToLocalStorage();
             });
             console.log('render add task btn');
             // console.log(this.todayTaskArr);
@@ -50,37 +37,58 @@ class StartContent {
 
     //render today task list
     renderTaskListFromArr() {
-        this.todayTaskArr = this.getTodayTaskArr();
-        this.todayTaskArr.forEach(element  => {
-            let taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
+        let appTaskList = document.querySelector(".task-list");
+        const dateSelectBlock = document.querySelector(".date-select");
+        const appContentBlock = document.querySelector(".app-content");
+        if(!appTaskList) {
+            const taskListCont = document.createElement('ul');
+            taskListCont.setAttribute("class", "task-list");
+            appContentBlock.appendChild(taskListCont);
+            appTaskList = document.querySelector(".task-list");
+            console.log('create ul');
+            
+        }
+        if(dateSelectBlock) {
+            dateSelectBlock.remove();
+        }
+        const todayTaskArr = this.getTodayTaskArr();
+        todayTaskArr.forEach(element  => {
+            const taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
             if(element.status === true) {
-                this.appTaskList.insertAdjacentHTML('beforeend', taskDoneItem);
+                appTaskList.insertAdjacentHTML('beforeend', taskDoneItem);
             }
             else {
-                let taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
-                this.appTaskList.insertAdjacentHTML('beforeend', taskItem);
+                const taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
+                appTaskList.insertAdjacentHTML('beforeend', taskItem);
             }
         
         });
+        
     }
 
     //hide add task btn block
     hideStartBlock() {
-        this.addTaskTodayBtn = document.querySelector(".new-task-btn");
-        this.addTaskTodayBtn.classList.add("hide-el");
+        const addTaskTodayBtn = document.querySelector(".new-task-btn");
+        addTaskTodayBtn.classList.add("hide-el");
     }
 
     //render task input block
     renderTaskInputBlock() {
-        this.inputBlock = document.querySelector(".task-input-block");
-        if(!this.inputBlock) {
-            this.taskInputParentEl.insertAdjacentHTML('beforeend', this.inputBlockHTML);
-            this.addTaskBtn = document.querySelector(".add-task-btn");
-            this.inputBlock = document.querySelector(".task-input-block");
+        const taskInputParentEl = document.querySelector(".app-container");
+        const inputBlock = document.querySelector(".task-input-block");
+        const inputBlockHTML = `<div class="task-input-block">
+                                    <input class="task-text" type="text" placeholder="введите текст задания">
+                                    <button class="add-task-btn"></button>
+                                    <button class="edit-task-btn"></button>
+                                </div>`;
+        if(!inputBlock) {
+            taskInputParentEl.insertAdjacentHTML('beforeend', inputBlockHTML);
+            const addTaskBtn = document.querySelector(".add-task-btn");
+            const inputBlock = document.querySelector(".task-input-block");
             console.log('show input block');
-            this.showInput = () =>{this.inputBlock.style.bottom = 0};
-            setTimeout(this.showInput, 1000);
-            this.addTaskBtn.addEventListener("click", () => {
+            const showInput = () =>{inputBlock.style.bottom = 0};
+            setTimeout(showInput, 500);
+            addTaskBtn.addEventListener("click", () => {
                 this.addNewTodayTask();
             });
             
@@ -89,20 +97,20 @@ class StartContent {
     }
 
     addNewTodayTask() {
-        this.inputTaskText = document.querySelector(".task-text");
+        const inputTaskText = document.querySelector(".task-text");
         console.log('add new task btn clicked');
-        if(this.inputTaskText.value) {
+        if(inputTaskText.value) {
             this.renderNewTaskItem();
-            let curTodayTask = this.updateTodayTasksArr();
-            this.inputTaskText.value = "";
+            const curTodayTask = this.updateTodayTasksArr();
+            inputTaskText.value = "";
             this.addTodayTaskToMainArr(curTodayTask);
-            this.setToLocalStorage();
+            // this.setToLocalStorage();
             // console.log(curTodayTask);
         }
         else {
-            this.inputTaskText.style.animation = "pulse  .5s ease-in-out";
+            inputTaskText.style.animation = "pulse  .5s ease-in-out";
                 setTimeout(()=> {
-                    this.inputTaskText.style.animation = "";
+                    inputTaskText.style.animation = "";
                 }, 600)
             console.log('empty input');
         }
@@ -110,93 +118,98 @@ class StartContent {
 
     //render task to DOM
     renderNewTaskItem() {
-        this.inputTaskText = document.querySelector(".task-text");
-        const elCount = this.appTaskList.childElementCount;
-        let taskItem = `<li><span id = "${elCount}" class="status"></span>
-                            <span id="text${elCount}" class="task-text-content">${this.inputTaskText.value}</span>
+        const appContentBlock = document.querySelector(".app-content");
+        const appTaskList = document.querySelector(".task-list");
+        const inputTaskText = document.querySelector(".task-text");
+        const elCount = appTaskList.childElementCount;
+        const taskItem = `<li><span id = "${elCount}" class="status"></span>
+                            <span id="text${elCount}" class="task-text-content">${inputTaskText.value}</span>
                             <span id="t${elCount}" class="trash"></span></li>`;
-        this.appContentBlock.style.alignItems = "flex-start";
-        this.appContentBlock.style.justifyContent = "flex-start";
-        this.appTaskList.insertAdjacentHTML('beforeend', taskItem);
+        appContentBlock.style.alignItems = "flex-start";
+        appContentBlock.style.justifyContent = "flex-start";
+        appTaskList.insertAdjacentHTML('beforeend', taskItem);
         console.log('task item rendered');
     }
 
     //DATA METHODS
     //get today task array from main data array
     getTodayTaskArr() {
+        const mainDataArr = this.getFromLocalStorage();
         console.log(this);
-        this.mainDataArr = this.getFromLocalStorage();
-        this.todayTasks = null;
-        this.mainDataArr.forEach(element => {
+        let todayTasks = null;
+        mainDataArr.forEach(element => {
             if(element.date == this.todayDate) {
-                this.todayTasks = element.tasks;
+                todayTasks = element.tasks;
             }
             
         })
-        console.log(this.todayTasks);
-        return this.todayTasks;
+        
+        console.log(todayTasks);
+        return todayTasks;
     }
 
     updateTodayTasksArr() {
-        this.inputTaskText = document.querySelector(".task-text");
-        this.todayTaskArr = this.getTodayTaskArr();
-        this.taskObj = {};
-        this.taskObj.tId = this.todayTaskArr.length;
-        this.taskObj.text = this.inputTaskText.value;
-        this.taskObj.status = false;
-        this.taskObj.trash = false;
-        this.todayTaskArr.push(this.taskObj);
+        const inputTaskText = document.querySelector(".task-text");
+        const todayTaskArr = this.getTodayTaskArr();
+        let taskObj = {};
+        taskObj.tId = todayTaskArr.length;
+        taskObj.text = inputTaskText.value;
+        taskObj.status = false;
+        taskObj.trash = false;
+        todayTaskArr.push(taskObj);
         console.log('today task array updated');
-        console.log(this.todayTaskArr);
-        return this.todayTaskArr;
+        console.log(todayTaskArr);
+        return todayTaskArr;
     }
 
     createTodayDateObj() {
-        this.todayObj = {};
-        this.todayObj.id = this.mainDataArr.length;
-        this.todayObj.date = this.todayDate;
-        this.todayObj.tasks = [];
-        this.todayObj.allDone = false;
-        this.mainDataArr.push(this.todayObj);
-        this.saveDataMethod;
+        const mainDataArr = this.getFromLocalStorage();
+        console.log(mainDataArr);
+        let todayObj = {};
+        todayObj.id = mainDataArr.length;
+        todayObj.date = this.todayDate;
+        todayObj.tasks = [];
+        todayObj.allDone = false;
+        mainDataArr.push(todayObj);
         console.log('today date obj created in main arr');
-        return this.mainDataArr;
+        this.setToLocalStorage(mainDataArr);
+        return mainDataArr;
         
     }
 
     addTodayTaskToMainArr(todayTasks) {
-        this.dateTaskObj = {};
-        this.arrItem = null;
-        if(this.arrItem = this.mainDataArr.find(item => item.date == this.todayDate)) {
-            this.arrItem.tasks = todayTasks; 
+        const mainDataArr = this.getFromLocalStorage();
+        let dateTaskObj = {};
+        let arrItem = null;
+        if(arrItem = mainDataArr.find(item => item.date == this.todayDate)) {
+            arrItem.tasks = todayTasks; 
             console.log('main array updated');
         }
         else {
-            this.dateTaskObj.id = this.mainDataArr.length;
-            this.dateTaskObj.date = this.todayDate;
-            this.dateTaskObj.tasks = todayTasks;
-            this.dateTaskObj.allDone = false;
-            this.mainDataArr.push(this.dateTaskObj);
+            dateTaskObj.id = mainDataArr.length;
+            dateTaskObj.date = this.todayDate;
+            dateTaskObj.tasks = todayTasks;
+            dateTaskObj.allDone = false;
+            mainDataArr.push(this.dateTaskObj);
             console.log("new task added to main array");
         }
-        console.log(this.mainDataArr);
-        this.setToLocalStorage;
-        return this.mainDataArr;
+        console.log(mainDataArr);
+        this.setToLocalStorage(mainDataArr);
+        return mainDataArr;
     }
 
     //LOCAL STORAGE
-    setToLocalStorage() {
-        localStorage.setItem("MYTODO", JSON.stringify(this.mainDataArr));
+    setToLocalStorage(mainDataArr) {
+        localStorage.setItem("MYTODO", JSON.stringify(mainDataArr));
         console.log('saved to LS');
     }
 
     getFromLocalStorage() {
-        console.log(this);
-        this.data = localStorage.getItem("MYTODO");
-        this.mainDataArr = [];
-        if(this.data) {
-            this.mainDataArr = JSON.parse(this.data);
-            return this.mainDataArr;
+        const data = localStorage.getItem("MYTODO");
+        let mainDataArr = [];
+        if(data) {
+            mainDataArr = JSON.parse(data);
+            return mainDataArr;
         }
         else {
             return [];

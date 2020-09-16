@@ -89,13 +89,20 @@ appContentEvents.taskListStatusEvents();
 //SHEDULED TASKS
 const todayYY_MM_DD = appDate.transformDateToYYMMDD(todayShortDate);
 const sheduledTasks = new SheduledTasks(todayYY_MM_DD);
-const sheduledTasksBlock = ()=> {sheduledTasks.renderSelectSheduledDateBlock()};
-const startContentScr = ()=> {startContent.renderStartContent()};
-appElements.selectDateBtn.addEventListener("click", ()=> {sheduledTasks.renderSelectSheduledDateBlock()});
-const toMainScrBtn = document.querySelector(".today-tasks-btn");
-if(toMainScrBtn) {
-    toMainScrBtn.addEventListener("click", ()=> {startContent.renderStartContent()});
-}
+sheduledTasks.callSheduledTaskEvent();
+// const sheduledTasksBlock = ()=> {sheduledTasks.renderSelectSheduledDateBlock()};
+// const startContentScr = ()=> {startContent.renderStartContent()};
+// appElements.selectDateBtn.addEventListener("click", sheduledTasks.renderSelectSheduledDateBlock.bind(startContent));
+// const toMainScrBtn = document.querySelector(".today-tasks-btn");
+// if(toMainScrBtn) {
+//     console.log('to main');
+//      toMainScrBtn.addEventListener("click", ()=> {
+//          console.log('to main');
+//         //  startContent.renderStartContent.bind(startContent)
+//     });
+//  }
+
+
 
 
 
