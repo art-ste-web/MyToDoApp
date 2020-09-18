@@ -1,40 +1,44 @@
 //IMPORT
+//COMMON
 //app globals
 import {appElements} from './common/globals.js';
 
-//animations
-import {ElementAnimation} from './common/animations.js';
-
 //dates
-import {ToDoDates} from './common/dates.js';
+import {ToDoDates} from './common/Dates.js';
 
 //local storage functions
-import {DataStore} from './common/storage.js';
+import {DataStore} from './common/Storage.js';
 
-//pop up window
-import {PopUpWindow} from './modules/pop-up.js';
+//add event listener function
+import {AppEventListener} from './common/AppEventListener.js';
 
-//data functions
-// import {AppData} from './common/app-data.js';
 
-//change HTML elements and styles
-// import {ElementActions} from './common/el-actions.js';
 
 //MODULES
 //header today date
-import {HeaderTodayDate} from './modules/header-date-block.js';
+import {HeaderTodayDate} from './modules/HeaderTodayDate.js';
 
 //options menu
-import {OptionsMenu} from './modules/options-menu.js';
+import {OptionsMenu} from './modules/OptionsMenu.js';
+
+//pop up window
+import {PopUpWindow} from './modules/PopUpWindow.js';
 
 //start content
-import {StartContent} from './modules/start-content.js'; 
+import {TaskListContent} from './modules/TaskListContent.js'; 
 
 //task list events
 import {TaskListAreaEvents} from './modules/content-area-events.js';
 
 //sheduled tasks
 import {SheduledTasks} from './modules/sheduled-tasks.js';
+
+
+
+// //buttons
+// import {appButtons} from './common/appButtons.js';
+
+
 
 //app content 
 // import {ContentArea} from './modules/content-area.js';
@@ -51,9 +55,9 @@ const todayShortDate = appDate.todayShortDate();
 const todayFullDate = appDate.todayFullDate();
 
 
-//APPLICATION
-const startContent = new StartContent(todayShortDate);
-
+//------------------APPLICATION----------------------
+const taskListContent = new TaskListContent(todayShortDate);
+//HEADER
 //show today date in header
 const headerDate = new HeaderTodayDate(todayFullDate);
 headerDate.renderTodayDate();
@@ -65,23 +69,33 @@ const clearStoragePopUpData = {
     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
     btnText: "Удалить данные",
     btnColor: btnColor,
-    btnFunc: startContent.clearLocalStorage
+    btnFunc: taskListContent.clearLocalStorage
 };
 //clear storage popUp window
 const alertDelDataPopUp = new PopUpWindow(clearStoragePopUpData);
-//clear storage popUp window render method
-const showDelDataPopUp = () => {alertDelDataPopUp.renderPopUp()};
+
 //open options menu
-const optionsMenu = new OptionsMenu(showDelDataPopUp);
-appElements.optionsBtn.addEventListener("click", () => {
+const optionsMenu = new OptionsMenu();
+document.querySelector(".options-btn").addEventListener("click", () => {
     optionsMenu.renderOptionsMenu();
 });
 
-//CONTENT AREA
-
+//TASK LIST CONTENT
 //start content
+taskListContent.renderStartContent();
 
-startContent.renderStartContent();
+//add new today task button event
+const appEvents = new AppEventListener();
+appEvents.addListener([
+    document.querySelector(".new-task-btn"),
+    "click",
+    ()=> {
+        taskListContent.renderTaskInputBlock();
+        taskListContent.createTodayDateObj();
+        taskListContent.hideStartBlock();
+    }
+]);
+
 
 const appContentEvents = new TaskListAreaEvents(todayShortDate);
 appContentEvents.taskListStatusEvents();
@@ -101,6 +115,85 @@ sheduledTasks.callSheduledTaskEvent();
 //         //  startContent.renderStartContent.bind(startContent)
 //     });
 //  }
+
+//----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
+const app = document.querySelector(".app-container");
+const observer = new MutationObserver(mutations => {
+    
+    console.log(mutations);
+
+    //Add button click events
+    //test
+    appEvents.addListener([
+        appElements.allDatesListsBtn,
+        "click",
+        ()=> {console.log('its work')}
+    ]);
+
+    //OPTIONS BLOCK
+    //close options button
+    appEvents.addListener([
+        document.querySelector(".close-options-btn"),
+        "click",
+        optionsMenu.hideOptionsMenu
+    ]);
+
+    //clear local storage button
+    appEvents.addListener([
+        document.querySelector(".delete-data-btn"),
+        "click",
+        ()=> {
+            alertDelDataPopUp.renderPopUp();
+            optionsMenu.hideOptionsMenu();
+        }
+    ]);
+
+    //pop up window buttons (delete data from local storage) 
+    appEvents.addListener([    
+        document.querySelector(".popup-confirm-btn"),
+        "click",
+        clearStoragePopUpData.btnFunc
+    ]);
+
+    appEvents.addListener([
+        document.querySelector(".close-popup-btn"),
+        "click",
+        alertDelDataPopUp.removePopUp.bind(alertDelDataPopUp)
+    ]);
+
+    appEvents.addListener([
+        document.querySelector(".popup-cancel-btn"),
+        "click",
+        alertDelDataPopUp.removePopUp.bind(alertDelDataPopUp)
+    ]);
+
+    //TASK LIST CONTENT BLOCK
+    //add new today tasks
+    appEvents.addListener([
+        document.querySelector(".new-task-btn"),
+        "click",
+        ()=> {
+            taskListContent.renderTaskInputBlock();
+            taskListContent.createTodayDateObj();
+            taskListContent.hideStartBlock();
+        }
+    ]);
+
+    //add new task input button
+    appEvents.addListener([
+        document.querySelector(".add-task-btn"),
+        "click",
+        taskListContent.addNewTodayTask.bind(taskListContent)
+    ]);
+    console.log('observed');
+
+})
+observer.observe(app, {
+    attributes: true,
+    childList: true,
+    subtree: true
+});
+
 
 
 

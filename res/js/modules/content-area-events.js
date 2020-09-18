@@ -1,8 +1,8 @@
-import {StartContent} from './start-content.js';
+import {TaskListContent} from './TaskListContent.js';
 
 export {TaskListAreaEvents};
 
-class TaskListAreaEvents extends StartContent {
+class TaskListAreaEvents extends TaskListContent {
     constructor(todayDate) {
         super();
         this.todayDate = todayDate;

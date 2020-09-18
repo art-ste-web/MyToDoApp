@@ -1,8 +1,8 @@
-import {StartContent} from './start-content.js';
-const startCont = new StartContent;
+import {TaskListContent} from './TaskListContent.js';
+const startCont = new TaskListContent;
 export {SheduledTasks};
 
-class SheduledTasks extends StartContent {
+class SheduledTasks extends TaskListContent {
     constructor(todayDateYY_MM_DD) {
         super();
         this.todayDateYY_MM_DD = todayDateYY_MM_DD;

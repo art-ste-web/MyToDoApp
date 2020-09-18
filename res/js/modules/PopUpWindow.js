@@ -19,20 +19,11 @@ class PopUpWindow {
         
     }
     renderPopUp() {
-        // if(this.optionsCont) {
-        //     this.optionsCont.style.display = "none";
-        // }
         this.blockScr.classList.add("show-el");
         this.parentEl.insertAdjacentHTML('afterbegin', this.popUpHTML);
         this.confirmBtn = document.querySelector(".popup-confirm-btn");
-        this.closePopUpBtn = document.querySelector(".close-popup-btn");
-        this.cancelPopUpBtn = document.querySelector(".popup-cancel-btn");
         this.confirmBtn.style.backgroundColor = this.popUpData.btnColor;
-        this.confirmBtn.addEventListener("click", this.popUpData.btnFunc);
-        this.closePopUpBtn.addEventListener("click", this.removePopUp.bind(this));
-        this.cancelPopUpBtn.addEventListener("click", this.removePopUp.bind(this));
-        // console.log(this);
-        return this;
+        
     }
     
     removePopUp() {
