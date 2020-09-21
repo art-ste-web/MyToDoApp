@@ -34,14 +34,15 @@ class TaskListContent {
 
     //render today task list
     renderTaskListFromArr() {
+        this.appTaskList = document.querySelector(".task-list");
         // const dateSelectBlock = document.querySelector(".date-select");
-        // if(!this.appTaskList) {
-        //     this.taskListCont = document.createElement('ul');
-        //     this.taskListCont.setAttribute("class", "task-list");
-        //     this.appContentBlock.appendChild(this.taskListCont);
-        //     this.appTaskList = document.querySelector(".task-list");
-        //     console.log('create ul');
-        // }
+        if(!this.appTaskList) {
+            this.taskListCont = document.createElement('ul');
+            this.taskListCont.setAttribute("class", "task-list");
+            this.appContentBlock.appendChild(this.taskListCont);
+            this.appTaskList = document.querySelector(".task-list");
+            console.log('create ul');
+        }
         // if(dateSelectBlock) {
         //     dateSelectBlock.remove();
         // }
@@ -57,7 +58,7 @@ class TaskListContent {
             }
         
         });
-        
+        console.log("render list");
     }
 
     //hide add task btn block

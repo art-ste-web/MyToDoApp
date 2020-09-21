@@ -1,22 +1,17 @@
 import {TaskListContent} from './TaskListContent.js';
-const startCont = new TaskListContent;
+
 export {SheduledTasks};
 
 class SheduledTasks extends TaskListContent {
     constructor(todayDateYY_MM_DD) {
         super();
         this.todayDateYY_MM_DD = todayDateYY_MM_DD;
-        
+        this.taskInputBlock = document.querySelector(".task-input-block");
+        this.appContentBlock = document.querySelector(".app-content");
     }
 
-    callSheduledTaskEvent() {
-        const sheduleTaskBtn = document.querySelector(".btn-calendar");
-        sheduleTaskBtn.addEventListener("click", this.renderSelectSheduledDateBlock.bind(this));
-    }
-
+    
     renderSelectSheduledDateBlock() {
-        const taskInputBlock = document.querySelector(".task-input-block");
-        const appContentBlock = document.querySelector(".app-content");
         const sheduleTaskBlockHTML = `<div class="date-select">
                                         <p>Выберите дату</p>
                                         <div class="date-input">
@@ -27,18 +22,21 @@ class SheduledTasks extends TaskListContent {
                                     </div>`;
         console.log(this);
         
-        if(taskInputBlock) {
-            taskInputBlock.style.bottom = '-180px';
+        if(this.taskInputBlock) {
+            this.taskInputBlock.style.bottom = '-180px';
         }
-        appContentBlock.innerHTML = "";
-        appContentBlock.insertAdjacentHTML('afterbegin', sheduleTaskBlockHTML);
-        const toMainScrBtn = document.querySelector(".today-tasks-btn");
-        // const mainScr = super.renderStartContent.bind(StartContent);
-        toMainScrBtn.addEventListener("click", super.renderStartContent.bind(this));
+        this.appContentBlock.innerHTML = "";
+        this.appContentBlock.insertAdjacentHTML('afterbegin', sheduleTaskBlockHTML);
+    }
+
+    removeSheduledDateBlock() {
+        this.selectTaskDateBlock = document.querySelector(".date-select");
+        // this.appContentBlock.innerHTML = "<ul class='task-list'></ul>";
+        // this.selectTaskDateBlock.style.cssText = "animation: appear-from-top; animation-duration: .25s; animation-direction: reverse;"
+        this.selectTaskDateBlock.style.transition = "all .4s"; 
+        this.selectTaskDateBlock.style.top = "800px";
+        this.selectTaskDateBlock.style.opacity = "0";
+        setTimeout(()=>{this.selectTaskDateBlock.remove()}, 1200);
         
-        // toMainScrBtn.addEventListener("click",  ()=>{
-        //     this.appContentBlock.innerHTML = "";
-        //     super.renderStartContent.bind(this);
-        // });
     }
 }

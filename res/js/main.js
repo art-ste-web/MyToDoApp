@@ -28,10 +28,10 @@ import {PopUpWindow} from './modules/PopUpWindow.js';
 import {TaskListContent} from './modules/TaskListContent.js'; 
 
 //task list events
-import {TaskListAreaEvents} from './modules/content-area-events.js';
+import {TaskListOperations} from './modules/TaskListOperations.js';
 
 //sheduled tasks
-import {SheduledTasks} from './modules/sheduled-tasks.js';
+import {SheduledTasks} from './modules/SheduledTasks.js';
 
 
 
@@ -97,24 +97,13 @@ appEvents.addListener([
 ]);
 
 
-const appContentEvents = new TaskListAreaEvents(todayShortDate);
+const appContentEvents = new TaskListOperations(todayShortDate);
 appContentEvents.taskListStatusEvents();
 
 //SHEDULED TASKS
 const todayYY_MM_DD = appDate.transformDateToYYMMDD(todayShortDate);
 const sheduledTasks = new SheduledTasks(todayYY_MM_DD);
-sheduledTasks.callSheduledTaskEvent();
-// const sheduledTasksBlock = ()=> {sheduledTasks.renderSelectSheduledDateBlock()};
-// const startContentScr = ()=> {startContent.renderStartContent()};
-// appElements.selectDateBtn.addEventListener("click", sheduledTasks.renderSelectSheduledDateBlock.bind(startContent));
-// const toMainScrBtn = document.querySelector(".today-tasks-btn");
-// if(toMainScrBtn) {
-//     console.log('to main');
-//      toMainScrBtn.addEventListener("click", ()=> {
-//          console.log('to main');
-//         //  startContent.renderStartContent.bind(startContent)
-//     });
-//  }
+
 
 //----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
 const app = document.querySelector(".app-container");
@@ -129,6 +118,23 @@ const observer = new MutationObserver(mutations => {
         "click",
         ()=> {console.log('its work')}
     ]);
+    //HEADER
+    //show shedule task block
+    appEvents.addListener([
+        document.querySelector(".btn-calendar"),
+        "click",
+        () => {
+            if(document.querySelector(".options-btns-container")){
+                optionsMenu.hideOptionsMenu();
+            }
+            if(!document.querySelector(".date-select")) {
+                sheduledTasks.renderSelectSheduledDateBlock();
+            }
+            
+        }
+        
+    ]);
+
 
     //OPTIONS BLOCK
     //close options button
@@ -148,19 +154,20 @@ const observer = new MutationObserver(mutations => {
         }
     ]);
 
-    //pop up window buttons (delete data from local storage) 
+    //pop up window buttons (delete data from local storage pop up) 
+    //confirm button
     appEvents.addListener([    
         document.querySelector(".popup-confirm-btn"),
         "click",
         clearStoragePopUpData.btnFunc
     ]);
-
+    //close window button
     appEvents.addListener([
         document.querySelector(".close-popup-btn"),
         "click",
         alertDelDataPopUp.removePopUp.bind(alertDelDataPopUp)
     ]);
-
+    //close window button
     appEvents.addListener([
         document.querySelector(".popup-cancel-btn"),
         "click",
@@ -168,7 +175,7 @@ const observer = new MutationObserver(mutations => {
     ]);
 
     //TASK LIST CONTENT BLOCK
-    //add new today tasks
+    //add new today tasks (start screen button if today tasks empty)
     appEvents.addListener([
         document.querySelector(".new-task-btn"),
         "click",
@@ -179,7 +186,7 @@ const observer = new MutationObserver(mutations => {
         }
     ]);
 
-    //add new task input button
+    //add new task input button (in input block)
     appEvents.addListener([
         document.querySelector(".add-task-btn"),
         "click",
@@ -187,7 +194,19 @@ const observer = new MutationObserver(mutations => {
     ]);
     console.log('observed');
 
+    //SHEDULE TASKS
+    //show today tasks button
+    appEvents.addListener([
+        document.querySelector(".today-tasks-btn"),
+        "click",
+        () => {
+            sheduledTasks.removeSheduledDateBlock();
+            taskListContent.renderStartContent();
+            appContentEvents.taskListStatusEvents();
+        }
+    ]);
 })
+//mutatiion observer options
 observer.observe(app, {
     attributes: true,
     childList: true,

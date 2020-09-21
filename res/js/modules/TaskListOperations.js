@@ -1,17 +1,21 @@
 import {TaskListContent} from './TaskListContent.js';
 
-export {TaskListAreaEvents};
+export {TaskListOperations};
 
-class TaskListAreaEvents extends TaskListContent {
+class TaskListOperations extends TaskListContent {
     constructor(todayDate) {
         super();
         this.todayDate = todayDate;
-        
+        this.editTaskInput = document.getElementById("task-edit-field");
+        this.editBtn = document.querySelector(".edit-task");
+        this.taskInputBlock = document.querySelector(".task-input-block");
     }
+
+    //catching clicked element
     taskListStatusEvents() {
-        const appTaskList = document.querySelector(".task-list");
-        if(appTaskList) {
-            appTaskList.addEventListener("click", (event) => {
+        this.appTaskList = document.querySelector(".task-list");
+        if(this.appTaskList) {
+            this.appTaskList.addEventListener("click", (event) => {
                 const clickedElement = event.target;
                 const elId = Number(event.target.id);
                 const trashIdNum = Number(event.target.id.substr(1));
@@ -28,7 +32,7 @@ class TaskListAreaEvents extends TaskListContent {
         
     }
 
-    
+    //change status of task
     changeStatusOfTask(clickedTaskEl, clickedElId) {
         // console.log(this.mainDataArr);
         if(clickedTaskEl.classList.contains("status")) {
@@ -66,14 +70,12 @@ class TaskListAreaEvents extends TaskListContent {
     }
 
     //-----------Edit task text methods----------------
+    //handling click on task text
     taskListEditTaskEvent(clickedTaskEl, clickedTaskTextId) {
-        const editTaskInput = document.getElementById("task-edit-field");
-        const editBtn = document.querySelector(".edit-task");
-        const taskInputBlock = document.querySelector(".task-input-block");
-        if(clickedTaskEl.classList.contains("task-text-content") && !editTaskInput) {
-            const trashBtnElements = document.querySelectorAll(".trash");
+        if(clickedTaskEl.classList.contains("task-text-content") && !this.editTaskInput) {
+            this.trashBtnElements = document.querySelectorAll(".trash");
             // console.log(trashBtnElements);
-            trashBtnElements.forEach(el => {
+            this.trashBtnElements.forEach(el => {
                 if(el.nextElementSibling) {
                     el.nextElementSibling.remove();
                     el.style.display = 'block';
@@ -86,14 +88,14 @@ class TaskListAreaEvents extends TaskListContent {
                     const editBtn = document.querySelector(".edit-task");
                     editBtn.addEventListener("click", () => {
                         this.showEditInput(clickedTaskEl);
-                        taskInputBlock.style.bottom = '-180px';
+                        this.taskInputBlock.style.bottom = '-180px';
                     });
                 }
             })
                        
         }
 
-        if (editBtn) {
+        if (this.editBtn) {
         this.trashBtnElements = document.querySelectorAll(".trash");
             this.trashBtnElements.forEach(el => {
                 if(el.nextElementSibling) {
@@ -105,20 +107,19 @@ class TaskListAreaEvents extends TaskListContent {
     }
 
     showEditInput(clickedTaskEl) {
-        const editInput = document.getElementById("task-edit-field");
-        if(editInput) {
-            editInput.remove();
+        if(this.editInput) {
+            this.editInput.remove();
         }
-        const taskTextContent = clickedTaskEl.innerText;
-        clickedTaskEl.innerHTML = `<input id = "task-edit-field" type = "text" value = "${taskTextContent}">`;
-        const trashBtnElements = document.querySelectorAll(".trash");
-            trashBtnElements.forEach(el => {
+        this.taskTextContent = clickedTaskEl.innerText;
+        clickedTaskEl.innerHTML = `<input id = "task-edit-field" type = "text" value = "${this.taskTextContent}">`;
+        this.trashBtnElements = document.querySelectorAll(".trash");
+            this.trashBtnElements.forEach(el => {
                 if(el.nextElementSibling) {
                     el.nextElementSibling.remove();
                     const confirmEditBtnHTML = `<span class = "confirm-edit-task"></span>`;
                     clickedTaskEl.parentNode.insertAdjacentHTML('beforeend', confirmEditBtnHTML);
-                    const confirmEditBtn = document.querySelector(".confirm-edit-task");
-                    confirmEditBtn.addEventListener("click", () => {this.confirmEditTask(clickedTaskEl)});
+                    this.confirmEditBtn = document.querySelector(".confirm-edit-task");
+                    this.confirmEditBtn.addEventListener("click", () => {this.confirmEditTask(clickedTaskEl)});
                 }
             })
     }
@@ -139,18 +140,6 @@ class TaskListAreaEvents extends TaskListContent {
         taskInputBlock.style.bottom = '0px';
         // console.log(taskId);
     }
-
-    // hideEditTaskBtn(clickedElement) {
-    //     if(!clickedElement.classList.contains("task-text-content")) {
-    //         this.trashBtnElements = document.querySelectorAll(".trash");
-    //         this.trashBtnElements.forEach(el => {
-    //             if(el.nextElementSibling) {
-    //                 el.nextElementSibling.remove();
-    //                 el.style.display = 'block';
-    //             }
-    //         })
-    //     }
-    // }
 
     //-----------Delete task methods----------------
     deleteTaskFromList(clickedElement, taskDate, trashIdNum) {
