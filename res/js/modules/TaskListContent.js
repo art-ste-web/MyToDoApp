@@ -3,15 +3,12 @@ export {TaskListContent};
 class TaskListContent {
     constructor(todayDate) {
         this.todayDate = todayDate;
-        this.taskInputParentEl = document.querySelector(".app-container");
-        this.inputBlock = document.querySelector(".task-input-block");
-        this.appContentBlock = document.querySelector(".app-content");
-        this.appTaskList = document.querySelector(".task-list");
     }
 
     
     //render add task btn or today task list
     renderStartContent() {
+        this.appContentBlock = document.querySelector(".app-content");
         // console.log(this);
         this.todayTasksArr = this.getTodayTaskArr();
         if(!this.todayTasksArr) {
@@ -34,6 +31,7 @@ class TaskListContent {
 
     //render today task list
     renderTaskListFromArr() {
+        this.appContentBlock = document.querySelector(".app-content");
         this.appTaskList = document.querySelector(".task-list");
         // const dateSelectBlock = document.querySelector(".date-select");
         if(!this.appTaskList) {
@@ -69,6 +67,8 @@ class TaskListContent {
 
     //render task input block
     renderTaskInputBlock() {
+        this.inputBlock = document.querySelector(".task-input-block");
+        this.taskInputParentEl = document.querySelector(".app-container");
         if(!this.inputBlock) {
             this.inputBlockHTML = `<div class="task-input-block">
                                     <input class="task-text" type="text" placeholder="введите текст задания">
@@ -106,6 +106,8 @@ class TaskListContent {
 
     //render task to DOM
     renderNewTaskItem() {
+        this.appContentBlock = document.querySelector(".app-content");
+        this.appTaskList = document.querySelector(".task-list");
         this.inputTaskText = document.querySelector(".task-text");
         this.elCount = this.appTaskList.childElementCount;
         this.taskItem = `<li><span id = "${this.elCount}" class="status"></span>

@@ -6,12 +6,12 @@ class SheduledTasks extends TaskListContent {
     constructor(todayDateYY_MM_DD) {
         super();
         this.todayDateYY_MM_DD = todayDateYY_MM_DD;
-        this.taskInputBlock = document.querySelector(".task-input-block");
-        this.appContentBlock = document.querySelector(".app-content");
     }
 
     
     renderSelectSheduledDateBlock() {
+        this.appContentBlock = document.querySelector(".app-content");
+        this.taskInputBlock = document.querySelector(".task-input-block");
         const sheduleTaskBlockHTML = `<div class="date-select">
                                         <p>Выберите дату</p>
                                         <div class="date-input">
@@ -21,7 +21,6 @@ class SheduledTasks extends TaskListContent {
                                         <button class = "today-tasks-btn">Задания на сегодня <span class="today-tasks-btn-icon"></span></button>
                                     </div>`;
         console.log(this);
-        
         if(this.taskInputBlock) {
             this.taskInputBlock.style.bottom = '-180px';
         }
@@ -37,6 +36,39 @@ class SheduledTasks extends TaskListContent {
         this.selectTaskDateBlock.style.top = "800px";
         this.selectTaskDateBlock.style.opacity = "0";
         setTimeout(()=>{this.selectTaskDateBlock.remove()}, 1200);
+    }
+
+    checkInputSelectedDate() {
+        this.dateInput = document.getElementById("task-date");
+        if(this.dateInput.value !== "") {
+            const plannedTaskDate = this.dateInput.value;
+            const convPlanDate = plannedTaskDate.split("-").reverse();
+            const plannedTaskDate_DD_MM_YY = `${convPlanDate[0]}.${convPlanDate[1]}.${convPlanDate[2]}`;
+            console.log(plannedTaskDate_DD_MM_YY);
+            return true;
+        }
+        else {
+            this.dateInput.style.animation = "pulse  .5s ease-in-out";
+                setTimeout(()=> {
+                    this.dateInput.style.animation = "";
+                }, 600)
+            console.log('empty date input');
+        }
+    }
+
+    createSheduledDateObj() {
+        this.dateInput = 
+        this.mainDataArr = this.getFromLocalStorage();
+        // console.log(this.mainDataArr);
+        this.todayObj = {};
+        this.todayObj.id = this.mainDataArr.length;
+        this.todayObj.date = this.todayDate;
+        this.todayObj.tasks = [];
+        this.todayObj.allDone = false;
+        this.mainDataArr.push(this.todayObj);
+        console.log('today date obj created in main arr');
+        this.setToLocalStorage(this.mainDataArr);
+        return this.mainDataArr;
         
     }
 }

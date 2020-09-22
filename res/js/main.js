@@ -57,10 +57,27 @@ const todayFullDate = appDate.todayFullDate();
 
 //------------------APPLICATION----------------------
 const taskListContent = new TaskListContent(todayShortDate);
+const appEvents = new AppEventListener();
 //HEADER
 //show today date in header
 const headerDate = new HeaderTodayDate(todayFullDate);
 headerDate.renderTodayDate();
+
+//shedule task button event
+appEvents.addListener([
+    document.querySelector(".btn-calendar"),
+    "click",
+    () => {
+        if(document.querySelector(".options-btns-container")){
+            optionsMenu.hideOptionsMenu();
+        }
+        if(!document.querySelector(".date-select")) {
+            sheduledTasks.renderSelectSheduledDateBlock();
+        }
+        
+    }
+    
+]);
 
 //OPTIONS MENU
 //clear storage popUp window data
@@ -85,7 +102,6 @@ document.querySelector(".options-btn").addEventListener("click", () => {
 taskListContent.renderStartContent();
 
 //add new today task button event
-const appEvents = new AppEventListener();
 appEvents.addListener([
     document.querySelector(".new-task-btn"),
     "click",
@@ -203,6 +219,19 @@ const observer = new MutationObserver(mutations => {
             sheduledTasks.removeSheduledDateBlock();
             taskListContent.renderStartContent();
             appContentEvents.taskListStatusEvents();
+        }
+    ]);
+
+    //select date button
+    appEvents.addListener([
+        document.querySelector(".date-select-btn"),
+        "click",
+        () => {
+            if(sheduledTasks.checkInputSelectedDate()) {
+                sheduledTasks.removeSheduledDateBlock();
+                console.log('create date');
+            }
+            
         }
     ]);
 })
@@ -632,61 +661,61 @@ observer.observe(app, {
 
 
 //****************TASKS BY DATES*****************/
-function showDateSelectBlock() {
-    const taskInputBlock = document.querySelector(".task-input-block");
-    const parentEl = appElements.appContent;
-    let dateDdMmYy = appDate.todayShortDate();
-    let minDate = appDate.transformDateToYYMMDD(dateDdMmYy);
-    const dateEl = `<div class="date-select">
-                        <p>Выберите дату</p>
-                        <div class="date-input">
-                            <input type="date" name="task-date" id="task-date" min="${minDate}" value="">
-                            <button class="date-select-btn"></button>
-                        </div>
-                        <button class = "today-tasks-btn">Задания на сегодня <span class="today-tasks-btn-icon"></span></button>
-                    </div>`;
-    if(taskInputBlock.style.bottom = '0px') {
-        taskInputBlock.style.bottom = '-180'+'px';
-    }
-    parentEl.innerHTML = "";
-    parentEl.insertAdjacentHTML('afterbegin', dateEl);
-    //event listeners for created btns
-    const dateSelectBtn = document.querySelector(".date-select-btn");
-    const toMainScreenBtn = document.querySelector(".today-tasks-btn");
-    dateSelectBtn.addEventListener("click", checkSelectedDate);
-    // toMainScreenBtn.addEventListener("click", toMainScreen);
-    toMainScreenBtn.addEventListener("click", ()=>{
-        let contentEl = document.querySelector(".app-content");
-        contentEl.innerHTML = "";
-        const listParent = `<ul class = "task-list"></ul>`;
-        contentEl.insertAdjacentHTML('afterbegin', listParent);
-        startContent.renderStartContent();
-        appContentEvents.taskListStatusEvents();
-        console.log('to main');
-    });
-}
+// function showDateSelectBlock() {
+//     const taskInputBlock = document.querySelector(".task-input-block");
+//     const parentEl = appElements.appContent;
+//     let dateDdMmYy = appDate.todayShortDate();
+//     let minDate = appDate.transformDateToYYMMDD(dateDdMmYy);
+//     const dateEl = `<div class="date-select">
+//                         <p>Выберите дату</p>
+//                         <div class="date-input">
+//                             <input type="date" name="task-date" id="task-date" min="${minDate}" value="">
+//                             <button class="date-select-btn"></button>
+//                         </div>
+//                         <button class = "today-tasks-btn">Задания на сегодня <span class="today-tasks-btn-icon"></span></button>
+//                     </div>`;
+//     if(taskInputBlock.style.bottom = '0px') {
+//         taskInputBlock.style.bottom = '-180'+'px';
+//     }
+//     parentEl.innerHTML = "";
+//     parentEl.insertAdjacentHTML('afterbegin', dateEl);
+//     //event listeners for created btns
+//     const dateSelectBtn = document.querySelector(".date-select-btn");
+//     const toMainScreenBtn = document.querySelector(".today-tasks-btn");
+//     dateSelectBtn.addEventListener("click", checkSelectedDate);
+//     // toMainScreenBtn.addEventListener("click", toMainScreen);
+//     toMainScreenBtn.addEventListener("click", ()=>{
+//         let contentEl = document.querySelector(".app-content");
+//         contentEl.innerHTML = "";
+//         const listParent = `<ul class = "task-list"></ul>`;
+//         contentEl.insertAdjacentHTML('afterbegin', listParent);
+//         startContent.renderStartContent();
+//         appContentEvents.taskListStatusEvents();
+//         console.log('to main');
+//     });
+// }
 
-//return to main screen 
-function toMainScreen() {
-    let contentEl = appElements.appContent;
-    contentEl.innerHTML = "";
-    const listParent = `<ul class = "task-list"></ul>`;
-    contentEl.insertAdjacentHTML('afterbegin', listParent);
-    showStartContent(contentEl);
-}
+// //return to main screen 
+// function toMainScreen() {
+//     let contentEl = appElements.appContent;
+//     contentEl.innerHTML = "";
+//     const listParent = `<ul class = "task-list"></ul>`;
+//     contentEl.insertAdjacentHTML('afterbegin', listParent);
+//     showStartContent(contentEl);
+// }
 
-//check if date was selected
-function checkSelectedDate() {
-    const dateInput = document.getElementById("task-date");
-    if(dateInput.value !== "") {
-        let plannedTaskDate = appDate.transformDateToDDMMYY(dateInput.value);
-        console.log(plannedTaskDate);
-        createTaskListSelectedDate(plannedTaskDate);
-    }
-    else {
-        animateEl.accentElement(dateInput);
-    }
-}
+//+check if date was selected
+// function checkSelectedDate() {
+//     const dateInput = document.getElementById("task-date");
+//     if(dateInput.value !== "") {
+//         let plannedTaskDate = appDate.transformDateToDDMMYY(dateInput.value);
+//         console.log(plannedTaskDate);
+//         createTaskListSelectedDate(plannedTaskDate);
+//     }
+//     else {
+//         animateEl.accentElement(dateInput);
+//     }
+// }
 
 //create task list (parent) for selected date or show planned tasks
 function createTaskListSelectedDate(selectedDate) {

@@ -6,9 +6,6 @@ class TaskListOperations extends TaskListContent {
     constructor(todayDate) {
         super();
         this.todayDate = todayDate;
-        this.editTaskInput = document.getElementById("task-edit-field");
-        this.editBtn = document.querySelector(".edit-task");
-        this.taskInputBlock = document.querySelector(".task-input-block");
     }
 
     //catching clicked element
@@ -72,6 +69,8 @@ class TaskListOperations extends TaskListContent {
     //-----------Edit task text methods----------------
     //handling click on task text
     taskListEditTaskEvent(clickedTaskEl, clickedTaskTextId) {
+        this.taskInputBlock = document.querySelector(".task-input-block");
+        this.editTaskInput = document.getElementById("task-edit-field");
         if(clickedTaskEl.classList.contains("task-text-content") && !this.editTaskInput) {
             this.trashBtnElements = document.querySelectorAll(".trash");
             // console.log(trashBtnElements);
