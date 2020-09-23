@@ -3,9 +3,9 @@ import {TaskListContent} from './TaskListContent.js';
 export {SheduledTasks};
 
 class SheduledTasks extends TaskListContent {
-    constructor(todayDateYY_MM_DD) {
+    constructor(todayDate) {
         super();
-        this.todayDateYY_MM_DD = todayDateYY_MM_DD;
+        this.todayDate = todayDate;
     }
 
     
@@ -45,6 +45,9 @@ class SheduledTasks extends TaskListContent {
             const convPlanDate = plannedTaskDate.split("-").reverse();
             const plannedTaskDate_DD_MM_YY = `${convPlanDate[0]}.${convPlanDate[1]}.${convPlanDate[2]}`;
             console.log(plannedTaskDate_DD_MM_YY);
+            
+            //create object in main data array with sheduled date
+            this.createSheduledDateObj(plannedTaskDate_DD_MM_YY);
             return true;
         }
         else {
@@ -56,19 +59,42 @@ class SheduledTasks extends TaskListContent {
         }
     }
 
-    createSheduledDateObj() {
-        this.dateInput = 
+    createSheduledDateObj(plannedTaskDate_DD_MM_YY) {
         this.mainDataArr = this.getFromLocalStorage();
+        console.log(this.mainDataArr);
+        if(this.mainDataArr == []) {
+            this.todayObj = {};
+                this.todayObj.id = this.mainDataArr.length;
+                this.todayObj.date = plannedTaskDate_DD_MM_YY;
+                this.todayObj.tasks = [];
+                this.todayObj.allDone = false;
+                this.mainDataArr.push(this.todayObj);
+                console.log('sheduled date obj created in main arr');
+                this.setToLocalStorage(this.mainDataArr);
+                return this.mainDataArr;
+        }
+        else {
+            this.mainDataArr.forEach(el => {
+                if(el.date == plannedTaskDate_DD_MM_YY) {
+                    console.log(el.date, plannedTaskDate_DD_MM_YY);
+                    return;
+                }
+                else {
+                    this.todayObj = {};
+                    this.todayObj.id = this.mainDataArr.length;
+                    this.todayObj.date = plannedTaskDate_DD_MM_YY;
+                    this.todayObj.tasks = [];
+                    this.todayObj.allDone = false;
+                    this.mainDataArr.push(this.todayObj);
+                    console.log('sheduled date obj created in main arr');
+                    this.setToLocalStorage(this.mainDataArr);
+                    return this.mainDataArr;
+                }
+            });
+        }
+        
         // console.log(this.mainDataArr);
-        this.todayObj = {};
-        this.todayObj.id = this.mainDataArr.length;
-        this.todayObj.date = this.todayDate;
-        this.todayObj.tasks = [];
-        this.todayObj.allDone = false;
-        this.mainDataArr.push(this.todayObj);
-        console.log('today date obj created in main arr');
-        this.setToLocalStorage(this.mainDataArr);
-        return this.mainDataArr;
+        
         
     }
 }

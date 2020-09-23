@@ -117,8 +117,7 @@ const appContentEvents = new TaskListOperations(todayShortDate);
 appContentEvents.taskListStatusEvents();
 
 //SHEDULED TASKS
-const todayYY_MM_DD = appDate.transformDateToYYMMDD(todayShortDate);
-const sheduledTasks = new SheduledTasks(todayYY_MM_DD);
+const sheduledTasks = new SheduledTasks(todayShortDate);
 
 
 //----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
