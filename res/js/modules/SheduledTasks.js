@@ -12,10 +12,12 @@ class SheduledTasks extends TaskListContent {
     renderSelectSheduledDateBlock() {
         this.appContentBlock = document.querySelector(".app-content");
         this.taskInputBlock = document.querySelector(".task-input-block");
+        const todayDateConvTo_YY_MM_DD = this.todayDate.split(".").reverse();
+        const todayDate_YY_MM_DD = `${todayDateConvTo_YY_MM_DD[0]}-${todayDateConvTo_YY_MM_DD[1]}-${todayDateConvTo_YY_MM_DD[2]}`;
         const sheduleTaskBlockHTML = `<div class="date-select">
                                         <p>Выберите дату</p>
                                         <div class="date-input">
-                                            <input type="date" name="task-date" id="task-date" min="${this.todayDateYY_MM_DD}" value="">
+                                            <input type="date" name="task-date" id="task-date" min="${todayDate_YY_MM_DD}" value="">
                                             <button class="date-select-btn"></button>
                                         </div>
                                         <button class = "today-tasks-btn">Задания на сегодня <span class="today-tasks-btn-icon"></span></button>
@@ -48,6 +50,7 @@ class SheduledTasks extends TaskListContent {
             
             //create object in main data array with sheduled date
             this.createSheduledDateObj(plannedTaskDate_DD_MM_YY);
+            this.removeSheduledDateBlock();
             return true;
         }
         else {
@@ -62,21 +65,10 @@ class SheduledTasks extends TaskListContent {
     createSheduledDateObj(plannedTaskDate_DD_MM_YY) {
         this.mainDataArr = this.getFromLocalStorage();
         console.log(this.mainDataArr);
-        if(this.mainDataArr == []) {
-            this.todayObj = {};
-                this.todayObj.id = this.mainDataArr.length;
-                this.todayObj.date = plannedTaskDate_DD_MM_YY;
-                this.todayObj.tasks = [];
-                this.todayObj.allDone = false;
-                this.mainDataArr.push(this.todayObj);
-                console.log('sheduled date obj created in main arr');
-                this.setToLocalStorage(this.mainDataArr);
-                return this.mainDataArr;
-        }
-        else {
-            this.mainDataArr.forEach(el => {
-                if(el.date == plannedTaskDate_DD_MM_YY) {
-                    console.log(el.date, plannedTaskDate_DD_MM_YY);
+        if(this.mainDataArr.length>0) {
+            for(let i=0; i<this.mainDataArr.length; i++){
+                if(this.mainDataArr[i].date == plannedTaskDate_DD_MM_YY) {
+                    console.log('date allready exist');
                     return;
                 }
                 else {
@@ -90,8 +82,39 @@ class SheduledTasks extends TaskListContent {
                     this.setToLocalStorage(this.mainDataArr);
                     return this.mainDataArr;
                 }
-            });
+            }
+            
         }
+        else {
+            this.todayObj = {};
+            this.todayObj.id = this.mainDataArr.length;
+            this.todayObj.date = plannedTaskDate_DD_MM_YY;
+            this.todayObj.tasks = [];
+            this.todayObj.allDone = false;
+            this.mainDataArr.push(this.todayObj);
+            console.log('obj created in main arr');
+            this.setToLocalStorage(this.mainDataArr);
+            return this.mainDataArr;
+        }
+        // else {
+        //     this.mainDataArr.forEach(el => {
+        //         if(el.date == plannedTaskDate_DD_MM_YY) {
+        //             console.log(el.date, plannedTaskDate_DD_MM_YY);
+        //             return;
+        //         }
+        //         else {
+        //             this.todayObj = {};
+        //             this.todayObj.id = this.mainDataArr.length;
+        //             this.todayObj.date = plannedTaskDate_DD_MM_YY;
+        //             this.todayObj.tasks = [];
+        //             this.todayObj.allDone = false;
+        //             this.mainDataArr.push(this.todayObj);
+        //             console.log('sheduled date obj created in main arr');
+        //             this.setToLocalStorage(this.mainDataArr);
+        //             return this.mainDataArr;
+        //         }
+        //     });
+        // }
         
         // console.log(this.mainDataArr);
         

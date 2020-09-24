@@ -226,10 +226,10 @@ const observer = new MutationObserver(mutations => {
         document.querySelector(".date-select-btn"),
         "click",
         () => {
-            if(sheduledTasks.checkInputSelectedDate()) {
-                sheduledTasks.removeSheduledDateBlock();
-                console.log('create date');
-            }
+            sheduledTasks.checkInputSelectedDate();
+            // sheduledTasks.removeSheduledDateBlock();
+            console.log('create date');
+            
             
         }
     ]);
