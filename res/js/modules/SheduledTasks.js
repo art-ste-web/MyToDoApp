@@ -67,23 +67,25 @@ class SheduledTasks extends TaskListContent {
         console.log(this.mainDataArr);
         if(this.mainDataArr.length>0) {
             for(let i=0; i<this.mainDataArr.length; i++){
-                if(this.mainDataArr[i].date == plannedTaskDate_DD_MM_YY) {
+                console.log(this.mainDataArr[i]);
+                if(this.mainDataArr[i].date === plannedTaskDate_DD_MM_YY) {
                     console.log('date allready exist');
+                    this.renderSheduledDateTaskList(plannedTaskDate_DD_MM_YY);
+                    this.removeTaskInputBlock();
+                    this.renderSheduledDateTaskInput();
                     return;
                 }
-                else {
-                    this.todayObj = {};
-                    this.todayObj.id = this.mainDataArr.length;
-                    this.todayObj.date = plannedTaskDate_DD_MM_YY;
-                    this.todayObj.tasks = [];
-                    this.todayObj.allDone = false;
-                    this.mainDataArr.push(this.todayObj);
-                    console.log('sheduled date obj created in main arr');
-                    this.setToLocalStorage(this.mainDataArr);
-                    return this.mainDataArr;
-                }
             }
-            
+            this.todayObj = {};
+            this.todayObj.id = this.mainDataArr.length;
+            this.todayObj.date = plannedTaskDate_DD_MM_YY;
+            this.todayObj.tasks = [];
+            this.todayObj.allDone = false;
+            this.mainDataArr.push(this.todayObj);
+            console.log('sheduled date obj created in main arr');
+            this.setToLocalStorage(this.mainDataArr);
+            this.renderSheduledDateTaskList(plannedTaskDate_DD_MM_YY);
+            // return this.mainDataArr;
         }
         else {
             this.todayObj = {};
@@ -94,30 +96,79 @@ class SheduledTasks extends TaskListContent {
             this.mainDataArr.push(this.todayObj);
             console.log('obj created in main arr');
             this.setToLocalStorage(this.mainDataArr);
+            debugger
             return this.mainDataArr;
         }
-        // else {
-        //     this.mainDataArr.forEach(el => {
-        //         if(el.date == plannedTaskDate_DD_MM_YY) {
-        //             console.log(el.date, plannedTaskDate_DD_MM_YY);
-        //             return;
-        //         }
-        //         else {
-        //             this.todayObj = {};
-        //             this.todayObj.id = this.mainDataArr.length;
-        //             this.todayObj.date = plannedTaskDate_DD_MM_YY;
-        //             this.todayObj.tasks = [];
-        //             this.todayObj.allDone = false;
-        //             this.mainDataArr.push(this.todayObj);
-        //             console.log('sheduled date obj created in main arr');
-        //             this.setToLocalStorage(this.mainDataArr);
-        //             return this.mainDataArr;
-        //         }
-        //     });
+    }
+
+    renderSheduledDateTaskList(selectedDate) {
+        this.appContentBlock = document.querySelector(".app-content");
+        this.appTaskList = document.querySelector(".task-list");
+        // const dateSelectBlock = document.querySelector(".date-select");
+        if(!this.appTaskList) {
+            this.taskListCont = document.createElement('ul');
+            this.taskListCont.setAttribute("class", "task-list");
+            this.appContentBlock.appendChild(this.taskListCont);
+            this.appTaskList = document.querySelector(".task-list");
+            console.log('create ul');
+        }
+        // if(dateSelectBlock) {
+        //     dateSelectBlock.remove();
         // }
+        const listHeader = `<h4 class = "date-list-head">Список заданий на <span id="sheduled-date">${selectedDate}</span></h4>`;
+        this.appContentBlock.insertAdjacentHTML('afterbegin', listHeader);
+        this.appContentBlock.style.justifyContent = "flex-start";
+        this.sheduledDateTaskArr = this.getSheduledDateTaskArray(selectedDate);
+        if(this.sheduledDateTaskArr.length === 0) {
+            const emptyListMessage = `<p class = "list-message">Пока ничего не запланировано</p>`;
+            this.appTaskList.insertAdjacentHTML('beforeend', emptyListMessage);
+            this.appTaskList.style.paddingTop = '30%';
+        }
+        this.sheduledDateTaskArr.forEach(element  => {
+            const taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
+            if(element.status === true) {
+                this.appTaskList.insertAdjacentHTML('beforeend', taskDoneItem);
+            }
+            else {
+                const taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
+                this.appTaskList.insertAdjacentHTML('beforeend', taskItem);
+            }
         
-        // console.log(this.mainDataArr);
+        });
+        console.log("render list");
+    }
+    //---------------
+    renderSheduledDateTaskInput() {
+        this.inputBlock = document.querySelector(".task-input-block");
+        this.taskInputParentEl = document.querySelector(".app-container");
+        if(!this.inputBlock) {
+            this.inputBlockHTML = `<div class="sheduled-task-input-block">
+                                    <input class="task-text" type="text" placeholder="введите текст задания">
+                                    <button class="add-sheduled-task-btn"></button>
+                                </div>`;
+            this.taskInputParentEl.insertAdjacentHTML('beforeend', this.inputBlockHTML);
+            const inputBlock = document.querySelector(".task-input-block");
+            console.log('show input block');
+            const showInputBlock = () =>{inputBlock.style.bottom = 0};
+            setTimeout(showInputBlock, 500);
+            
+        }
         
+    }
+
+    //DATA
+    getSheduledDateTaskArray(selectedDate) {
+        this.mainDataArr = this.getFromLocalStorage();
+        // console.log(this);
+        this.selectedDateTasks = null;
+        this.mainDataArr.forEach(element => {
+            if(element.date == selectedDate) {
+                this.selectedDateTasks = element.tasks;
+            }
+            
+        })
         
+        // console.log(this.todayTasks);
+        return this.selectedDateTasks;
     }
 }

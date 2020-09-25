@@ -23,7 +23,7 @@ class TaskListContent {
         }
         else {
             this.renderTaskListFromArr();
-            this.renderTaskInputBlock()
+            this.renderTaskInputBlock();
             console.log('render exist task list');
 
         }
@@ -68,7 +68,11 @@ class TaskListContent {
     //render task input block
     renderTaskInputBlock() {
         this.inputBlock = document.querySelector(".task-input-block");
+        this.sheduledInputBlock = document.querySelector(".sheduled-task-input-block");
         this.taskInputParentEl = document.querySelector(".app-container");
+        if(this.sheduledInputBlock) {
+            this.sheduledInputBlock.remove();
+        }
         if(!this.inputBlock) {
             this.inputBlockHTML = `<div class="task-input-block">
                                     <input class="task-text" type="text" placeholder="введите текст задания">
@@ -83,6 +87,16 @@ class TaskListContent {
             
         }
         
+    }
+
+    showTaskInputBlock() {
+        this.inputBlock = document.querySelector(".task-input-block");
+        this.inputBlock.style.bottom = '0px';
+    }
+
+    removeTaskInputBlock() {
+        this.inputBlock = document.querySelector(".task-input-block");
+        this.inputBlock.remove();
     }
 
     addNewTodayTask() {

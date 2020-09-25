@@ -218,6 +218,7 @@ const observer = new MutationObserver(mutations => {
             sheduledTasks.removeSheduledDateBlock();
             taskListContent.renderStartContent();
             appContentEvents.taskListStatusEvents();
+            taskListContent.showTaskInputBlock();
         }
     ]);
 
@@ -227,8 +228,9 @@ const observer = new MutationObserver(mutations => {
         "click",
         () => {
             sheduledTasks.checkInputSelectedDate();
+            appContentEvents.taskListStatusEvents();
             // sheduledTasks.removeSheduledDateBlock();
-            console.log('create date');
+            // console.log('create date');
             
             
         }
@@ -716,18 +718,18 @@ observer.observe(app, {
 //     }
 // }
 
-//create task list (parent) for selected date or show planned tasks
-function createTaskListSelectedDate(selectedDate) {
-    const container = appElements.appContent;
-    const listParent = `<ul class = "task-list"></ul>`;
-    const listHeader = `<h4 class = "date-list-head">Список заданий на <span id="sheduled-date">${selectedDate}</span></h4>`;
-    container.innerHTML = "";
-    container.style.justifyContent = "flex-start";
-    container.insertAdjacentHTML('afterbegin', listHeader);
-    container.insertAdjacentHTML('beforeend', listParent);
-    //проверка на наличие заданий на эту дату и вывод
-    checkPlannedTasks(selectedDate, container);
-}
+//+create task list (parent) for selected date or show planned tasks
+// function createTaskListSelectedDate(selectedDate) {
+//     const container = appElements.appContent;
+//     const listParent = `<ul class = "task-list"></ul>`;
+//     const listHeader = `<h4 class = "date-list-head">Список заданий на <span id="sheduled-date">${selectedDate}</span></h4>`;
+//     container.innerHTML = "";
+//     container.style.justifyContent = "flex-start";
+//     container.insertAdjacentHTML('afterbegin', listHeader);
+//     container.insertAdjacentHTML('beforeend', listParent);
+//     //проверка на наличие заданий на эту дату и вывод
+//     checkPlannedTasks(selectedDate, container);
+// }
 
 //check if exist tasks for selected date and render tasks (if exists) or show message (if not) 
 function checkPlannedTasks(selectedDate, appContentContainer) {
