@@ -91,7 +91,10 @@ class TaskListContent {
 
     showTaskInputBlock() {
         this.inputBlock = document.querySelector(".task-input-block");
-        this.inputBlock.style.bottom = '0px';
+        if(this.inputBlock) {
+            this.inputBlock.style.bottom = '0px';
+        }
+        
     }
 
     removeTaskInputBlock() {
@@ -126,6 +129,12 @@ class TaskListContent {
         this.appContentBlock = document.querySelector(".app-content");
         this.appTaskList = document.querySelector(".task-list");
         this.inputTaskText = document.querySelector(".task-text");
+        if(!this.appTaskList) {
+            this.taskListCont = document.createElement('ul');
+            this.taskListCont.setAttribute("class", "task-list");
+            this.appContentBlock.appendChild(this.taskListCont);
+            this.appTaskList = document.querySelector(".task-list");
+        }
         this.elCount = this.appTaskList.childElementCount;
         this.taskItem = `<li><span id = "${this.elCount}" class="status"></span>
                             <span id="text${this.elCount}" class="task-text-content">${this.inputTaskText.value}</span>
