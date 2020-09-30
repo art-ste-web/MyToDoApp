@@ -328,11 +328,13 @@ body {
     align-self: center;
 }
 /* task list styles */
-.app-container .app-content .task-list {
+.app-container .app-content .task-list,
+.app-container .app-content .sheduled-task-list {
     width: 100%;
     padding: .1rem 0;
 }
-.app-container .app-content .task-list li {
+.app-container .app-content .task-list li,
+.app-container .app-content .sheduled-task-list li {
     position: relative;
     margin-top: 1rem;
     font-size: 1.3rem;
@@ -342,11 +344,13 @@ body {
     height: 2.5rem;
     transition: height .25s;
 }
-.app-container .app-content .task-list li.done {
+.app-container .app-content .task-list li.done,
+.app-container .app-content .sheduled-task-list li.done {
     color: var(--gray);
     text-decoration: line-through;
 }
-.app-container .app-content .task-list li .status {
+.app-container .app-content .task-list li .status,
+.app-container .app-content .sheduled-task-list li .status {
     display: inline-block;
     height: 2rem;
     width: 2rem;
@@ -355,7 +359,8 @@ body {
     margin-right: .5rem;
     cursor: pointer;
 }
-.app-container .app-content .task-list li input {
+.app-container .app-content .task-list li input,
+.app-container .app-content .sheduled-task-list li input {
     position: absolute;
     top: 0;
     max-width: 60%;
@@ -368,7 +373,8 @@ body {
     animation-fill-mode: forwards;
     animation-duration: .5s;
 }
-.app-container .app-content .task-list li span.checked {
+.app-container .app-content .task-list li span.checked,
+.app-container .app-content .sheduled-task-list li span.checked {
     display: inline-block;
     height: 2.25rem;
     width: 2.25rem;
@@ -380,7 +386,8 @@ body {
     background-size: cover;
 }
 
-.app-container .app-content .task-list li .trash {
+.app-container .app-content .task-list li .trash,
+.app-container .app-content .sheduled-task-list li .trash {
     display: inline-block;
     height: 2rem;
     width: 2rem;
@@ -391,7 +398,8 @@ body {
     margin-left: auto;
     cursor: pointer;
 }
-.app-container .app-content .task-list li .edit-task {
+.app-container .app-content .task-list li .edit-task,
+.app-container .app-content .sheduled-task-list li .edit-task {
     display: inline-block;
     height: 2.2rem;
     width: 2.2rem;
@@ -408,7 +416,8 @@ body {
     animation: appear;
     animation-duration: .25s;
 }
-.app-container .app-content .task-list li .confirm-edit-task {
+.app-container .app-content .task-list li .confirm-edit-task,
+.app-container .app-content .sheduled-task-list li .confirm-edit-task {
     display: inline-block;
     height: 2.2rem;
     width: 2.2rem;
@@ -535,7 +544,8 @@ body {
     cursor: pointer;
 }
 /*task input block*/
-.app-container .task-input-block {
+.app-container .task-input-block, 
+.app-container .sheduled-task-input-block {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -553,7 +563,8 @@ body {
     border-top-right-radius: 20px;
     box-shadow: 0px -6px 6px rgba(0, 0, 0, 0.1);
 }
-.app-container .task-input-block input {
+.app-container .task-input-block input,
+.app-container .sheduled-task-input-block input {
     padding: .6rem;
     border: 1px solid var(--light-gray);
     border-radius: 5px;
@@ -563,7 +574,7 @@ body {
     color: var(--black);
 }
 .app-container .task-input-block .add-task-btn,
-.app-container .task-input-block .add-sheduled-task-btn {
+.app-container .sheduled-task-input-block .add-sheduled-task-btn {
     background-color: var(--icon-bg-blue);
     background-image: url("../img/plus.svg");
     background-repeat: no-repeat;
@@ -598,7 +609,8 @@ body {
     animation: appear;
     animation-duration: 0.5s;
 }
-.app-container .task-input-block button:hover {
+.app-container .task-input-block button:hover,
+.app-container .sheduled-task-input-block button:hover {
     transform: scale(1.1);
 }
 

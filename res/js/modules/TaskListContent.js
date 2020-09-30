@@ -96,7 +96,10 @@ class TaskListContent {
 
     removeTaskInputBlock() {
         this.inputBlock = document.querySelector(".task-input-block");
-        this.inputBlock.remove();
+        if(this.inputBlock) {
+            this.inputBlock.remove();
+        }
+        
     }
 
     addNewTodayTask() {

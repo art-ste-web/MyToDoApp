@@ -24,16 +24,17 @@ import {OptionsMenu} from './modules/OptionsMenu.js';
 //pop up window
 import {PopUpWindow} from './modules/PopUpWindow.js';
 
-//start content
+//today tasklist (start content)
 import {TaskListContent} from './modules/TaskListContent.js'; 
 
-//task list events
+//today task list events
 import {TaskListOperations} from './modules/TaskListOperations.js';
 
 //sheduled tasks
 import {SheduledTasks} from './modules/SheduledTasks.js';
 
-
+//sheduled tasks list events
+import {SheduledTasksOperations} from './modules/SheduledTasksOperations.js';
 
 // //buttons
 // import {appButtons} from './common/appButtons.js';
@@ -118,13 +119,13 @@ appContentEvents.taskListStatusEvents();
 
 //SHEDULED TASKS
 const sheduledTasks = new SheduledTasks(todayShortDate);
-
+const sheduledTasksOps = new SheduledTasksOperations();
 
 //----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
 const app = document.querySelector(".app-container");
 const observer = new MutationObserver(mutations => {
     
-    console.log(mutations);
+    // console.log(mutations);
 
     //Add button click events
     //test
@@ -145,7 +146,7 @@ const observer = new MutationObserver(mutations => {
             if(!document.querySelector(".date-select")) {
                 sheduledTasks.renderSelectSheduledDateBlock();
             }
-            
+                        
         }
         
     ]);
@@ -228,12 +229,19 @@ const observer = new MutationObserver(mutations => {
         "click",
         () => {
             sheduledTasks.checkInputSelectedDate();
-            appContentEvents.taskListStatusEvents();
-            // sheduledTasks.removeSheduledDateBlock();
-            // console.log('create date');
-            
+            sheduledTasksOps.sheduledTaskListStatusEvents();
             
         }
+    ]);
+
+    //add new sheduled task input button (in sheduled input block)
+    appEvents.addListener([
+        document.querySelector(".add-sheduled-task-btn"),
+        "click",
+        () => {
+            sheduledTasks.addNewSheduledTask.bind(sheduledTasks);
+        }
+        
     ]);
 })
 //mutatiion observer options
