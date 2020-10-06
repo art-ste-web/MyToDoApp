@@ -94,15 +94,15 @@ class TaskListOperations extends TaskListContent {
                        
         }
 
-        if (this.editBtn) {
-        this.trashBtnElements = document.querySelectorAll(".trash");
-            this.trashBtnElements.forEach(el => {
-                if(el.nextElementSibling) {
-                    el.nextElementSibling.remove();
-                    el.style.display = 'block';
-                }
-            })
-        }
+        // if (this.editBtn) {
+        // this.trashBtnElements = document.querySelectorAll(".trash");
+        //     this.trashBtnElements.forEach(el => {
+        //         if(el.nextElementSibling) {
+        //             el.nextElementSibling.remove();
+        //             el.style.display = 'block';
+        //         }
+        //     })
+        // }
     }
 
     showEditInput(clickedTaskEl) {

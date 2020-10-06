@@ -36,6 +36,12 @@ import {SheduledTasks} from './modules/SheduledTasks.js';
 //sheduled tasks list events
 import {SheduledTasksOperations} from './modules/SheduledTasksOperations.js';
 
+//sheduled tasks dates list
+import {SheduledDatesList} from './modules/SheduledDatesList.js';
+
+const sheduledDatesList = new SheduledDatesList();
+console.log(sheduledDatesList.transformData());
+
 // //buttons
 // import {appButtons} from './common/appButtons.js';
 
@@ -239,7 +245,7 @@ const observer = new MutationObserver(mutations => {
         document.querySelector(".add-sheduled-task-btn"),
         "click",
         () => {
-            sheduledTasks.addNewSheduledTask.bind(sheduledTasks);
+            sheduledTasks.addNewSheduledTask();
         }
         
     ]);

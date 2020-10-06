@@ -138,12 +138,12 @@ class SheduledTasks extends TaskListContent {
             this.sheduledTaskList.style.paddingTop = '30%';
         }
         this.sheduledDateTaskArr.forEach(element  => {
-            const taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
+            const taskDoneItem = `<li class = "done"><span id = "${element.tId}" class="status checked"></span><span id="text${element.tId}" class="sheduled-task-text-content">${element.text}</span></span><span id="t${element.tId}" class="trash"></span></li>`;
             if(element.status === true) {
                 this.sheduledTaskList.insertAdjacentHTML('beforeend', taskDoneItem);
             }
             else {
-                const taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
+                const taskItem = `<li><span  id = "${element.tId}" class="status"></span><span id="text${element.tId}" class="sheduled-task-text-content">${element.text}</span><span id="t${element.tId}" class="trash"></span></li>`;
                 this.sheduledTaskList.insertAdjacentHTML('beforeend', taskItem);
             }
         
@@ -201,15 +201,15 @@ class SheduledTasks extends TaskListContent {
         this.appTaskList = document.querySelector(".sheduled-task-list");
         this.inputSheduledTaskText = document.querySelector(".sheduled-task-text");
         this.emptyListMessage = document.querySelector(".list-message");
-        this.elCount = this.appTaskList.childElementCount;
-        this.sheduledTaskItemHTML = `<li><span id = "${this.elCount}" class="status"></span>
-                            <span id="text${this.elCount}" class="task-text-content">${this.inputSheduledTaskText.value}</span>
-                            <span id="t${this.elCount}" class="trash"></span></li>`;
-        this.appContentBlock.style.alignItems = "flex-start";
-        this.appContentBlock.style.justifyContent = "flex-start";
         if(this.emptyListMessage){
             this.emptyListMessage.remove();
         }
+        this.elCount = this.appTaskList.childElementCount;
+        this.sheduledTaskItemHTML = `<li><span id = "${this.elCount}" class="status"></span>
+                            <span id="text${this.elCount}" class="sheduled-task-text-content">${this.inputSheduledTaskText.value}</span>
+                            <span id="t${this.elCount}" class="trash"></span></li>`;
+        this.appContentBlock.style.alignItems = "flex-start";
+        this.appContentBlock.style.justifyContent = "flex-start";
         this.appTaskList.style.paddingTop = "";
         this.appTaskList.insertAdjacentHTML('beforeend', this.sheduledTaskItemHTML);
         console.log('sheduled task item rendered');
