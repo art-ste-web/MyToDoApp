@@ -10,10 +10,12 @@ class SheduledDatesList extends TaskListContent {
     transformData() {
         this.mainDataArr = super.getFromLocalStorage();
         console.log(this.mainDataArr);
-        const transformedMainArr = this.mainDataArr.map(el => {
-            if(el.tasks.length > 0) {
-                return el;
-            }
+        // const transformedMainArr = this.mainDataArr.filter(el => {
+        //     return el.tasks.length >0;
+            
+        // });
+        const transArr = this.mainDataArr.forEach(element => {
+            element.date.split('.');
         });
         console.log(transformedMainArr);
         

@@ -18,6 +18,7 @@ class TaskListContent {
                               </div>`;
             this.appContentBlock.insertAdjacentHTML('afterbegin', this.newTaskBtn);
             this.appContentBlock.style.justifyContent = "center";
+            this.appContentBlock.style.alignItems = "center";
             console.log('render add task btn');
             // console.log(this.todayTaskArr);
         }
