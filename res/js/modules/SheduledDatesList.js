@@ -1,16 +1,20 @@
 import {TaskListContent} from './TaskListContent.js';
 
-export {SheduledDatesList};
-
 class SheduledDatesList extends TaskListContent {
     constructor() {
         super();
     }
 
+    renderDateList() {
+        this.appContentBlock = document.querySelector(".app-content");
+        this.appContentBlock.innerHTML = "";
+        this.transformData();
+    }
+
     transformData() {
-        this.mainDataArr = super.getFromLocalStorage();
-        console.log(this.mainDataArr);
-        const transformedMainArr = this.mainDataArr.filter(el => {
+        const mainDataArr = super.getFromLocalStorage();
+        console.log(mainDataArr);
+        const transformedMainArr = mainDataArr.filter(el => {
              return el.tasks.length > 0;
             
         });
@@ -33,6 +37,7 @@ class SheduledDatesList extends TaskListContent {
             return (a.unixDate-b.unixDate);
         });
         console.log(sortedArr);
+        return sortedArr;
         // const date2 =new Date ('2020-10-16T00:00:00');
         // console.log(date2.toISOString());
         
@@ -43,3 +48,6 @@ class SheduledDatesList extends TaskListContent {
 
     }
 }
+
+
+export {SheduledDatesList};

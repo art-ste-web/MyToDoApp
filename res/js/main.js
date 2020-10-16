@@ -39,8 +39,8 @@ import {SheduledTasksOperations} from './modules/SheduledTasksOperations.js';
 //sheduled tasks dates list
 import {SheduledDatesList} from './modules/SheduledDatesList.js';
 
-const sheduledDatesList = new SheduledDatesList();
-console.log(sheduledDatesList.transformData());
+
+
 
 // //buttons
 // import {appButtons} from './common/appButtons.js';
@@ -85,6 +85,9 @@ appEvents.addListener([
     }
     
 ]);
+
+//dates list
+const sheduledDatesList = new SheduledDatesList();
 
 //OPTIONS MENU
 //clear storage popUp window data
@@ -135,11 +138,11 @@ const observer = new MutationObserver(mutations => {
 
     //Add button click events
     //test
-    appEvents.addListener([
-        appElements.allDatesListsBtn,
-        "click",
-        ()=> {console.log('its work')}
-    ]);
+    // appEvents.addListener([
+    //     appElements.allDatesListsBtn,
+    //     "click",
+    //     ()=> {console.log('its work')}
+    // ]);
     //HEADER
     //show shedule task block
     appEvents.addListener([
@@ -157,6 +160,20 @@ const observer = new MutationObserver(mutations => {
         
     ]);
 
+    //show dates list
+    appEvents.addListener([
+        document.querySelector(".btn-dates-list"),
+        "click",
+        () => {
+            if(document.querySelector(".options-btns-container")){
+                optionsMenu.hideOptionsMenu();
+            }
+            sheduledDatesList.renderDateList();
+            console.log('show dates list');
+                        
+        }
+        
+    ]);
 
     //OPTIONS BLOCK
     //close options button
