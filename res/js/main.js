@@ -130,6 +130,8 @@ appContentEvents.taskListStatusEvents();
 const sheduledTasks = new SheduledTasks(todayShortDate);
 const sheduledTasksOps = new SheduledTasksOperations();
 
+
+
 //----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
 const app = document.querySelector(".app-container");
 const observer = new MutationObserver(mutations => {
@@ -170,6 +172,17 @@ const observer = new MutationObserver(mutations => {
             }
             sheduledDatesList.renderDateList();
             console.log('show dates list');
+                        
+        }
+        
+    ]);
+
+    //dates list items
+    appEvents.addListener([
+        document.querySelector(".sheduled-tasks-list"),
+        "click",
+        () => {
+            console.log(this);
                         
         }
         
