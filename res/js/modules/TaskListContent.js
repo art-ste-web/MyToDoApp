@@ -9,6 +9,7 @@ class TaskListContent {
     //render add task btn or today task list
     renderStartContent() {
         this.appContentBlock = document.querySelector(".app-content");
+        this.appContentBlock.innerHTML = "";
         // console.log(this);
         this.todayTasksArr = this.getTodayTaskArr();
         if(!this.todayTasksArr) {
@@ -25,8 +26,8 @@ class TaskListContent {
         else {
             this.renderTaskListFromArr();
             this.renderTaskInputBlock();
+            this.appContentBlock.style.justifyContent = "flex-start";
             console.log('render exist task list');
-
         }
     }
 

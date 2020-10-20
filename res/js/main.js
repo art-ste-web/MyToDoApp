@@ -37,8 +37,10 @@ import {SheduledTasks} from './modules/SheduledTasks.js';
 import {SheduledTasksOperations} from './modules/SheduledTasksOperations.js';
 
 //sheduled tasks dates list
-import {SheduledDatesList} from './modules/SheduledDatesList.js';
+import {DatesList} from './modules/DatesList.js';
 
+//task dates list operations
+import {DatesListOperations} from './modules/DatesListOperations.js';
 
 
 
@@ -87,7 +89,8 @@ appEvents.addListener([
 ]);
 
 //dates list
-const sheduledDatesList = new SheduledDatesList();
+const datesList = new DatesList();
+const datesListOps = new DatesListOperations();
 
 //OPTIONS MENU
 //clear storage popUp window data
@@ -131,6 +134,24 @@ const sheduledTasks = new SheduledTasks(todayShortDate);
 const sheduledTasksOps = new SheduledTasksOperations();
 
 
+//-----------ADD EVENT LISTENER TO HEADER BTNS-----------
+//show today tasks button
+document.querySelector(".btn-today-tasks").addEventListener("click", ()=>{
+    console.log("show today");
+    taskListContent.renderStartContent();
+    appContentEvents.taskListStatusEvents();
+    taskListContent.showTaskInputBlock();
+});
+
+//show task lists by dates
+document.querySelector(".btn-dates-list").addEventListener("click", ()=>{
+    if(document.querySelector(".options-btns-container")){
+        optionsMenu.hideOptionsMenu();
+    }
+    datesList.renderDateList();
+    datesListOps.getDatesListClickedEl();
+    console.log('show dates list');
+})
 
 //----------WATCH DOM CHANGES AND ADD EVENT LISTENERS---------------
 const app = document.querySelector(".app-container");
@@ -163,30 +184,30 @@ const observer = new MutationObserver(mutations => {
     ]);
 
     //show dates list
-    appEvents.addListener([
-        document.querySelector(".btn-dates-list"),
-        "click",
-        () => {
-            if(document.querySelector(".options-btns-container")){
-                optionsMenu.hideOptionsMenu();
-            }
-            sheduledDatesList.renderDateList();
-            console.log('show dates list');
+    // appEvents.addListener([
+    //     document.querySelector(".btn-dates-list"),
+    //     "click",
+    //     () => {
+    //         if(document.querySelector(".options-btns-container")){
+    //             optionsMenu.hideOptionsMenu();
+    //         }
+    //         sheduledDatesList.renderDateList();
+    //         console.log('show dates list');
                         
-        }
+    //     }
         
-    ]);
+    // ]);
 
     //dates list items
-    appEvents.addListener([
-        document.querySelector(".sheduled-tasks-list"),
-        "click",
-        () => {
-            console.log(this);
+    // appEvents.addListener([
+    //     document.querySelector(".sheduled-tasks-list"),
+    //     "click",
+    //     () => {
+    //         console.log(this);
                         
-        }
+    //     }
         
-    ]);
+    // ]);
 
     //OPTIONS BLOCK
     //close options button

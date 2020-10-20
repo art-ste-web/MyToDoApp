@@ -11,6 +11,7 @@ class SheduledTasks extends TaskListContent {
     
     renderSelectSheduledDateBlock() {
         this.appContentBlock = document.querySelector(".app-content");
+        this.appContentBlock.style.justifyContent = "center";
         this.taskInputBlock = document.querySelector(".task-input-block");
         this.sheduledDateTaskInput = document.querySelector(".sheduled-task-input-block");
         const todayDateConvTo_YY_MM_DD = this.todayDate.split(".").reverse();

@@ -1,6 +1,6 @@
 import {TaskListContent} from './TaskListContent.js';
 
-class SheduledDatesList extends TaskListContent {
+class DatesList extends TaskListContent {
     constructor() {
         super();
     }
@@ -9,6 +9,7 @@ class SheduledDatesList extends TaskListContent {
         this.hideTaskInput();
         this.appContentBlock = document.querySelector(".app-content");
         this.appContentBlock.style.alignItems = "center";
+        this.appContentBlock.style.justifyContent = "flex-start";
         this.appContentBlock.innerHTML = "";
         const transDataArr = this.transformData();
         const datesListHeader = document.createElement("h1");
@@ -17,8 +18,9 @@ class SheduledDatesList extends TaskListContent {
         this.appContentBlock.appendChild(datesListHeader);
         if(transDataArr.length === 0) {
             const emptyList = document.createElement("p");
-            emptyList.setAttribute("class", "empty-list-mes");
+            emptyList.setAttribute("class", "list-message");
             emptyList.textContent = "Ничего не запланировано";
+            emptyList.style.paddingTop = '30%';
             this.appContentBlock.appendChild(emptyList);
         }
         else {
@@ -28,16 +30,22 @@ class SheduledDatesList extends TaskListContent {
             transDataArr.forEach(el => {
                 const listCont = document.querySelector(".sheduled-tasks-list");
                 const listItem = document.createElement("li");
+                listItem.setAttribute("class", "d-btn");
+                const trashBtn = document.createElement("span");
+                trashBtn.setAttribute("id", `tr${el.id}`);
+                trashBtn.setAttribute("class", "trash-btn");
                 if(el.allDone === true) {
                     const allDoneIcon = document.createElement("span");
                     allDoneIcon.setAttribute("class", "date-tasks-done-icon");
                     listItem.textContent = el.date;
                     listCont.appendChild(listItem).appendChild(allDoneIcon);
-                    listItem.setAttribute("class", "all-tasks-done-item");
+                    listItem.setAttribute("class", "d-btn all-tasks-done-item");
+                    listItem.appendChild(trashBtn);
                 }
                 else {
                     listItem.textContent = el.date;
                     listCont.appendChild(listItem);
+                    listItem.appendChild(trashBtn);
                 }
                 
             });
@@ -104,4 +112,4 @@ class SheduledDatesList extends TaskListContent {
 }
 
 
-export {SheduledDatesList};
+export {DatesList};
