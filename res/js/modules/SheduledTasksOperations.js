@@ -73,6 +73,7 @@ class SheduledTasksOperations extends SheduledTasks {
             // let todayTasks = appData.getTodayTaskArr(curDate);
             this.clearDOMTaskList();
             super.renderSheduledDateTaskList(this.sheduledTaskDate);
+            this.sheduledTaskListStatusEvents();
         }
     }
 

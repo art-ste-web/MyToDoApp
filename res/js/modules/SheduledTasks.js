@@ -41,10 +41,13 @@ class SheduledTasks extends TaskListContent {
         this.selectTaskDateBlock = document.querySelector(".date-select");
         // this.appContentBlock.innerHTML = "<ul class='task-list'></ul>";
         // this.selectTaskDateBlock.style.cssText = "animation: appear-from-top; animation-duration: .25s; animation-direction: reverse;"
-        this.selectTaskDateBlock.style.transition = "all .4s"; 
-        this.selectTaskDateBlock.style.top = "800px";
-        this.selectTaskDateBlock.style.opacity = "0";
-        setTimeout(()=>{this.selectTaskDateBlock.remove()}, 1200);
+        if(this.selectTaskDateBlock) {
+            this.selectTaskDateBlock.style.transition = "all .4s"; 
+            this.selectTaskDateBlock.style.top = "800px";
+            this.selectTaskDateBlock.style.opacity = "0";
+            setTimeout(()=>{this.selectTaskDateBlock.remove()}, 1200);
+        }
+        
     }
 
     checkInputSelectedDate() {
@@ -114,6 +117,7 @@ class SheduledTasks extends TaskListContent {
 
     renderSheduledDateTaskList(selectedDate) {
         this.appContentBlock = document.querySelector(".app-content");
+        this.appContentBlock.innerHTML = '';
         this.sheduledTaskList = document.querySelector(".sheduled-task-list");
         // const dateSelectBlock = document.querySelector(".date-select");
         if(!this.sheduledTaskList) {
