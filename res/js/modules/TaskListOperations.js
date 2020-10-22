@@ -11,6 +11,7 @@ class TaskListOperations extends TaskListContent {
     //catching clicked element
     taskListStatusEvents() {
         this.appTaskList = document.querySelector(".task-list");
+        console.log(this.appTaskList);
         if(this.appTaskList) {
             this.appTaskList.addEventListener("click", (event) => {
                 const clickedElement = event.target;
@@ -23,7 +24,7 @@ class TaskListOperations extends TaskListContent {
                 this.deleteTaskFromList(clickedElement, this.todayDate, trashIdNum);
                 this.taskListEditTaskEvent(clickedElement, taskTextId);
                 // console.log(this.mainDataArr);
-                
+                console.log('status was changed');
             })
         }
         

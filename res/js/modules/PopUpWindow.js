@@ -4,6 +4,7 @@ class PopUpWindow {
     constructor(popUpData) {
         this.popUpData = popUpData;
     }
+    
     renderPopUp() {
         this.parentEl = document.querySelector(".app-content");
         this.blockScr = document.querySelector(".popup-block-screen");
@@ -13,7 +14,7 @@ class PopUpWindow {
                 <p>${this.popUpData.bodyText}</p>
             </div>
             <div class="popup-btns">
-                <button class="popup-confirm-btn">${this.popUpData.btnText}</button>
+                <button id = ${this.popUpData.confBtnId} class="popup-confirm-btn">${this.popUpData.btnText}</button>
                 <button class="popup-cancel-btn">Отмена</button>
             </div>
         </div>`;

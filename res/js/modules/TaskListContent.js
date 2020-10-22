@@ -65,6 +65,11 @@ class TaskListContent {
     hideStartBlock() {
         this.addTaskTodayBtn = document.querySelector(".new-task-btn");
         this.addTaskTodayBtn.classList.add("hide-el");
+        this.parentEl = document.querySelector(".app-content");
+        const taskListEl = document.createElement("ul");
+        taskListEl.setAttribute("class", "task-list");
+        this.parentEl.appendChild(taskListEl);
+
     }
 
     //render task input block

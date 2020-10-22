@@ -350,6 +350,7 @@ body {
     align-items: center;
     width: 100%;
     min-height: 2rem;
+    height: 2.2rem;
     transition: height .25s;
 }
 .app-container .app-content .task-list li.done,
@@ -559,6 +560,7 @@ body {
     z-index: 2000;
     animation: appear-from-top;
     animation-duration: 0.5s;
+    padding: 1rem;
 }
 .app-container .app-content .popup-window .popup-close {
     display: flex;
@@ -588,6 +590,7 @@ body {
     height: 50%;
 }
 .app-container .app-content .popup-window .popup-content p {
+    line-height: 1.2rem;
     margin-top: 0;
     padding: 1rem;
     color: var(--black);
@@ -599,6 +602,7 @@ body {
     align-items: center;
 }
 .app-container .app-content .popup-window .popup-btns .popup-confirm-btn {
+    font-size: 1rem;
     padding: .5rem;
     border: none;
     outline: none;
@@ -608,6 +612,7 @@ body {
     cursor: pointer;
 }
 .app-container .app-content .popup-window .popup-btns .popup-cancel-btn {
+    font-size: 1rem;
     padding: .5rem;
     border: 1px solid var(--gray);
     outline: none;

@@ -99,7 +99,8 @@ const clearStoragePopUpData = {
     bodyText: "Вы уверены, что хотите удалить все сохраненные данные приложения?",
     btnText: "Удалить данные",
     btnColor: btnColor,
-    btnFunc: taskListContent.clearLocalStorage
+    confBtnId: "del-data",
+    // btnFunc: taskListContent.clearLocalStorage
 };
 //clear storage popUp window
 const alertDelDataPopUp = new PopUpWindow(clearStoragePopUpData);
@@ -122,6 +123,7 @@ appEvents.addListener([
         taskListContent.renderTaskInputBlock();
         taskListContent.createTodayDateObj();
         taskListContent.hideStartBlock();
+        appContentEvents.taskListStatusEvents();
     }
 ]);
 
@@ -230,9 +232,10 @@ const observer = new MutationObserver(mutations => {
     //pop up window buttons (delete data from local storage pop up) 
     //confirm button
     appEvents.addListener([    
-        document.querySelector(".popup-confirm-btn"),
+        document.getElementById("del-data"),
         "click",
-        clearStoragePopUpData.btnFunc
+        taskListContent.clearLocalStorage
+                
     ]);
     //close window button
     appEvents.addListener([
@@ -256,14 +259,21 @@ const observer = new MutationObserver(mutations => {
             taskListContent.renderTaskInputBlock();
             taskListContent.createTodayDateObj();
             taskListContent.hideStartBlock();
+            appContentEvents.taskListStatusEvents();
+            console.log("22222222222");
         }
     ]);
 
     //add new task input button (in input block)
     appEvents.addListener([
         document.querySelector(".add-task-btn"),
-        "click",
-        taskListContent.addNewTodayTask.bind(taskListContent)
+        "click", ()=>{
+            taskListContent.addNewTodayTask();
+            // appContentEvents.taskListStatusEvents();
+            console.log("new task was added");
+        }
+        
+
     ]);
     console.log('observed');
 
@@ -301,7 +311,7 @@ const observer = new MutationObserver(mutations => {
         
     ]);
 })
-//mutatiion observer options
+//mutation observer options
 observer.observe(app, {
     attributes: true,
     childList: true,

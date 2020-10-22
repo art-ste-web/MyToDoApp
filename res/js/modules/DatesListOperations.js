@@ -1,4 +1,7 @@
 import {SheduledTasksOperations} from './SheduledTasksOperations.js';
+import {PopUpWindow} from './PopUpWindow.js';
+import {TaskListContent} from './TaskListContent.js';
+
 
 class DatesListOperations extends SheduledTasksOperations {
     constructor() {
@@ -7,15 +10,35 @@ class DatesListOperations extends SheduledTasksOperations {
 
     getDatesListClickedEl () {
         const datesList = document.querySelector(".sheduled-tasks-list");
-        datesList.addEventListener("click", (event)=> {
-            console.log(event.target);
-            console.log(event.target.textContent);
-            if(event.target.classList.contains("d-btn")) {
-                this.renderDateTaskList(event.target.textContent);
-                super.sheduledTaskListStatusEvents();
-                this.renderDateTaskInput();
-            }
-        })
+        if(datesList) {
+            datesList.addEventListener("click", (event)=> {
+                console.log(event.target);
+                console.log(event.target.textContent);
+                if(event.target.classList.contains("d-btn")) {
+                    this.renderDateTaskList(event.target.textContent);
+                    super.sheduledTaskListStatusEvents();
+                    this.renderDateTaskInput();
+                }
+                if(event.target.classList.contains("trash-btn")) {
+                    //pop Up
+                    const deleteDatePopupData = {
+                        bodyText: `Удалить все задания на ${event.target.parentNode.innerText}?`,
+                        btnText: "Удалить задания",
+                        btnColor: '#dc3545',
+                        confBtnId: "del-date-btn"
+                    };
+                    const deleteDatePopup = new PopUpWindow(deleteDatePopupData);
+                    // this.deleteDateList(event.target);
+                    deleteDatePopup.renderPopUp();
+                    const confDelBtn = document.getElementById("del-date-btn");
+                    confDelBtn.addEventListener("click", ()=>{
+                        this.deleteDateList(event.target);
+                        deleteDatePopup.removePopUp();
+                    })
+                }
+            })
+        }
+        
     }
 
     renderDateTaskList(selectedDate) {
@@ -69,6 +92,23 @@ class DatesListOperations extends SheduledTasksOperations {
             this.sheduledTasksInputBlock.style.bottom = 0;
         }
         
+    }
+
+    deleteDateList(trashEl) {
+        const delDate = trashEl.parentNode.innerText;
+        const taskListContent = new TaskListContent();
+        const mainDataArr = taskListContent.getFromLocalStorage();
+        mainDataArr.forEach(el => {
+            if(el.date === delDate) {
+                const elId = el.id;
+                mainDataArr.splice(elId, 1);
+            }
+            for(let i=0; i<mainDataArr.length; i++) {
+                mainDataArr[i].id = i;
+            }
+        });
+        taskListContent.setToLocalStorage(mainDataArr);
+        trashEl.parentNode.remove();
     }
 }
 
