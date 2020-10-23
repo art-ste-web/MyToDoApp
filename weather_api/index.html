@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather API</title>
+    <style>
+        body {
+            width: 60%;
+            margin: 0 auto;
+        }
+        .wrapper {
+            margin: 0 auto;
+            position: relative;
+        }
+        #search-city {
+            height: 40px;
+            width: 600px;
+        }
+        .search-results {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: bisque;
+            height: 400px;
+            width: 600px;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="search-city" type="text"></input>
+        <button id="select-btn">Выбрать</button>
+        <div class="search-results"></div>
+    </div>
+    
+    
+
+    <script src="get-weather.js"></script>
+    <script src="search-city.js"></script>
+</body>
+</html>
