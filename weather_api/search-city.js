@@ -1,6 +1,6 @@
 
 const inputCity = document.getElementById("search-city");
-inputCity.addEventListener("keyup", ()=> {searchCity(inputCity.value)});
+inputCity.addEventListener("keyup", ()=> {searchCity(inputCity.value.toLowerCase())});
 
 function searchCity(key) {
     const cont = document.querySelector(".search-results");
