@@ -42,6 +42,9 @@ import {DatesList} from './modules/DatesList.js';
 //task dates list operations
 import {DatesListOperations} from './modules/DatesListOperations.js';
 
+//weather block
+import {WeatherBlock} from './modules/WeatherBlock.js';
+import {WeatherData} from './modules/WeatherData.js';
 
 
 // //buttons
@@ -111,6 +114,8 @@ document.querySelector(".options-btn").addEventListener("click", () => {
     optionsMenu.renderOptionsMenu();
 });
 
+
+
 //TASK LIST CONTENT
 //start content
 taskListContent.renderStartContent();
@@ -134,6 +139,14 @@ appContentEvents.taskListStatusEvents();
 //SHEDULED TASKS
 const sheduledTasks = new SheduledTasks(todayShortDate);
 const sheduledTasksOps = new SheduledTasksOperations();
+
+
+//WEATHER BLOCK
+const weatherData = new WeatherData();
+const weatherCities = weatherData.getCitiesList();
+const weatherIcons = weatherData.getWeatherIcons();
+const weatherBlock = new WeatherBlock(weatherCities, weatherIcons);
+weatherBlock.renderCityPopUp();
 
 
 //-----------ADD EVENT LISTENER TO HEADER BTNS-----------

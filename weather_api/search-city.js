@@ -1,5 +1,6 @@
 
 const inputCity = document.getElementById("search-city");
+searchCity(inputCity.value);
 inputCity.addEventListener("keyup", ()=> {searchCity(inputCity.value.toLowerCase())});
 
 function searchCity(key) {
@@ -7,9 +8,10 @@ function searchCity(key) {
     console.log(key);
     let newArray = citiesArr.filter((el)=> {
         const caseTrans = el.cyrName.toLowerCase();
-        if(key!='') {
-            return caseTrans.indexOf(key) !== -1;
-        }
+        // if(key!='') {
+        //     return caseTrans.indexOf(key) !== -1;
+        // }
+        return caseTrans.indexOf(key) !== -1;
         
     })
     
@@ -22,11 +24,11 @@ function searchCity(key) {
         
         
     });
-    for(let i=0; i<newArray; i++) {
-        // cont.appendChild(result);
-        console.log(newArray[i]);
-        // cont.appendChild(result.innerText[foundArr[i].cyrName]);
-    }
+    // for(let i=0; i<newArray; i++) {
+    //     // cont.appendChild(result);
+    //     console.log(newArray[i]);
+    //     // cont.appendChild(result.innerText[foundArr[i].cyrName]);
+    // }
     // showSearchList(newArray);
     console.log(newArray)
 }

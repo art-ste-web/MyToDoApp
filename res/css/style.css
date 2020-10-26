@@ -562,6 +562,7 @@ body {
     animation-duration: 0.5s;
     padding: 1rem;
 }
+
 .app-container .app-content .popup-window .popup-close {
     display: flex;
     justify-content: flex-end;
@@ -621,6 +622,34 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+/*select city popup*/
+.app-container .app-content .cities-popup {
+    height: 70%;
+}
+.app-container .app-content .cities-popup .popup-close {
+    align-items: flex-start;
+    height: 12%;
+}
+.app-container .app-content .cities-popup .popup-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.app-container .app-content .cities-popup .popup-content h2 {
+    margin: 0 auto .5rem auto;
+    text-align: center;
+    color: var(--black);
+
+}
+.app-container .app-content .cities-popup .popup-content input {
+    font-size: 1.1rem;
+    height: 2.1rem;
+    width: 80%;
+    border: 1px solid var(--icon-bg-blue);
+    border-radius: 5px;
+}
+
 /*task input block*/
 .app-container .task-input-block, 
 .app-container .sheduled-task-input-block {
