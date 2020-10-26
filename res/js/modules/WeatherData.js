@@ -8,127 +8,152 @@ class WeatherData {
             {   
                 id: '689558',
                 name: 'Vinnytsia',
-                cyrName: 'Винница'
+                cyrName: 'Винница',
+                isActive: false
             },
             {
                 id: '709930',
                 name: 'Dnipro',
-                cyrName: 'Днепр'
+                cyrName: 'Днепр',
+                isActive: true
             },
             {
                 id: '709717',
                 name: 'Donetsk',
-                cyrName: 'Донецк'
+                cyrName: 'Донецк',
+                isActive: false
             },
             {
                 id: '686967',
                 name: 'Zhytomyr',
-                cyrName: 'Житомир'
+                cyrName: 'Житомир',
+                isActive: false
             },
             {
                 id: '687700',
                 name: 'Zaporizhia',
-                cyrName: 'Запорожье'
+                cyrName: 'Запорожье',
+                isActive: false
             },
             {
                 id: '707471',
                 name: 'Ivano-Frankivsk',
-                cyrName: 'Ивано-Франковск'
+                cyrName: 'Ивано-Франковск',
+                isActive: false
             },
             {
                 id: '703448',
                 name: 'Kyiv',
-                cyrName: 'Киев'
+                cyrName: 'Киев',
+                isActive: false
             },
             {
                 id: '705812',
                 name: 'Kropyvnytskyi',
-                cyrName: 'Кропивницкий'
+                cyrName: 'Кропивницкий',
+                isActive: false
             },
             {
                 id: '702658',
                 name: 'Luhansk',
-                cyrName: 'Луганск'
+                cyrName: 'Луганск',
+                isActive: false
             },
             {
                 id: '702569',
                 name: 'Lutsk',
-                cyrName: 'Луцк'
+                cyrName: 'Луцк',
+                isActive: false
             },
             {
                 id: '702550',
                 name: 'Lviv',
-                cyrName: 'Львов'
+                cyrName: 'Львов',
+                isActive: false
             },
             {
                 id: '700568',
                 name: 'Mykolaiv',
-                cyrName: 'Николаев'
+                cyrName: 'Николаев',
+                isActive: false
             },
             {
                 id: '698740',
                 name: 'Odessa',
-                cyrName: 'Одесса'
+                cyrName: 'Одесса',
+                isActive: false
             },
             {
                 id: '696643',
                 name: 'Poltava',
-                cyrName: 'Полтава'
+                cyrName: 'Полтава',
+                isActive: false
             },
             {
                 id: '695365',
                 name: 'Rivne',
-                cyrName: 'Ровно'
+                cyrName: 'Ровно',
+                isActive: false
             },
             {
                 id: '693805',
                 name: 'Simferopol',
-                cyrName: 'Симферополь'
+                cyrName: 'Симферополь',
+                isActive: false
             },
             {
                 id: '692194',
                 name: 'Sumy',
-                cyrName: 'Сумы'
+                cyrName: 'Сумы',
+                isActive: false
             },
             {
                 id: '691650',
                 name: 'Ternopil',
-                cyrName: 'Тернополь'
+                cyrName: 'Тернополь',
+                isActive: false
             },
             {
                 id: '690548',
                 name: 'Uzhgorod',
-                cyrName: 'Ужгород'
+                cyrName: 'Ужгород',
+                isActive: false
             },
             {
                 id: '706483',
                 name: 'Kharkiv',
-                cyrName: 'Харьков'
+                cyrName: 'Харьков',
+                isActive: false
             },
             {
                 id: '706448',
                 name: 'Kherson',
-                cyrName: 'Херсон'
+                cyrName: 'Херсон',
+                isActive: false
             },
             {
                 id: '706369',
                 name: 'Khmelnytskyi',
-                cyrName: 'Хмельницкий'
+                cyrName: 'Хмельницкий',
+                isActive: false
             },
             {
                 id: '710791',
                 name: 'Cherkasy',
-                cyrName: 'Черкассы'
+                cyrName: 'Черкассы',
+                isActive: false
             },
             {
                 id: '710735',
                 name: 'Chernihiv',
-                cyrName: 'Чернигов'
+                cyrName: 'Чернигов',
+                isActive: false
             },
             {
                 id: '710741',
                 name: 'Chernivtsi',
-                cyrName: 'Черновцы'
+                cyrName: 'Черновцы',
+                isActive: false
             },
         ];
         return this.weatherCities;
