@@ -164,92 +164,92 @@ class WeatherData {
             {
                 description: 'clear sky day',
                 icon: '01d',
-                path: '../img/wheather-icons/clear-sky-day.svg'
+                path: 'res/img/weather-icons/clear-sky-day.svg'
             },
             {
                 description: 'clear sky night',
                 icon: '01n',
-                path: '../img/wheather-icons/clear-sky-night.svg'
+                path: 'res/img/weather-icons/clear-sky-night.svg'
             },
             {
                 description: 'few clouds day',
                 icon: '02d',
-                path: '../img/wheather-icons/few-clouds-day.svg'
+                path: 'res/img/weather-icons/few-clouds-day.svg'
             },
             {
                 description: 'few clouds night',
                 icon: '02n',
-                path: '../img/wheather-icons/few-clouds-night.svg'
+                path: 'res/img/weather-icons/few-clouds-night.svg'
             },
             {
                 description: 'scattered clouds day',
                 icon: '03d',
-                path: '../img/wheather-icons/scattered-clouds.svg'
+                path: 'res/img/weather-icons/scattered-clouds.svg'
             },
             {
                 description: 'scattered clouds night',
                 icon: '03n',
-                path: '../img/wheather-icons/scattered-clouds.svg'
+                path: 'res/img/weather-icons/scattered-clouds.svg'
             },
             {
                 description: 'broken clouds day',
                 icon: '04d',
-                path: '../img/wheather-icons/broken-clouds.svg'
+                path: 'res/img/weather-icons/broken-clouds.svg'
             },
             {
                 description: 'broken clouds night',
                 icon: '04n',
-                path: '../img/wheather-icons/broken-clouds.svg'
+                path: 'res/img/weather-icons/broken-clouds.svg'
             },
             {
                 description: 'shower rain day',
                 icon: '09d',
-                path: '../img/wheather-icons/shower-rain.svg'
+                path: 'res/img/weather-icons/shower-rain.svg'
             },
             {
                 description: 'shower rain night',
                 icon: '09n',
-                path: '../img/wheather-icons/shower-rain.svg'
+                path: 'res/img/weather-icons/shower-rain.svg'
             },
             {
                 description: 'rain day',
                 icon: '10d',
-                path: '../img/wheather-icons/rain-day.svg'
+                path: 'res/img/weather-icons/rain-day.svg'
             },
             {
                 description: 'rain night',
                 icon: '10n',
-                path: '../img/wheather-icons/rain-night.svg'
+                path: 'res/img/weather-icons/rain-night.svg'
             },
             {
                 description: 'thundershtorm day',
                 icon: '11d',
-                path: '../img/wheather-icons/thundershtorm.svg'
+                path: 'res/img/weather-icons/thundershtorm.svg'
             },
             {
                 description: 'thundershtorm night',
                 icon: '11n',
-                path: '../img/wheather-icons/thundershtorm.svg'
+                path: 'res/img/weather-icons/thundershtorm.svg'
             },
             {
                 description: 'snow day',
                 icon: '13d',
-                path: '../img/wheather-icons/snow.svg'
+                path: 'res/img/weather-icons/snow.svg'
             },
             {
                 description: 'snow night',
                 icon: '13n',
-                path: '../img/wheather-icons/snow.svg'
+                path: 'res/img/weather-icons/snow.svg'
             },
             {
                 description: 'mist day',
                 icon: '50d',
-                path: '../img/wheather-icons/mist.svg'
+                path: 'res/img/weather-icons/mist.svg'
             },
             {
                 description: 'mist night',
                 icon: '50n',
-                path: '../img/wheather-icons/mist.svg'
+                path: 'res/img/weather-icons/mist.svg'
             }
         
         ]

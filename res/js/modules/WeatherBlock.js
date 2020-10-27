@@ -24,14 +24,19 @@ class WeatherBlock {
         this.parentEl.insertAdjacentHTML('afterbegin', this.popUpHTML);
         this.searchCityInput = document.getElementById("input-city");
         this.searchCity(this.searchCityInput);
+        this.changeActiveCity();
         this.searchCityInput.addEventListener("keyup", ()=> {this.searchCity(this.searchCityInput)});
-        // this.searchCityInput.addEventListener("keyup", ()=> {console.log('key up')});
+        
     }
 
     searchCity(searchInput) {
+        if(!localStorage.getItem("WEATHER-DATA")) {
+            this.setWeatherDataToLocalStorage(this.weatherCities);
+        }
+        const getCities = this.getWeatherDataFromLocalStorage();
         const listCont = document.querySelector(".city-list-container");
         let searchInputValue = searchInput.value.toLowerCase();
-        let foundCitiesArr = this.weatherCities.filter((el)=> {
+        let foundCitiesArr = getCities.filter((el)=> {
             const caseTrans = el.cyrName.toLowerCase();
             // if(key!='') {
             //     return caseTrans.indexOf(key) !== -1;
@@ -40,29 +45,85 @@ class WeatherBlock {
             
         })
         
-        console.log(foundCitiesArr);    
+        // console.log(foundCitiesArr);    
         listCont.innerHTML = "";
         foundCitiesArr.forEach(el => {
         
             const result = document.createElement('li');
-            // const activeCityIcon = document.createElement('span');
-            // activeCityIcon.setAttribute("class", "active-city");
+            result.setAttribute("class", "city");
             if(el.isActive) {
-                result.innerHTML ='<span class = "active-city"></span>';
-                result.textContent = el.cyrName;
-                
-                listCont.append(result);
-                console.log('1111111');
+                const activeCityHTML =`<li class="city active-city"><span class = "active-city-icon"></span>${el.cyrName}</li>`;
+                listCont.insertAdjacentHTML('afterbegin', activeCityHTML);
             }
             result.textContent = el.cyrName;
             listCont.appendChild(result);
-            // console.log(this.weatherCities);
+            
         
         });
         
     }
 
-    getWeather(cityId) {
+    changeActiveCity() {
+        this.citiesData = this.getWeatherDataFromLocalStorage();
+        this.cityCont = document.querySelector(".city-list-container");
+        this.cityCont.addEventListener("click", (ev)=>{
+            if(ev.target.classList.contains("city")) {
+                const selectedCity = ev.target.textContent;
+            this.citiesData.forEach(el => {
+                if(el.cyrName === selectedCity) {
+                    el.isActive = true;
+                }
+                else {
+                    el.isActive = false;
+                }
+            })
+            
+            this.setWeatherDataToLocalStorage(this.citiesData);
+            this.searchCityInput = document.getElementById("input-city");
+            this.searchCity(this.searchCityInput);
+            this.renderWeatherData(selectedCity);
+            }
+            
+        
+        })
+        
+    }
+
+    getActiveCity() {
+        const citiesData = this.getWeatherDataFromLocalStorage();
+        const activeCity = citiesData.find(el => el.isActive === true);
+        return activeCity.cyrName;
+    }
+
+    renderWeatherData(activeCity) {
+        this.cityNameBlock = document.querySelector(".city");
+        this.tempValueBlock = document.querySelector(".temp");
+        this.weatherIconBlock = document.querySelector(".weather-icon");
+        this.cityNameBlock.textContent = activeCity;
+        this.cityList = this.getWeatherDataFromLocalStorage();
+        const cityEl = this.cityList.find(el => el.cyrName === activeCity);
+        const cityId = cityEl.id;
+        fetch(`http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=32efaa158ae7df320c4702c6122cda73`)
+            .then((resp)=>{return resp.json()})
+            .then((data) => {
+                // console.log(data);
+                const tempValue = Math.round((data.main.temp)-273);
+                this.tempValueBlock.innerHTML = tempValue>0 ? `+${tempValue}&deg;C` : `${tempValue}&deg;C`;
+                const getIcon = this.weatherIcons.find(el => el.icon === data.weather[0].icon);
+                this.weatherIconBlock.setAttribute("src", `${getIcon.path}`);
+                return data;
+            })
+        .catch(() => {
+            console.log('connection error');
+            return false;
+        })
+
+        
+        
+
+    }
+
+    getWeatherByAPI(cityId) {
         fetch(`http://api.openweathermap.org/data/2.5/weather?id=${cityId}&appid=32efaa158ae7df320c4702c6122cda73`)
             .then((resp)=>{return resp.json()})
             .then((data) => {
@@ -75,7 +136,23 @@ class WeatherBlock {
         })
     }
 
-    
+    //LOCAL STORAGE
+    setWeatherDataToLocalStorage(weatherData) {
+        localStorage.setItem("WEATHER-DATA", JSON.stringify(weatherData));
+        console.log('saved to LS');
+    }
+
+    getWeatherDataFromLocalStorage() {
+        const weatherData = localStorage.getItem("WEATHER-DATA");
+        let weatherDataArr = [];
+        if(weatherData) {
+            weatherDataArr = JSON.parse(weatherData);
+            return weatherDataArr;
+        }
+        else {
+            return [];
+        }
+    }
     
     // removeCityPopUp() {
     //     this.blockScr = document.querySelector(".popup-block-screen");

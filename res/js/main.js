@@ -146,7 +146,9 @@ const weatherData = new WeatherData();
 const weatherCities = weatherData.getCitiesList();
 const weatherIcons = weatherData.getWeatherIcons();
 const weatherBlock = new WeatherBlock(weatherCities, weatherIcons);
-weatherBlock.renderCityPopUp();
+const activeCity = weatherBlock.getActiveCity();
+weatherBlock.renderWeatherData(activeCity);
+
 
 
 //-----------ADD EVENT LISTENER TO HEADER BTNS-----------
@@ -240,6 +242,17 @@ const observer = new MutationObserver(mutations => {
             alertDelDataPopUp.renderPopUp();
             optionsMenu.hideOptionsMenu();
         }
+    ]);
+
+    //weather location
+    appEvents.addListener([
+        document.querySelector(".select-location-btn"),
+        "click",
+        ()=> {
+            weatherBlock.renderCityPopUp();
+            optionsMenu.hideOptionsMenu();
+        }
+       
     ]);
 
     //pop up window buttons (delete data from local storage pop up) 

@@ -295,23 +295,24 @@ body {
 .app-container .header .menu-wrapper .weather-block {
     z-index: 500;
     min-width: 5rem;
+    margin-right: .3rem;
 }
 .app-container .header .menu-wrapper .weather-block .city {
     font-weight: 500;
     font-size: .8rem;
 }
 .app-container .header .menu-wrapper .weather-block .temp {
-    font-size: 2.4rem;
+    font-size: 1.6rem;
     position: relative;
 }
-.app-container .header .menu-wrapper .weather-block .temp .deg-icon {
+/* .app-container .header .menu-wrapper .weather-block .temp .deg-icon {
     position: absolute;
     top: 0;
-    font-size: 1.2rem;
-}
+    font-size: .8rem;
+} */
 .app-container .header .menu-wrapper .weather-block img {
-    height: 3rem;
-    width: 3rem;
+    height: 2.5rem;
+    width: 2.5rem;
 }
 
 /*content part*/
@@ -650,6 +651,10 @@ body {
     border-radius: 5px;
 }
 .app-container .app-content .cities-popup .popup-content .city-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
     margin-top: 1rem;
     width: 80%;
     min-height: 110%;
@@ -657,6 +662,26 @@ body {
 }
 .app-container .app-content .cities-popup .popup-content .city-list-container li {
     margin-top: 1rem;
+    cursor: pointer;
+    
+}
+.app-container .app-content .cities-popup .popup-content .city-list-container .active-city {
+    margin-left: 1.5rem;
+    position: relative;
+}
+.app-container .app-content .cities-popup .popup-content .city-list-container li .active-city-icon {
+    position: absolute;
+    display: inline-block;
+    height: 1.5rem;
+    width: 1.5rem;
+    min-width: 2rem;
+    background-image: url(../img/active-city.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    left: -2rem;
+    bottom: -0.1rem;
+    
 }
 
 /*task input block*/
