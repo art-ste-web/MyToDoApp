@@ -90,9 +90,22 @@ class WeatherBlock {
     }
 
     getActiveCity() {
-        const citiesData = this.getWeatherDataFromLocalStorage();
-        const activeCity = citiesData.find(el => el.isActive === true);
-        return activeCity.cyrName;
+        let citiesData = [];
+        let activeCity = '';
+        if(localStorage.getItem("WEATHER-DATA")) {
+            citiesData = this.getWeatherDataFromLocalStorage();
+            activeCity = citiesData.find(el => el.isActive === true);
+            return activeCity.cyrName;
+        }
+        else {
+            citiesData = this.weatherCities;
+            activeCity = citiesData.find(el => el.isActive === true);
+            console.log(activeCity);
+            this.setWeatherDataToLocalStorage(this.weatherCities);
+            return activeCity.cyrName;
+            console.log(activeCity);
+        }
+        
     }
 
     renderWeatherData(activeCity) {
