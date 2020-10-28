@@ -14,7 +14,10 @@ class WeatherBlock {
                             <div class="popup-close"><button class="close-popup-btn"></button></div>
                                 <div class="popup-content">
                                     <h2>Выберите город для отображения прогноза погоды</h2>
-                                    <input type = "text" id = "input-city"/>
+                                    <div class = "search-wrapper">
+                                        <input type = "text" id = "input-city"/>
+                                        <span class = "search-icon"></span>
+                                    </div>
                                     <ul class = "city-list-container">
 
                                     </ul>
@@ -55,10 +58,16 @@ class WeatherBlock {
                 const activeCityHTML =`<li class="city active-city"><span class = "active-city-icon"></span>${el.cyrName}</li>`;
                 listCont.insertAdjacentHTML('afterbegin', activeCityHTML);
             }
-            result.textContent = el.cyrName;
-            listCont.appendChild(result);
+            const actCity = document.querySelector(".active-city");
+            if(actCity && el.cyrName === actCity.textContent) {
+                result.remove();
+            }
+            else {
+                result.textContent = el.cyrName;
+                listCont.appendChild(result);
+            }
             
-        
+                    
         });
         
     }
@@ -77,9 +86,9 @@ class WeatherBlock {
                     el.isActive = false;
                 }
             })
-            
-            this.setWeatherDataToLocalStorage(this.citiesData);
             this.searchCityInput = document.getElementById("input-city");
+            this.searchCityInput.value = selectedCity;
+            this.setWeatherDataToLocalStorage(this.citiesData);
             this.searchCity(this.searchCityInput);
             this.renderWeatherData(selectedCity);
             }
