@@ -173,7 +173,7 @@ body {
     top: 0;
     padding: 1rem;
     /* width: 4rem; */
-    height: 10rem;
+    /* height: 10rem; */
     background-color: var(--white);
     box-shadow: var(--btn-shadow);
     border-bottom-left-radius: 5px;
@@ -182,8 +182,8 @@ body {
     animation-duration: .5s;
 }
 .app-container .header .date-block .options-btns-container .close-options-btn {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 1.8rem;
+    width: 1.8rem;
     background-color: transparent;
     background-image: url(../img/close.svg);
     background-size: 90%;
@@ -196,8 +196,8 @@ body {
     cursor: pointer;
 }
 .app-container .header .date-block .options-btns-container .delete-data-btn {
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 3rem;
+    width: 3rem;
     background-color: #dc3545;
     background-image: url(../img/delete-database.svg);
     background-size: 60%;
@@ -211,8 +211,8 @@ body {
     padding: .5rem;
 }
 .app-container .header .date-block .options-btns-container .select-location-btn {
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 3rem;
+    width: 3rem;
     background-color: #00B0E8;
     background-image: url(../img/location.svg);
     background-size: 60%;
@@ -628,6 +628,9 @@ body {
     height: 60%;
     width: 70%;
 }
+.app-container .app-content .cities-popup .popup-close .close-popup-btn {
+    margin: .25rem;
+}
 .app-container .app-content .cities-popup .popup-close {
     align-items: flex-start;
     height: 10%;
@@ -637,6 +640,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    height: 75%;
 }
 .app-container .app-content .cities-popup .popup-content h2 {
     margin: 0 auto .5rem auto;
@@ -649,7 +653,7 @@ body {
     width: 80%;
 }
 .app-container .app-content .cities-popup .popup-content .search-wrapper input {
-    font-size: 1rem;
+    font-size: 1.1rem;
     min-height: 2.1rem;
     height: 2.1rem;
     width: 90%;
@@ -661,7 +665,7 @@ body {
     position: absolute;
     display: inline-block;
     top: .6rem;
-    right: -1rem;
+    right: -1.5rem;
     height: 1.2rem;
     width: 1.2rem;
     margin-right: .5rem;
@@ -677,7 +681,7 @@ body {
     align-content: center;
     margin-top: 1rem;
     width: 80%;
-    min-height: 110%;
+    min-height: 60%;
     overflow-y: scroll;
 }
 .app-container .app-content .cities-popup .popup-content .city-list-container li {
@@ -702,6 +706,9 @@ body {
     left: -2rem;
     bottom: -0.1rem;
     
+}
+.app-container .app-content .cities-popup .popup-btns {
+    height: 15%;
 }
 
 /*task input block*/

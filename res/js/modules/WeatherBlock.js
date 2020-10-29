@@ -22,6 +22,9 @@ class WeatherBlock {
 
                                     </ul>
                                 </div>
+                                <div class="popup-btns">
+                                    <button class="popup-cancel-btn">Закрыть</button>
+                                </div>
                             </div>`;
         this.blockScr.classList.add("show-el");
         this.parentEl.insertAdjacentHTML('afterbegin', this.popUpHTML);
